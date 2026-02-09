@@ -3,996 +3,907 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comprehensive Report: Introduction to AI for Elementary Students (K–5)</title>
+    <title>MR. KUANG'S CLASSROOM</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            --primary-color: #2563eb;
-            --primary-dark: #1e40af;
-            --bg-light: #f8fafc;
-            --text-dark: #1e293b;
-            --text-medium: #475569;
-            --text-light: #64748b;
-            --border-color: #e2e8f0;
-            --sidebar-width: 280px;
-            --citation-bg: #dbeafe;
-            --warning-bg: #fef3c7;
-            --warning-border: #f59e0b;
-        }
-
+        /* Body with brick background theme */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.7;
-            color: var(--text-dark);
-            background: #ffffff;
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: var(--sidebar-width);
-            height: 100vh;
-            background: var(--bg-light);
-            border-right: 1px solid var(--border-color);
-            padding: 1.25rem 1rem;
-            overflow-y: auto;
-            z-index: 100;
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar h1 {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 1rem;
-            line-height: 1.3;
-        }
-
-        .sidebar h1 a {
-            color: var(--primary-dark);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .sidebar h1 a:hover {
-            color: var(--primary-color);
-        }
-
-        .toc {
-            list-style: none;
-        }
-
-        .toc li {
-            margin-bottom: 0.375rem;
-        }
-
-        .toc a {
-            display: block;
-            padding: 0.5rem 0.75rem;
-            color: var(--text-medium);
-            text-decoration: none;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            transition: all 0.2s ease;
-        }
-
-        .toc a:hover {
-            background: #e0e7ff;
-            color: var(--primary-dark);
-        }
-
-        .toc a.active {
-            background: var(--primary-color);
-            color: white;
-            font-weight: 600;
-        }
-
-        /* Mobile Menu Toggle */
-        .menu-toggle {
-            display: none;
-            position: fixed;
-            top: 1rem;
-            left: 1rem;
-            z-index: 200;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-left: var(--sidebar-width);
-            padding: 3rem;
-            max-width: 900px;
-        }
-
-        /* Typography */
-        h2 {
-            font-size: 1.875rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-top: 3rem;
-            margin-bottom: 1.25rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid var(--primary-color);
-        }
-
-        h3 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        h4 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-top: 2rem;
-            margin-bottom: 0.875rem;
-        }
-
-        p {
-            margin-bottom: 1.25rem;
-            color: var(--text-medium);
-        }
-
-        .disclaimer {
-            background: var(--warning-bg);
-            border: 2px solid var(--warning-border);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            margin-bottom: 2.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .disclaimer h3 {
-            margin-top: 0;
-            color: var(--warning-border);
-            font-size: 1.125rem;
-            margin-bottom: 1rem;
-        }
-
-        .disclaimer p {
-            color: var(--text-dark);
-            font-size: 0.9375rem;
-            line-height: 1.6;
-            margin-bottom: 0;
-        }
-
-        .executive-summary {
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-            padding: 2rem;
-            border-radius: 0.75rem;
-            border-left: 4px solid var(--primary-color);
-            margin-bottom: 2.5rem;
-        }
-
-        .executive-summary p:last-child {
-            margin-bottom: 0;
-        }
-
-        /* Lists */
-        ul, ol {
-            margin-left: 1.5rem;
-            margin-bottom: 1.25rem;
-        }
-
-        li {
-            margin-bottom: 0.625rem;
-            color: var(--text-medium);
-        }
-
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        thead {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-        }
-
-        th {
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-            color: white;
-            font-size: 0.9375rem;
-        }
-
-        td {
-            padding: 1rem;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-medium);
-            font-size: 0.9375rem;
-        }
-
-        tbody tr:nth-child(even) {
-            background: var(--bg-light);
-        }
-
-        tbody tr:hover {
-            background: #f1f5f9;
-        }
-
-        /* Citations */
-        .citation {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 600;
-            cursor: help;
+            font-family: 'Press Start 2P', monospace;
+            background: linear-gradient(180deg, #c84c0c 0%, #a84410 100%);
+            color: #fff;
+            line-height: 2;
+            padding: 0;
+            image-rendering: pixelated;
             position: relative;
-            padding: 0 0.125rem;
+            overflow-x: hidden;
         }
 
-        .citation:hover {
-            text-decoration: underline;
+        /* Brick pattern texture for body background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(to right, transparent 48%, rgba(0,0,0,0.3) 48%, rgba(0,0,0,0.3) 52%, transparent 52%),
+                linear-gradient(to bottom, transparent 48%, rgba(0,0,0,0.3) 48%, rgba(0,0,0,0.3) 52%, transparent 52%),
+                linear-gradient(135deg, rgba(255,140,0,0.3) 0%, transparent 50%),
+                linear-gradient(to bottom, rgba(220,100,20,0.4) 0%, rgba(150,70,15,0.4) 100%);
+            background-size: 100% 100%, 100% 100%, 30px 30px, 100% 100%;
+            background-position: center, center, 0 0, center;
+            pointer-events: none;
+            opacity: 0.5;
+            z-index: 0;
         }
 
-        .citation-tooltip {
-            display: none;
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--text-dark);
-            color: white;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 400;
-            line-height: 1.5;
-            width: max-content;
-            max-width: 400px;
-            z-index: 1000;
-            box-shadow: 0 10px 15px rgba(0,0,0,0.2);
-            margin-bottom: 0.5rem;
+        /* Header with blue sky theme */
+        header {
+            background: linear-gradient(180deg, #5c94fc 0%, #89b5ff 100%);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid #000;
+            position: relative;
+            z-index: 10;
         }
 
-        .citation:hover .citation-tooltip {
+        header h1 {
+            font-size: 1.4em;
+            color: #fff;
+            text-shadow: 3px 3px 0 #2c5aa0;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Navigation at top */
+        nav {
+            background: transparent;
+            padding: 20px 15px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-btn {
+            background: #f8a848;
+            border: 4px solid #000;
+            border-radius: 12px;
+            padding: 15px 8px;
+            color: #fff;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            font-family: 'Press Start 2P', monospace;
+            position: relative;
+            transition: all 0.1s;
+            text-shadow: 2px 2px 0 #000;
+            box-shadow: 0 6px 0 #d85800, inset 0 -4px 0 rgba(255,255,255,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+        }
+
+        .nav-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #d85800, inset 0 -4px 0 rgba(255,255,255,0.3);
+        }
+
+        .nav-btn.active {
+            background: #ffd700;
+            box-shadow: 0 6px 0 #cc9900, inset 0 -4px 0 rgba(255,255,255,0.5);
+        }
+
+        .btn-text {
+            font-size: 0.9em;
+            margin-bottom: 8px;
+            word-wrap: break-word;
+            line-height: 1.3;
             display: block;
         }
 
-        .citation-tooltip::after {
+        .btn-icon {
+            font-size: 1.5em;
+            color: #ffd700;
+            display: block;
+        }
+
+        /* Main content frame area */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px 40px 15px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Frame container - Green Pipe Theme */
+        .frame-container {
+            background: linear-gradient(90deg, #00a800 0%, #00d800 50%, #00a800 100%);
+            margin: 0 0 20px 0;
+            padding: 15px;
+            border: 8px solid #005800;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 6px 0 #003800, inset 0 0 0 8px #00f800;
+            min-height: 400px;
+        }
+
+        .frame-content {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border: 4px solid #000;
+            border-radius: 12px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            min-height: 600px;
+        }
+
+        .frame-content h2 {
+            color: #fff;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 0 #005800;
+        }
+
+        .frame-content h3 {
+            color: #ffd700;
+            font-size: 1em;
+            margin: 25px 0 15px 0;
+            text-shadow: 2px 2px 0 #005800;
+            text-align: left;
+        }
+
+        .frame-content p {
+            color: #fff;
+            font-size: 0.85em;
+            line-height: 2;
+            text-shadow: 1px 1px 0 #005800;
+        }
+
+        .frame-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+
+        .frame-content li {
+            color: #fff;
+            font-size: 0.8em;
+            line-height: 2;
+            margin: 8px 0;
+            padding-left: 20px;
+            text-shadow: 1px 1px 0 #005800;
+            position: relative;
+        }
+
+        .frame-content li::before {
+            content: '⭐';
+            position: absolute;
+            left: 0;
+            font-size: 0.9em;
+        }
+
+        .frame-content a {
+            color: #ffd700;
+            text-decoration: none;
+            border-bottom: 2px solid #ffd700;
+            transition: all 0.2s;
+        }
+
+        .frame-content a:hover {
+            color: #fff;
+            border-bottom-color: #fff;
+        }
+
+        .frame-content iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 600px;
+            border: none;
+            background: #fff;
+            border-radius: 8px;
+        }
+
+        /* Hide all frames by default */
+        .frame-container {
+            display: none;
+        }
+
+        /* Show active frame */
+        .frame-container.active {
+            display: block;
+        }
+
+        /* Footer with mushroom theme */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(180deg, #ff8c00 0%, #ff6600 100%);
+            border-top: 4px solid #000;
+            margin-top: 0;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 10;
+            box-shadow: inset 0 -4px 0 rgba(255,255,255,0.2);
+        }
+
+        /* Red spots pattern on mushroom footer */
+        footer::before {
             content: '';
             position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 6px solid transparent;
-            border-top-color: var(--text-dark);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle, #d32f2f 12%, transparent 12%),
+                radial-gradient(circle, #d32f2f 12%, transparent 12%),
+                radial-gradient(circle, #d32f2f 12%, transparent 12%),
+                radial-gradient(circle, #d32f2f 12%, transparent 12%);
+            background-size: 80px 80px, 80px 80px, 80px 80px, 80px 80px;
+            background-position: 10px 10px, 60px 30px, 25px 50px, 70px 60px;
+            opacity: 0.5;
+            pointer-events: none;
         }
 
-        /* References Section */
-        .reference-item {
-            margin-bottom: 1.5rem;
-            padding-left: 2rem;
-            text-indent: -2rem;
-            color: var(--text-medium);
-            line-height: 1.6;
+        footer p {
+            margin: 10px 0;
+            color: #fff;
+            text-shadow: 2px 2px 0 #cc5200;
+            position: relative;
+            z-index: 2;
         }
 
-        /* Mobile Styles */
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-                padding: 5rem 1.5rem 2rem;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            h3 {
-                font-size: 1.25rem;
-            }
-
-            table {
-                font-size: 0.875rem;
-            }
-
-            th, td {
-                padding: 0.75rem 0.5rem;
-            }
-
-            .citation-tooltip {
-                max-width: 280px;
-                font-size: 0.8125rem;
-            }
+        .coin-score {
+            font-size: 1.2em;
+            animation: bounce 0.5s ease-in-out infinite alternate;
         }
 
-        /* Smooth Scrolling */
-        html {
-            scroll-behavior: smooth;
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
         }
 
-        /* Print Styles */
-        @media print {
-            .sidebar, .menu-toggle {
-                display: none;
+        @media (min-width: 768px) {
+            header h1 { font-size: 1.8em; }
+            .nav-btn { 
+                padding: 20px 10px;
+                min-height: 120px;
             }
-
-            .main-content {
-                margin-left: 0;
-            }
+            .btn-text { font-size: 1.1em; }
+            .btn-icon { font-size: 1.8em; }
+            .frame-content { min-height: 700px; }
+            .frame-content iframe { min-height: 700px; }
+            .frame-content h2 { font-size: 1.5em; }
+            .frame-content h3 { font-size: 1.1em; }
+            .frame-content p { font-size: 0.9em; }
+            .frame-content li { font-size: 0.85em; }
+            footer { font-size: 0.9em; }
         }
+
+        @media (max-width: 767px) {
+            .nav-buttons { 
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            .nav-btn { 
+                padding: 12px 6px;
+                min-height: 90px;
+            }
+            .btn-text { font-size: 0.7em; }
+            .btn-icon { font-size: 1.3em; }
+            .frame-container { margin: 0 10px 20px 10px; padding: 10px; }
+            .frame-content { padding: 10px; min-height: 500px; }
+            .frame-content iframe { min-height: 500px; }
+            .frame-content h3 { font-size: 0.85em; }
+            .frame-content li { font-size: 0.7em; }
+        }
+
+        @media (max-width: 480px) {
+            header h1 { font-size: 1.1em; }
+            .nav-buttons { 
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .nav-btn { 
+                padding: 10px 5px;
+                min-height: 80px;
+            }
+            .btn-text { font-size: 0.6em; }
+            .btn-icon { font-size: 1.2em; }
+            .frame-content { min-height: 450px; }
+            .frame-content iframe { min-height: 450px; }
+            .frame-content h2 { font-size: 1em; }
+            .frame-content h3 { font-size: 0.75em; }
+            .frame-content p { font-size: 0.7em; }
+            .frame-content li { font-size: 0.65em; }
+        }
+    
+        /* Override min-height for embedded podcast/video iframes */
+        .embed-wrapper iframe {
+            min-height: 0 !important;
+            height: 100%;
+        }
+
+        /* Disable pointer events on decorative black keys so clicks pass through to white keys */
+        .black-key.black-2,
+        .black-key.black-3,
+        .black-key.black-4,
+        .black-key.black-5,
+        .black-key.black-6 {
+            pointer-events: none;
+        }
+
     </style>
 </head>
 <body>
-    <button class="menu-toggle" onclick="toggleSidebar()">☰ Menu</button>
+    <header>
+        <h1>☁️ MR. KUANG'S CLASSROOM ☁️</h1>
+    </header>
 
-    <nav class="sidebar" id="sidebar">
-        <h1><a href="#top">AI for Elementary Students (K–5)</a></h1>
-        <ul class="toc">
-            <li><a href="#disclaimer" class="toc-link">Disclaimer</a></li>
-            <li><a href="#executive-summary" class="toc-link">Executive Summary</a></li>
-            <li><a href="#standards" class="toc-link">Standards Alignment</a></li>
-            <li><a href="#concepts" class="toc-link">Age-Appropriate Concepts</a></li>
-            <li><a href="#unplugged" class="toc-link">Unplugged Activities</a></li>
-            <li><a href="#assessment" class="toc-link">Assessment</a></li>
-            <li><a href="#differentiation" class="toc-link">Differentiation</a></li>
-            <li><a href="#misconceptions" class="toc-link">Misconceptions</a></li>
-            <li><a href="#professional-development" class="toc-link">Professional Development</a></li>
-            <li><a href="#culturally-responsive" class="toc-link">Culturally Responsive Teaching</a></li>
-            <li><a href="#takeaways" class="toc-link">Key Takeaways</a></li>
-            <li><a href="#references" class="toc-link">References</a></li>
-        </ul>
+    <!-- NAVIGATION AT TOP -->
+    <nav>
+        <div class="nav-buttons">
+            <a href="#" class="nav-btn active" data-frame="calendar" data-emoji="🗓️">
+                <span class="btn-text">CALENDAR</span>
+                <span class="btn-icon">🗓️</span>
+            </a>
+            <a href="#" class="nav-btn" data-frame="ai" data-emoji="🤖">
+                <span class="btn-text">A.I.</span>
+                <span class="btn-icon">?</span>
+            </a>
+            <a href="#" class="nav-btn" data-frame="music" data-emoji="🎸">
+                <span class="btn-text">MUSIC</span>
+                <span class="btn-icon">?</span>
+            </a>
+            <a href="#" class="nav-btn" data-frame="doodle" data-emoji="✍️">
+                <span class="btn-text">DOODLES</span>
+                <span class="btn-icon">?</span>
+            </a>
+            <a href="#" class="nav-btn" data-frame="tiles" data-emoji="🧲">
+                <span class="btn-text">MAG TILES</span>
+                <span class="btn-icon">?</span>
+            </a>
+        </div>
     </nav>
 
-    <main class="main-content">
-        <header id="top">
-            <h2 style="border: none; margin-top: 0;">Comprehensive Report: Introduction to AI for Elementary Students (K–5) in San Francisco Unified School District</h2>
-            <p style="font-size: 1.125rem; color: var(--text-light); margin-bottom: 2.5rem;">Research-Informed Edition with Academic Frameworks & Evidence Base</p>
-        </header>
-
-        <section id="disclaimer">
-            <div class="disclaimer">
-                <h3>Disclaimer</h3>
-                <p>The views and recommendations in this report are those of the author and do not represent the official position of San Francisco Unified School District. This is an independent research project, not an official SFUSD publication.</p>
+    <!-- MAIN CONTENT AREA WITH FRAMES -->
+    <main>
+        <!-- CALENDAR FRAME (Default) -->
+        <div id="calendar" class="frame-container active">
+            <div class="frame-content">
+                <iframe src="https://calendar.google.com/calendar/embed?src=kuangb%40sfusd.edu&ctz=America%2FLos_Angeles"></iframe>
             </div>
-        </section>
+        </div>
 
-        <section id="executive-summary">
-            <h2>Executive Summary</h2>
-            <div class="executive-summary">
-                <p>Teaching artificial intelligence to elementary students in grades K–5 is increasingly essential as AI becomes embedded in everyday life. California's Department of Education (CDE) has provided comprehensive guidance emphasizing human-centered AI, early literacy development, and ethical reasoning—not advanced coding. This report synthesizes authoritative standards, peer-reviewed research, and classroom-ready activities to support educators in San Francisco Unified School District (SFUSD) designing age-appropriate, culturally responsive AI learning experiences grounded in evidence-based practices.</p>
+        <!-- A.I. FRAME -->
+        <div id="ai" class="frame-container">
+            <div class="frame-content">
+                <h2>ARTIFICIAL INTELLIGENCE</h2>
 
-                <p>The report integrates findings from 172 sources including peer-reviewed empirical studies, UNESCO global frameworks, validated assessment instruments, and California state guidance. Key evidence supports:</p>
+                <h3>Grades: K, 1st, 2nd</h3>
+                <ul>
+                    <li>What is A.I.? (<a href="https://docs.google.com/presentation/d/1wdW3P2dN2IhdtON3ZcwjsHXEzdzPYfuIpSv1oTJiZqE/edit?usp=sharing" target="_blank">Slides</a>)</li>
+                    <li>How We Teach Machines (<a href="https://docs.google.com/presentation/d/1eOPAY84tG90A5jfrzuE8LeJ07RJKBvqIQEaGaZQ6bDE/edit?usp=sharing" target="_blank">Slides</a>)</li>
+                </ul>
+
+                <h3>Grades: 3rd, 4th, 5th</h3>
+                <ul>
+                    <li>What is A.I.? (<a href="https://docs.google.com/presentation/d/1slG2Sp8NJZWu4tm3a2mJgcA9VPi4-MhmsAh4mLlPqSY/edit?usp=sharing" target="_blank">Slides</a>)</li>
+                    <li>How Do Machines Learn? (<a href="https://docs.google.com/presentation/d/18ObW44hpqGIto2yGrwVZDZd_gLA69PGXF2n4dT-gJEk/edit?usp=sharing" target="_blank">Slides</a>)</li>
+                </ul>
+
+                <h3>A.I. for Teachers</h3>
+
+                <!-- Embedded Podcast -->
+                <div class="embed-wrapper" style="max-width: 500px; height: 202px; margin: 10px 0; text-align: left;">
+                    <iframe src="https://player.rss.com/billkuang/2522934?theme=light&v=2" title="Teaching A.I. with Yarn and Tape" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen scrolling="no"><a href="https://rss.com/podcasts/billkuang/2522934/">Teaching A.I. with Yarn and Tape | RSS.com</a></iframe>
+                </div>
+
+                <!-- Embedded YouTube Video -->
+                <div class="embed-wrapper" style="max-width: 500px; height: 280px; margin: 10px 0; text-align: left;">
+                    <iframe src="https://www.youtube.com/embed/zvmURYVmwB8?si=H9wDiZWfFFCfu4Np" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
 
                 <ul>
-                    <li><strong>Unplugged (no-technology) activities promote deeper AI concept understanding</strong> than technology-first approaches, particularly in early elementary grades<a href="#" class="citation">[web:136]<span class="citation-tooltip">ERIC. (2023). Unplugged activities as a catalyst when teaching computational thinking.</span></a><a href="#" class="citation">[web:139]<span class="citation-tooltip">ScienceDirect. (2025). Comparative experiment of the effects of unplugged and plugged-in programming.</span></a></li>
-                    <li><strong>Inclusive, tangible-based pedagogies effectively close gender achievement gaps</strong> in AI literacy<a href="#" class="citation">[web:118]<span class="citation-tooltip">Sage Journals. (2024). Designing an Inclusive AI Curriculum for Elementary Students to Address Gender Differences.</span></a><a href="#" class="citation">[web:133]<span class="citation-tooltip">Nordic Journal. (2024). Exploring the Potentials of Unplugged Activities—Developing Self-Efficacy and Be-greifbarkeit.</span></a></li>
-                    <li><strong>Teacher misconceptions significantly impact student outcomes</strong>, requiring targeted professional development<a href="#" class="citation">[web:134]<span class="citation-tooltip">NSF. (2022). In-service teachers' (mis)conceptions of artificial intelligence in K-12.</span></a></li>
-                    <li><strong>Formative assessment using validated instruments</strong> (AI Literacy Concept Inventory, UNESCO frameworks) provides actionable data for instruction</li>
+                    <li>Summary (<a href="https://drive.google.com/file/d/1Gkhw3M_Tb3EIOVJ9_2KCfoXaXkqGMJdq/view?usp=share_link" target="_blank">Slides</a>)</li>
+                    <li>Full Guide (<a href="https://drive.google.com/file/d/15N7PtmzJ6-bViKlSNU7yxkuYqTGJ2yiv/view?usp=share_link" target="_blank">Text</a>)</li>
                 </ul>
             </div>
-        </section>
-
-        <section id="standards">
-            <h2>Standards Alignment Framework</h2>
-
-            <h3>Global & California Standards Authority</h3>
-            <p><strong>UNESCO AI Competency Frameworks (2024)</strong><a href="#" class="citation">[web:161]<span class="citation-tooltip">UNESCO. (2025). AI competency framework for students.</span></a><a href="#" class="citation">[web:163]<span class="citation-tooltip">UNESCO. (2025). What you need to know about UNESCO's new AI competency frameworks.</span></a> establish internationally recognized competency standards that align with California requirements:</p>
-            <ul>
-                <li><strong>12 Student Competencies</strong> across 4 dimensions: Human-centred mindset, Ethics of AI, AI techniques & applications, AI system design</li>
-                <li><strong>3 Progression Levels</strong>: Understand → Apply → Create (developmentally aligned to K-5 expectations)</li>
-                <li><strong>15 Teacher Competencies</strong> across 5 dimensions: Human-centred mindset, AI ethics, AI foundations/applications, AI pedagogy, AI for professional learning</li>
-            </ul>
-
-            <p>The California Computer Science Standards (2018) and California Department of Education (2025) align with these global frameworks, positioning SFUSD within an internationally coordinated effort.</p>
-
-            <h3>California Computer Science Standards (K–5) with Research Validation</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Grade Span</th>
-                        <th>Standard Code</th>
-                        <th>Validated Research Support</th>
-                        <th>Learning Objective</th>
-                        <th>AI Connection</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>K-2</strong></td>
-                        <td>K-2.AP.10</td>
-                        <td>Unplugged studies<a href="#" class="citation">[web:133]<span class="citation-tooltip">Nordic Journal. (2024). Exploring the Potentials of Unplugged Activities—Developing Self-Efficacy and Be-greifbarkeit.</span></a><a href="#" class="citation">[web:136]<span class="citation-tooltip">ERIC. (2023). Unplugged activities as a catalyst when teaching computational thinking.</span></a></td>
-                        <td>Model daily processes by creating algorithms</td>
-                        <td>Understanding step-by-step instructions that AI systems follow</td>
-                    </tr>
-                    <tr>
-                        <td><strong>K-2</strong></td>
-                        <td>K-2.DA.9</td>
-                        <td>Conceptual Inventory research<a href="#" class="citation">[web:170]<span class="citation-tooltip">MIT DSpace. (2024). Developing an AI Literacy Concept Inventory Assessment (AI-CI).</span></a></td>
-                        <td>Identify/describe patterns in data</td>
-                        <td>Foundation for machine learning; be-greifbarkeit (graspability)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>3-5</strong></td>
-                        <td>3-5.AP.10</td>
-                        <td>Pedagogical research<a href="#" class="citation">[web:121]<span class="citation-tooltip">Taylor & Francis. (2025). Teaching elementary artificial intelligence: Can the CTCA improve students' learning outcomes?</span></a></td>
-                        <td>Compare/refine algorithms</td>
-                        <td>Evaluating different AI approaches through iterative design</td>
-                    </tr>
-                    <tr>
-                        <td><strong>3-5</strong></td>
-                        <td>3-5.AP.15</td>
-                        <td>Gender/inclusivity studies<a href="#" class="citation">[web:118]<span class="citation-tooltip">Sage Journals. (2024). Designing an Inclusive AI Curriculum for Elementary Students to Address Gender Differences.</span></a></td>
-                        <td>Use iterative process considering others' perspectives</td>
-                        <td>Understanding bias and fairness in AI design (closes gender gaps)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>3-5</strong></td>
-                        <td>3-5.DA.9</td>
-                        <td>Meta-analysis<a href="#" class="citation">[web:124]<span class="citation-tooltip">MDPI. (2022). Examining the Effects of AI on Elementary Students' Mathematics Achievement: A Meta-Analysis.</span></a></td>
-                        <td>Use data to predict/communicate</td>
-                        <td>Core machine learning principle with validated effect sizes</td>
-                    </tr>
-                    <tr>
-                        <td><strong>3-5</strong></td>
-                        <td>3-5.IC.21</td>
-                        <td>Ethical framework research<a href="#" class="citation">[web:109]<span class="citation-tooltip">PMC NCBI. (2021). Artificial intelligence in education: Addressing ethical challenges in K-12.</span></a></td>
-                        <td>Propose accessibility improvements</td>
-                        <td>Ethical AI design for all users; addresses systemic bias</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section id="concepts">
-            <h2>Age-Appropriate AI Concepts: Research-Informed Approaches</h2>
-
-            <h3>Kindergarten–Grade 2: "Notice & Name"</h3>
-            <h4>Empirical Research Base:</h4>
-            <ul>
-                <li>Finnish study of 5th-6th graders (N=significant) identified 3 categories of AI misconceptions: AI as human-like entity, AI with pre-installed knowledge, and linguistic misconceptions<a href="#" class="citation">[web:102]<span class="citation-tooltip">ArXiv. (2023). Finnish 5th and 6th graders' misconceptions about Artificial Intelligence.</span></a></li>
-                <li>Unplugged activities with K-2 students show highest self-efficacy and "be-greifbarkeit" (intellectual and tangible graspability) when activities are physical/hands-on before abstraction<a href="#" class="citation">[web:133]<span class="citation-tooltip">Nordic Journal. (2024). Exploring the Potentials of Unplugged Activities—Developing Self-Efficacy and Be-greifbarkeit.</span></a></li>
-                <li>Nordic research: unplugged activities provide "non-threatening entry point" for learners without prior tech experience, building motivation and confidence<a href="#" class="citation">[web:133]<span class="citation-tooltip">Nordic Journal. (2024). Exploring the Potentials of Unplugged Activities—Developing Self-Efficacy and Be-greifbarkeit.</span></a></li>
-            </ul>
-
-            <h4>Core Concepts (Designed to Prevent Common Misconceptions):</h4>
-            <ul>
-                <li><strong>AI is a tool, not a person</strong> – (Addresses Finnish misconception: AI as human-like entity)</li>
-                <li><strong>Algorithms are step-by-step rules</strong> – (Contrasts with common notion that AI "thinks" independently)</li>
-                <li><strong>AI learns from many examples</strong> – (Prevents belief in pre-installed AI knowledge)</li>
-            </ul>
-
-            <h4>Vocabulary with Linguistic Clarity:</h4>
-            <ul>
-                <li>Artificial (human-made, not natural)</li>
-                <li>Algorithm (a list of steps, like a recipe)</li>
-                <li>Training (showing examples, like practice)</li>
-            </ul>
-
-            <h3>Grades 3–5: "Interact & Question"</h3>
-            <h4>Empirical Research Base:</h4>
-            <ul>
-                <li>Gender differences in AI literacy: MANOVA study (N=significant) showed initial gender gaps in AI knowledge closed completely when using tangible/collaborative approaches<a href="#" class="citation">[web:118]<span class="citation-tooltip">Sage Journals. (2024). Designing an Inclusive AI Curriculum for Elementary Students to Address Gender Differences.</span></a></li>
-                <li>Field experiment with 82 students: female and lower-knowledge students show AI appreciation bias; high-knowledge students more critical<a href="#" class="citation">[web:164]<span class="citation-tooltip">Nature. (2025). Gender, knowledge, and trust in artificial intelligence.</span></a></li>
-                <li>Comparative study: unplugged + plugged approach yields better computational thinking outcomes than plugged alone, particularly in Grade 1-2 but benefits extend through Grade 5<a href="#" class="citation">[web:139]<span class="citation-tooltip">ScienceDirect. (2025). Comparative experiment of the effects of unplugged and plugged-in programming.</span></a></li>
-                <li>Meta-analysis of 21 mathematics studies: AI has measurable effect size (0.351) on elementary achievement; effectiveness varies significantly by grade level and topic<a href="#" class="citation">[web:124]<span class="citation-tooltip">MDPI. (2022). Examining the Effects of AI on Elementary Students' Mathematics Achievement: A Meta-Analysis.</span></a></li>
-            </ul>
-
-            <h4>Core Concepts (Research-Validated for 3-5):</h4>
-            <ul>
-                <li><strong>Data shapes AI output</strong> – Different training data produces systematically different results<a href="#" class="citation">[web:87]<span class="citation-tooltip">Wiley Online Library. (2024). Global initiatives and challenges in integrating AI literacy in elementary education.</span></a></li>
-                <li><strong>AI has limitations and biases</strong> – Can be wrong, unfair, miss important information<a href="#" class="citation">[web:102]<span class="citation-tooltip">ArXiv. (2023). Finnish 5th and 6th graders' misconceptions about Artificial Intelligence.</span></a></li>
-                <li><strong>Bias stems from incomplete training data</strong> – Explicitly taught to prevent "AI is fair/objective" misconception<a href="#" class="citation">[web:109]<span class="citation-tooltip">PMC NCBI. (2021). Artificial intelligence in education: Addressing ethical challenges in K-12.</span></a></li>
-                <li><strong>Humans design and guide AI</strong> – Emphasizes human agency and responsibility</li>
-            </ul>
-        </section>
-
-        <section id="unplugged">
-            <h2>Unplugged (No-Technology) Activities: Evidence-Based Implementations</h2>
-
-            <h3>Research Validation for Unplugged Approach</h3>
-            <h4>Key Findings:</h4>
-            <ol>
-                <li><strong>Comparative Efficacy:</strong> Quasi-experimental study with 124 Grade 1-2 students found unplugged programming promoted computational thinking <strong>MORE</strong> than plugged-in programming alone; combined approach (unplugged + plugged) most effective<a href="#" class="citation">[web:139]<span class="citation-tooltip">ScienceDirect. (2025). Comparative experiment of the effects of unplugged and plugged-in programming.</span></a></li>
-
-                <li><strong>Self-Efficacy & Vocabulary:</strong> Teachers using unplugged-first approach achieved identical learning objectives with <strong>less programming time</strong> while students showed <strong>higher self-efficacy and vocabulary retention</strong><a href="#" class="citation">[web:136]<span class="citation-tooltip">ERIC. (2023). Unplugged activities as a catalyst when teaching computational thinking.</span></a></li>
-
-                <li><strong>Be-Greifbarkeit (Graspability):</strong> Nordic research identified that unplugged activities build both self-efficacy and "be-greifbarkeit" (intellectual and tangible understanding); critical for establishing successful mental models before abstract concepts<a href="#" class="citation">[web:133]<span class="citation-tooltip">Nordic Journal. (2024). Exploring the Potentials of Unplugged Activities—Developing Self-Efficacy and Be-greifbarkeit.</span></a></li>
-
-                <li><strong>Anxiety Reduction:</strong> Unplugged activities described as "non-threatening entry point," particularly effective for learners without prior tech access or confidence<a href="#" class="citation">[web:133]<span class="citation-tooltip">Nordic Journal. (2024). Exploring the Potentials of Unplugged Activities—Developing Self-Efficacy and Be-greifbarkeit.</span></a></li>
-            </ol>
-
-            <h3>K–2 Activity: "If-Then Robot" (Decision Tree)</h3>
-            <h4>Why This Works (Evidence):</h4>
-            <ul>
-                <li>Decision trees scaffold algorithmic thinking through physical decomposition<a href="#" class="citation">[web:136]<span class="citation-tooltip">ERIC. (2023). Unplugged activities as a catalyst when teaching computational thinking.</span></a></li>
-                <li>Students establish "Notional Machine" mental models through tangible representation before abstract programming<a href="#" class="citation">[web:136]<span class="citation-tooltip">ERIC. (2023). Unplugged activities as a catalyst when teaching computational thinking.</span></a></li>
-                <li>Addresses common misconception: "AI makes decisions like people do" by showing explicit rules and edge cases</li>
-            </ul>
-
-            <h4>Implementation (10–15 minutes):</h4>
-            <ol>
-                <li>Create physical decision tree on floor using yarn/tape</li>
-                <li>Students take turns being "robot" following exact YES/NO questions</li>
-                <li>Reflect: "Why did the robot need exact questions? Why couldn't it use feelings like you can?"</li>
-            </ol>
-
-            <p><strong>Standards Alignment:</strong> K-2.AP.10, K-2.AP.13, 1-LS1-1; UNESCO Understand level (Human-centred mindset)</p>
-
-            <h3>3–5 Activity: "Biased Decision-Maker" (Ethics Role-Play)</h3>
-            <h4>Why This Works (Evidence):</h4>
-            <ul>
-                <li>Concrete scenario analysis helps upper elementary students recognize bias in training data<a href="#" class="citation">[web:87]<span class="citation-tooltip">Wiley Online Library. (2024). Global initiatives and challenges in integrating AI literacy in elementary education.</span></a><a href="#" class="citation">[web:109]<span class="citation-tooltip">PMC NCBI. (2021). Artificial intelligence in education: Addressing ethical challenges in K-12.</span></a></li>
-                <li>Research shows students develop critical thinking about AI fairness through role-play and structured discussion<a href="#" class="citation">[web:99]<span class="citation-tooltip">ArXiv. (2024). From Unseen Needs to Classroom Solutions: Exploring AI Literacy Challenges with Project-based Learning Toolkit in K-12.</span></a></li>
-                <li>Culturally responsive approach: scenarios reflect diverse communities and real-world impacts of biased AI</li>
-            </ul>
-
-            <h4>Age-Appropriate Scenarios Based on Research:</h4>
-            <ol>
-                <li><strong>Recommendation System Bias:</strong> "An app learns book recommendations from students. But only 15% of sample were books by authors of color. What happens?"
-                    <ul><li>Research basis: Addresses systemic bias perpetuation identified in educational AI ethics literature<a href="#" class="citation">[web:109]<span class="citation-tooltip">PMC NCBI. (2021). Artificial intelligence in education: Addressing ethical challenges in K-12.</span></a></li></ul>
-                </li>
-
-                <li><strong>Voice Assistant Bias:</strong> "An AI learned to recognize words from American English speakers mostly. What happens with an accent from another country?"
-                    <ul><li>Research basis: Real documented limitation; directly relevant to multilingual SFUSD families</li></ul>
-                </li>
-
-                <li><strong>New Student Exclusion:</strong> "An AI suggests friend groups based on past play data. But Maria is new. Why might it be unfair to her?"
-                    <ul><li>Research basis: Incomplete data limitation; develops empathy for disadvantaged students</li></ul>
-                </li>
-            </ol>
-
-            <p><strong>Formative Assessment Connection:</strong> Exit ticket using validated question from UNESCO ethical reasoning competencies: "Whose perspective is missing from the data? Who might be hurt?"</p>
-        </section>
-
-        <section id="assessment">
-            <h2>Assessment: Evidence-Based Measurement Instruments</h2>
-
-            <h3>Validated Formative Assessment Tools</h3>
-
-            <h4>AI Literacy Concept Inventory (AI-CI)</h4>
-            <p><a href="#" class="citation">[web:93]<span class="citation-tooltip">Springer Link. (2024). Developing and Validating the Artificial Intelligence Literacy Concept Inventory.</span></a><a href="#" class="citation">[web:170]<span class="citation-tooltip">MIT DSpace. (2024). Developing an AI Literacy Concept Inventory Assessment (AI-CI).</span></a></p>
-            <ul>
-                <li>Peer-reviewed, psychometrically validated instrument for assessing foundational AI concepts</li>
-                <li>Identifies misconceptions about AI learning, bias, autonomy</li>
-                <li>Can be administered to 3-5 students; provides diagnostic data</li>
-                <li>Example items: "How does an AI learn?" (concept); "What happens if training data is unfair?" (misconception)</li>
-            </ul>
-
-            <h4>UNESCO AI Competency Assessment Framework</h4>
-            <p><a href="#" class="citation">[web:163]<span class="citation-tooltip">UNESCO. (2025). What you need to know about UNESCO's new AI competency frameworks.</span></a></p>
-            <ul>
-                <li>Aligned with global standards</li>
-                <li>3-level progression: Understand → Apply → Create</li>
-                <li>Sample learning target for Grade 3-5: "Students can identify 2 examples of bias in AI scenarios and propose one fairness solution"</li>
-            </ul>
-
-            <h4>Exit Ticket Questions (Formative)</h4>
-            <p><a href="#" class="citation">[web:39]<span class="citation-tooltip">Formative. (2025). FAQ: What Are Exit Tickets for Formative Assessment?</span></a><a href="#" class="citation">[web:42]<span class="citation-tooltip">ORE AI. (2026). Understanding Exit Tickets: A Key Tool for Formative Assessment.</span></a><a href="#" class="citation">[web:45]<span class="citation-tooltip">SchoolAI. (2025). Using exit tickets to amplify real-time student feedback.</span></a></p>
-
-            <p><strong>For K-2:</strong></p>
-            <ul>
-                <li>Thumbs signal: "AI is a tool that follows rules"</li>
-                <li>Draw: Show me something an AI learned</li>
-            </ul>
-
-            <p><strong>For 3-5:</strong></p>
-            <ul>
-                <li>"The AI learned from ____ data. What might it get wrong?" [sentence frame with data examples]</li>
-                <li>"Is this AI fair? Why or why not?" [with evidence from scenario]</li>
-                <li>Research supports these formats for capturing student thinking in real-time<a href="#" class="citation">[web:160]<span class="citation-tooltip">GitHub. (2024). A Review of Assessments in K-12 AI Literacy Curricula.</span></a></li>
-            </ul>
-
-            <h3>Summative Assessment: Performance Task</h3>
-            <h4>"Design an AI System" Project</h4>
-            <p>(Research Evidence: Project-based learning shows significant gains in critical thinking and AI ethics reasoning<a href="#" class="citation">[web:99]<span class="citation-tooltip">ArXiv. (2024). From Unseen Needs to Classroom Solutions: Exploring AI Literacy Challenges with Project-based Learning Toolkit in K-12.</span></a>)</p>
-
-            <p><strong>For Grades 3–5 (2-3 lessons):</strong></p>
-            <p><strong>Prompt:</strong> "Design an AI system to solve a problem at our school. Explain what data it learns from and how you'd make it fair to everyone."</p>
-
-            <p><strong>Rubric Grounded in UNESCO Competencies:</strong></p>
-            <ul>
-                <li>✓ Identifies real school problem (Apply level: AI techniques & applications)</li>
-                <li>✓ Explains training data needed (Apply level: AI system design)</li>
-                <li>✓ Discusses 1+ fairness concern/limitation (Apply level: Ethics of AI)</li>
-                <li>✓ Proposes fairness solution (Create level: AI system design)</li>
-            </ul>
-
-            <p><strong>Scoring Correlation with Research:</strong> Students who demonstrate understanding at "Create" level on this task show sustained AI literacy gains in longitudinal classroom observations<a href="#" class="citation">[web:121]<span class="citation-tooltip">Taylor & Francis. (2025). Teaching elementary artificial intelligence: Can the CTCA improve students' learning outcomes?</span></a></p>
-        </section>
-
-        <section id="differentiation">
-            <h2>Differentiation: Research-Informed Strategies</h2>
-
-            <h3>English Language Learners (ELL/EL)</h3>
-            <p><strong>Research Finding:</strong> Limited research combines ELL support with AI literacy; following best practices from ELL pedagogy literature adapted to AI context<a href="#" class="citation">[web:24]<span class="citation-tooltip">Jeff Bullas. (2025). Practical ways AI can support English language learners.</span></a><a href="#" class="citation">[web:27]<span class="citation-tooltip">Collaborative Classroom. (2025). Scaffolding Techniques for English Language Learners.</span></a></p>
-
-            <h4>Scientifically-Supported Strategies:</h4>
-
-            <p><strong>1. Sentence Frames (Reduces Language Load While Building Content Knowledge)</strong></p>
-            <ul>
-                <li>"AI learned from _____ data."</li>
-                <li>"This is fair/unfair because _____."</li>
-                <li>Research basis: Explicit sentence frames reduce cognitive load and allow ELL students to focus on content concepts rather than language production<a href="#" class="citation">[web:33]<span class="citation-tooltip">Continental Press. (2025). 5 Scaffolding Strategies for ELL Students.</span></a></li>
-            </ul>
-
-            <p><strong>2. Pre-Teaching with Realia (Real Objects)</strong></p>
-            <ul>
-                <li>Define "algorithm" with physical recipe: "Do this step, then this step, then this step"</li>
-                <li>Define "training" with student experience: "When you practice math problems, you get better. AI practices with examples."</li>
-                <li>Research basis: Concrete materials before abstract terms improves comprehension for ELL students<a href="#" class="citation">[web:27]<span class="citation-tooltip">Collaborative Classroom. (2025). Scaffolding Techniques for English Language Learners.</span></a></li>
-            </ul>
-
-            <p><strong>3. Home Language Bridges</strong></p>
-            <ul>
-                <li>Invite bilingual students to explain concepts in home language</li>
-                <li>Validates linguistic assets and builds peer understanding</li>
-                <li>Research basis: Translanguaging improves both language development and content understanding<a href="#" class="citation">[web:24]<span class="citation-tooltip">Jeff Bullas. (2025). Practical ways AI can support English language learners.</span></a></li>
-            </ul>
-
-            <p><strong>Expected Outcomes:</strong> ELL students can verbally explain AI concepts using frames and identify bias in scenarios, even if written explanations are developing</p>
-
-            <h3>Struggling Learners</h3>
-            <p><strong>Research Basis:</strong> Unplugged activities provide ideal entry point for below-grade learners; reduces anxiety and builds foundational understanding<a href="#" class="citation">[web:133]<span class="citation-tooltip">Nordic Journal. (2024). Exploring the Potentials of Unplugged Activities—Developing Self-Efficacy and Be-greifbarkeit.</span></a><a href="#" class="citation">[web:136]<span class="citation-tooltip">ERIC. (2023). Unplugged activities as a catalyst when teaching computational thinking.</span></a></p>
-
-            <p><strong>Differentiation:</strong></p>
-            <ul>
-                <li>Start with manipulatives (cards, objects) before discussing "data" abstractly</li>
-                <li>Model activities with think-aloud before independent practice</li>
-                <li>Reduce cognitive load: one concept per lesson (e.g., "patterns" in Week 1; "unfairness in data" in Week 2)</li>
-            </ul>
-
-            <h3>Advanced Learners</h3>
-            <p><strong>Research-Supported Extensions:</strong></p>
-            <ul>
-                <li><strong>Open-ended projects:</strong> "Design an AI system that solves a problem in our neighborhood. What data does it need? What could go wrong?"</li>
-                <li><strong>Algorithm design challenge:</strong> "Write rules for a robot to sort our classroom library. Test it with a friend."</li>
-                <li><strong>AI ethics research:</strong> Investigate real-world AI bias case studies (e.g., facial recognition accuracy disparities documented in published research<a href="#" class="citation">[web:164]<span class="citation-tooltip">Nature. (2025). Gender, knowledge, and trust in artificial intelligence.</span></a>)</li>
-            </ul>
-        </section>
-
-        <section id="misconceptions">
-            <h2>Misconceptions: Evidence-Based Intervention</h2>
-
-            <h3>Documented Elementary AI Misconceptions</h3>
-
-            <h4>Misconception 1: "AI thinks like humans"</h4>
-            <ul>
-                <li>Finnish research identified this as most common misconception in 5th-6th graders (vernacular/non-scientific category)<a href="#" class="citation">[web:102]<span class="citation-tooltip">ArXiv. (2023). Finnish 5th and 6th graders' misconceptions about Artificial Intelligence.</span></a></li>
-                <li>Correction strategy: Explicit comparison activities ("What can AI do? What can only people do?")</li>
-            </ul>
-
-            <h4>Misconception 2: "AI has knowledge built-in"</h4>
-            <ul>
-                <li>Factual misconception identified in Nordic research<a href="#" class="citation">[web:102]<span class="citation-tooltip">ArXiv. (2023). Finnish 5th and 6th graders' misconceptions about Artificial Intelligence.</span></a></li>
-                <li>Evidence-based correction: "Training Data Detective" activity showing how limited examples restrict AI understanding</li>
-            </ul>
-
-            <h4>Misconception 3: "AI is always fair and objective"</h4>
-            <ul>
-                <li>Perpetuates systemic bias; research shows this prevents critical examination of AI ethics<a href="#" class="citation">[web:109]<span class="citation-tooltip">PMC NCBI. (2021). Artificial intelligence in education: Addressing ethical challenges in K-12.</span></a></li>
-                <li>Correction: Biased Decision-Maker scenario work; discussing real AI bias examples</li>
-            </ul>
-
-            <h4>Misconception 4: "AI is new/recent"</h4>
-            <ul>
-                <li>Teacher misconception (Antonenko & Abramowitz, 2022): teachers incorrectly believe AI is new<a href="#" class="citation">[web:134]<span class="citation-tooltip">NSF. (2022). In-service teachers' (mis)conceptions of artificial intelligence in K-12.</span></a></li>
-                <li>Impact: Teachers underestimate how AI already affects students' lives</li>
-                <li>Correction: Inventory of AI students encounter daily (voice assistants, recommendation systems, autocorrect)</li>
-            </ul>
-
-            <h4>Misconception 5: "AI doesn't need humans"</h4>
-            <ul>
-                <li>Correlates with low intent to integrate AI; teachers holding this misconception less likely to teach AI critically<a href="#" class="citation">[web:134]<span class="citation-tooltip">NSF. (2022). In-service teachers' (mis)conceptions of artificial intelligence in K-12.</span></a></li>
-                <li>Correction: Emphasize human design choices, bias, oversight, and values in AI systems</li>
-            </ul>
-        </section>
-
-        <section id="professional-development">
-            <h2>Teacher Professional Development: UNESCO & California Framework</h2>
-
-            <h3>UNESCO Teacher AI Competency Framework (2024)</h3>
-            <p><a href="#" class="citation">[web:132]<span class="citation-tooltip">UNESCO. (2025). AI competency framework for teachers.</span></a><a href="#" class="citation">[web:168]<span class="citation-tooltip">MaricrzGarciaVallejo. (2024). UNESCO´s AI competency frameworks for teachers and students.</span></a></p>
-
-            <h4>15 Competencies Across 5 Dimensions:</h4>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Dimension</th>
-                        <th>Competencies</th>
-                        <th>Progression Levels</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Human-Centred Mindset</strong></td>
-                        <td>Understanding AI's role in society; supporting human agency</td>
-                        <td>Acquire → Deepen → Create</td>
-                    </tr>
-                    <tr>
-                        <td><strong>AI Ethics</strong></td>
-                        <td>Recognizing bias, privacy, accountability; teaching ethical principles</td>
-                        <td>Acquire → Deepen → Create</td>
-                    </tr>
-                    <tr>
-                        <td><strong>AI Foundations & Applications</strong></td>
-                        <td>Technical understanding of how AI works; recognizing limitations</td>
-                        <td>Acquire → Deepen → Create</td>
-                    </tr>
-                    <tr>
-                        <td><strong>AI Pedagogy</strong></td>
-                        <td>Using AI to enhance teaching; designing AI-integrated lessons</td>
-                        <td>Acquire → Deepen → Create</td>
-                    </tr>
-                    <tr>
-                        <td><strong>AI for Professional Learning</strong></td>
-                        <td>Using AI to develop own practice; continuous learning</td>
-                        <td>Acquire → Deepen → Create</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Recommended Initial 2–3 Hour PD Session</h3>
-
-            <h4>Phase 1: Experience First (60 minutes)</h4>
-            <ul>
-                <li>Teachers participate in unplugged activities (decision tree, training data detective)</li>
-                <li>Goal: Build comfort through tangible understanding before pedagogy discussion</li>
-                <li>Research basis: Teachers who experience activities report higher confidence and intent to implement<a href="#" class="citation">[web:121]<span class="citation-tooltip">Taylor & Francis. (2025). Teaching elementary artificial intelligence: Can the CTCA improve students' learning outcomes?</span></a></li>
-            </ul>
-
-            <h4>Phase 2: Pedagogy & Differentiation (45 minutes)</h4>
-            <ul>
-                <li>Address teacher misconceptions explicitly using evidence</li>
-                <li>Discuss gender-inclusive design and unplugged-first approach</li>
-                <li>Research basis: Professional learning addressing misconceptions increases effective implementation<a href="#" class="citation">[web:134]<span class="citation-tooltip">NSF. (2022). In-service teachers' (mis)conceptions of artificial intelligence in K-12.</span></a></li>
-            </ul>
-
-            <h4>Phase 3: Design & Planning (45 minutes)</h4>
-            <ul>
-                <li>Map AI concepts into existing lessons (math, science, social studies)</li>
-                <li>Design one exit ticket</li>
-                <li>Plan first unit using shared resources</li>
-            </ul>
-
-            <h4>Ongoing Support:</h4>
-            <ul>
-                <li>Monthly virtual communities of practice (address isolation)</li>
-                <li>Classroom observation + feedback cycle (builds coaching capacity)</li>
-                <li>Updated research briefs (keeps knowledge current)</li>
-            </ul>
-        </section>
-
-        <section id="culturally-responsive">
-            <h2>Culturally Responsive Teaching: SFUSD-Specific Implementation</h2>
-
-            <h3>Research on Cultural Context in AI Learning</h3>
-            <p><strong>Culturo-Techno-Contextual Approach (CTCA) Study</strong> <a href="#" class="citation">[web:121]<span class="citation-tooltip">Taylor & Francis. (2025). Teaching elementary artificial intelligence: Can the CTCA improve students' learning outcomes?</span></a></p>
-            <ul>
-                <li>Quasi-experimental design (N=105): Comparing CTCA vs. lecture method</li>
-                <li><strong>Result:</strong> CTCA showed statistically significant difference in AI achievement (F=103.01; p<.05)</li>
-                <li><strong>Key finding:</strong> Students valued integration of lesson content with everyday life and cultural illustrations</li>
-                <li><strong>Application to SFUSD:</strong> Use local San Francisco examples (BART AI prediction, Lyft/Uber algorithms, translation tools for families' home languages)</li>
-            </ul>
-
-            <h3>San Francisco-Specific Examples</h3>
-
-            <h4>Tech Industry Representation:</h4>
-            <ul>
-                <li>Highlight engineers and researchers of color in major AI companies</li>
-                <li>Connect to SFUSD student backgrounds and career pathways</li>
-                <li>Research basis: Representation in STEM reduces bias and increases sense of belonging<a href="#" class="citation">[web:162]<span class="citation-tooltip">VoxDev. (2024). Improving learning efficacy and equality with AI training.</span></a></li>
-            </ul>
-
-            <h4>Multilingual AI Applications:</h4>
-            <ul>
-                <li>Discuss how voice assistants and translation tools handle multiple accents/languages</li>
-                <li>Real-world bias example: "Why do some voice assistants understand American English better than other accents?"</li>
-                <li>Relevant to SFUSD's significant multilingual population</li>
-            </ul>
-
-            <h4>Community Impact Discussions:</h4>
-            <ul>
-                <li>How does facial recognition AI affect different communities?<a href="#" class="citation">[web:164]<span class="citation-tooltip">Nature. (2025). Gender, knowledge, and trust in artificial intelligence.</span></a></li>
-                <li>What AI decisions affect neighborhoods (police prediction, loan algorithms, hiring)?</li>
-                <li>Student agency: "How would you design fair AI for our neighborhood?"</li>
-            </ul>
-        </section>
-
-        <section id="takeaways">
-            <h2>Key Takeaways for SFUSD Implementation</h2>
-
-            <ol>
-                <li><strong>Unplugged-first approach is evidence-based.</strong> Research across multiple studies confirms that no-tech activities build deeper conceptual understanding and higher self-efficacy than technology-first approaches—particularly in K-2.</li>
-
-                <li><strong>Gender gaps close with tangible, collaborative design.</strong> MANOVA research shows inclusive pedagogies specifically designed with gender considerations eliminate observed knowledge gaps while increasing engagement.</li>
-
-                <li><strong>Teacher misconceptions predict student outcomes.</strong> Professional development must explicitly address teacher beliefs about AI (that it's objective, new, doesn't need humans, etc.) which influence teaching quality.</li>
-
-                <li><strong>Assessment requires validated instruments.</strong> Use UNESCO frameworks and AI Literacy Concept Inventory to measure real understanding rather than relying on informal checks.</li>
-
-                <li><strong>Culturally responsive practice improves achievement.</strong> CTCA research shows significant learning gains when AI concepts connect to students' cultural contexts and everyday lives.</li>
-
-                <li><strong>Ethics must be woven throughout, not isolated.</strong> Research on ethical AI competencies shows students need repeated, scaffolded exposure to fairness/bias concepts starting in K-2.</li>
-
-                <li><strong>Invest in teacher learning first.</strong> Teachers who experience activities and understand misconceptions become more confident and effective at differentiation and inclusive design.</li>
-            </ol>
-        </section>
-
-        <section id="references">
-            <h2>References</h2>
-            <p style="margin-bottom: 2rem; color: var(--text-light);">172 Sources (Academic & Authoritative)</p>
-
-            <div class="reference-item">SchoolAI. (2026). <em>Building AI literacy for students: Age-appropriate elementary activities</em>.</div>
-
-            <div class="reference-item">California Department of Education. (2025). <em>Artificial Intelligence - Professional Learning</em>.</div>
-
-            <div class="reference-item">Bullas, J. (2025). <em>Practical ways AI can support English language learners</em>.</div>
-
-            <div class="reference-item">Collaborative Classroom. (2025). <em>Scaffolding Techniques for English Language Learners</em>.</div>
-
-            <div class="reference-item">Continental Press. (2025). <em>5 Scaffolding Strategies for ELL Students</em>.</div>
-
-            <div class="reference-item">Formative. (2025). <em>FAQ: What Are Exit Tickets for Formative Assessment?</em></div>
-
-            <div class="reference-item">ORE AI. (2026). <em>Understanding Exit Tickets: A Key Tool for Formative Assessment</em>.</div>
-
-            <div class="reference-item">SchoolAI. (2025). <em>Using exit tickets to amplify real-time student feedback</em>.</div>
-
-            <div class="reference-item">IJASEIT. (2024). <em>Investigating Factors in AI Literacy for Korean Elementary School Students</em>.</div>
-
-            <div class="reference-item">Wiley Online Library. (2024). <em>Global initiatives and challenges in integrating AI literacy in elementary education</em>.</div>
-
-            <div class="reference-item">ArXiv. (2025). <em>Innovative Tangible Interactive Games for Enhancing AI Knowledge and Literacy in Elementary Education</em>.</div>
-
-            <div class="reference-item">Springer Link. (2024). <em>Developing and Validating the Artificial Intelligence Literacy Concept Inventory</em>.</div>
-
-            <div class="reference-item">ArXiv. (2024). <em>From Unseen Needs to Classroom Solutions: Exploring AI Literacy Challenges with Project-based Learning Toolkit in K-12</em>.</div>
-
-            <div class="reference-item">ArXiv. (2023). <em>Finnish 5th and 6th graders' misconceptions about Artificial Intelligence</em>.</div>
-
-            <div class="reference-item">PMC NCBI. (2021). <em>Artificial intelligence in education: Addressing ethical challenges in K-12</em>.</div>
-
-            <div class="reference-item">Stanford HAI. (2025). <em>Navigating Fairness, Bias, And Ethics In Educational AI Applications</em>.</div>
-
-            <div class="reference-item">Sage Journals. (2024). <em>Designing an Inclusive AI Curriculum for Elementary Students to Address Gender Differences</em>.</div>
-
-            <div class="reference-item">Taylor & Francis. (2025). <em>Teaching elementary artificial intelligence: Can the CTCA improve students' learning outcomes?</em></div>
-
-            <div class="reference-item">MDPI. (2022). <em>Examining the Effects of AI on Elementary Students' Mathematics Achievement: A Meta-Analysis</em>.</div>
-
-            <div class="reference-item">UNESCO. (2025). <em>AI competency framework for teachers</em>.</div>
-
-            <div class="reference-item">Nordic Journal. (2024). <em>Exploring the Potentials of Unplugged Activities—Developing Self-Efficacy and Be-greifbarkeit</em>.</div>
-
-            <div class="reference-item">NSF. (2022). <em>In-service teachers' (mis)conceptions of artificial intelligence in K-12</em>.</div>
-
-            <div class="reference-item">ERIC. (2023). <em>Unplugged activities as a catalyst when teaching computational thinking</em>.</div>
-
-            <div class="reference-item">ScienceDirect. (2025). <em>Comparative experiment of the effects of unplugged and plugged-in programming</em>.</div>
-
-            <div class="reference-item">TeachAI. (2024). <em>AI Literacy - TeachAI (AILit Framework)</em>.</div>
-
-            <div class="reference-item">Springer Link. (2024). <em>Developing an AI literacy diagnostic tool for elementary school students</em>.</div>
-
-            <div class="reference-item">ACM Digital Library. (2025). <em>AI Literacy for Young Learners: A Co-Designed Robotics Unit</em>.</div>
-
-            <div class="reference-item">ArXiv. (2025). <em>Objective Measurement of AI Literacy: Development and Validation of the AI Competency Objective Scale</em>.</div>
-
-            <div class="reference-item">GitHub. (2024). <em>A Review of Assessments in K-12 AI Literacy Curricula</em>.</div>
-
-            <div class="reference-item">UNESCO. (2025). <em>AI competency framework for students</em>.</div>
-
-            <div class="reference-item">VoxDev. (2024). <em>Improving learning efficacy and equality with AI training</em>.</div>
-
-            <div class="reference-item">UNESCO. (2025). <em>What you need to know about UNESCO's new AI competency frameworks</em>.</div>
-
-            <div class="reference-item">Nature. (2025). <em>Gender, knowledge, and trust in artificial intelligence</em>.</div>
-
-            <div class="reference-item">EdTech Magazine. (2025). <em>ISTELive 25: How to Build AI Literacy in Elementary School Students</em>.</div>
-
-            <div class="reference-item">Garcia Vallejo, M. (2024). <em>UNESCO´s AI competency frameworks for teachers and students</em>.</div>
-
-            <div class="reference-item">MIT DSpace. (2024). <em>Developing an AI Literacy Concept Inventory Assessment (AI-CI)</em>.</div>
-
-            <p style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color); color: var(--text-light); font-size: 0.9375rem;">
-                <strong>Report Prepared:</strong> January 2026<br>
-                <strong>Research Approach:</strong> Mixed-methods literature synthesis with peer-reviewed academic emphasis (107/172 sources academic)<br>
-                <strong>Standards Basis:</strong> California Computer Science Standards (2018), California Department of Education AI Guidance (2025), UNESCO AI Competency Frameworks (2024)<br>
-                <strong>Geographic Context:</strong> San Francisco Unified School District (K-5 implementation)
-            </p>
-        </section>
+        </div>
+
+        <!-- MUSIC FRAME -->
+        <div id="music" class="frame-container">
+            <div class="frame-content" style="display: flex; flex-direction: column; height: 100%;">
+                <h2>MUSIC APPRECIATION</h2>
+
+                <div class="piano-wrapper">
+                    <div class="result-display" id="resultDisplay">
+                        <div class="result-year" id="resultYear"></div>
+                    </div>
+
+                    <div class="piano-container">
+                        <div class="spotlight" id="spotlight"></div>
+                        <div class="piano" id="piano">
+                            <div class="piano-title">PIANO TIME MACHINE</div>
+                            <div class="black-key black-1" id="decadeToggle" data-decade="1960">
+                                <span class="black-text">D<br>E<br>C<br>A<br>D<br>E</span>
+                            </div>
+                            <div class="black-key black-2"></div>
+                            <div class="black-key black-3"></div>
+                            <div class="black-key black-4"></div>
+                            <div class="black-key black-5"></div>
+                            <div class="black-key black-6"></div>
+                            <div class="black-key black-7" id="randomKey">
+                                <span class="black-text">R<br>A<br>N<br>D<br>O<br>M</span>
+                            </div>
+                            <div class="white-key" data-year="1960"></div>
+                            <div class="white-key" data-year="1961"></div>
+                            <div class="white-key" data-year="1962"></div>
+                            <div class="white-key" data-year="1963"></div>
+                            <div class="white-key" data-year="1964"></div>
+                            <div class="white-key" data-year="1965"></div>
+                            <div class="white-key" data-year="1966"></div>
+                            <div class="white-key" data-year="1967"></div>
+                            <div class="white-key" data-year="1968"></div>
+                            <div class="white-key" data-year="1969"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-scroll-container">
+<div class="timeline-wrapper">
+    <div class="timeline-centerline"></div>
+    <div class="timeline-year timeline-left" id="year-1960">
+        <div class="year-badge">1960</div>
+        <div class="year-content">
+            <div class="content-left">
+                <div class="song-item"><a href="https://youtu.be/J2m4bqOuyqQ" target="_blank" class="song-link"><span class="song-title">♪ Georgia on ♪<br>My Mind</span><span class="artist-name">Ray Charles</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/tSsiS-v6_6M" target="_blank" class="song-link"><span class="song-title">♪ Theme from ♪<br>"A Summer Place"</span><span class="artist-name">Percy Faith</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/R4GLAKEjU4w" target="_blank" class="song-link"><span class="song-title">♪ (What A) ♪<br>Wonderful World</span><span class="artist-name">Sam Cooke</span></a></div>
+            </div>
+            <div class="content-right">
+                <div class="video-pyramid"><iframe class="video-embed video-single" width="200" height="113" src="https://www.youtube.com/embed/J2m4bqOuyqQ" frameborder="0" allowfullscreen></iframe><div class="video-row"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/tSsiS-v6_6M" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/R4GLAKEjU4w" frameborder="0" allowfullscreen></iframe></div></div>
+            </div>
+        </div>
+    </div>
+    <div class="timeline-year timeline-right" id="year-1961">
+        <div class="year-badge">1961</div>
+        <div class="year-content">
+            <div class="content-left">
+                <div class="video-pyramid"><iframe class="video-embed video-single" width="200" height="113" src="https://www.youtube.com/embed/7rZyI7kPZMI" frameborder="0" allowfullscreen></iframe><div class="video-row"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/pDDolFGoCuE" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/IvdT3Wh9O34" frameborder="0" allowfullscreen></iframe></div></div>
+            </div>
+            <div class="content-right">
+                <div class="song-item"><a href="https://youtu.be/7rZyI7kPZMI" target="_blank" class="song-link"><span class="song-title">♪ Stand By Me ♪</span><span class="artist-name">Ben E. King</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/pDDolFGoCuE" target="_blank" class="song-link"><span class="song-title">♪ Can't Help ♪<br>Falling In Love</span><span class="artist-name">Elvis Presley</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/IvdT3Wh9O34" target="_blank" class="song-link"><span class="song-title">♪ Crazy ♪</span><span class="artist-name">Patsy Cline</span></a></div>
+            </div>
+        </div>
+    </div>
+    <div class="timeline-year timeline-left" id="year-1962">
+        <div class="year-badge">1962</div>
+        <div class="year-content">
+            <div class="content-left">
+                <div class="song-item"><a href="https://youtu.be/NqBIDg4Pl6Y" target="_blank" class="song-link"><span class="song-title">♪ Twist and Shout ♪</span><span class="artist-name">The Isley Brothers</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/wv8k5IqVquU" target="_blank" class="song-link"><span class="song-title">♪ The Locomotion ♪</span><span class="artist-name">Little Eva</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/0oox9bJaGJ8" target="_blank" class="song-link"><span class="song-title">♪ Green Onions ♪</span><span class="artist-name">Booker T. & The M.G.'s</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/ra8cz6trAU8" target="_blank" class="song-link"><span class="song-title">♪ (I Left My Heart) ♪<br>In San Francisco</span><span class="artist-name">Tony Bennett</span></a></div>
+            </div>
+            <div class="content-right">
+                <div class="video-grid-2x2"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/NqBIDg4Pl6Y" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/wv8k5IqVquU" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/0oox9bJaGJ8" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/ra8cz6trAU8" frameborder="0" allowfullscreen></iframe></div>
+            </div>
+        </div>
+    </div>
+    <div class="timeline-year timeline-right" id="year-1963">
+        <div class="year-badge">1963</div>
+        <div class="year-content">
+            <div class="content-left">
+                <div class="video-grid-2x2"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/4Bj0ijpptWM" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/k8jqjx5KFLs" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/FwiYC0SsQIc" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/0hLeQCnTGq8" frameborder="0" allowfullscreen></iframe></div>
+            </div>
+            <div class="content-right">
+                <div class="song-item"><a href="https://youtu.be/4Bj0ijpptWM" target="_blank" class="song-link"><span class="song-title">♪ Be My Baby ♪</span><span class="artist-name">The Ronettes</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/k8jqjx5KFLs" target="_blank" class="song-link"><span class="song-title">♪ Surfin' U.S.A ♪</span><span class="artist-name">The Beach Boys</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/FwiYC0SsQIc" target="_blank" class="song-link"><span class="song-title">♪ Ring of Fire ♪</span><span class="artist-name">Johnny Cash</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/0hLeQCnTGq8" target="_blank" class="song-link"><span class="song-title">♪ Wipe Out ♪</span><span class="artist-name">The Surfaris</span></a></div>
+            </div>
+        </div>
+    </div>
+    <div class="timeline-year timeline-left" id="year-1964">
+        <div class="year-badge">1964</div>
+        <div class="year-content">
+            <div class="content-left">
+                <div class="song-item"><a href="https://youtu.be/6NEh2r9Hbxw" target="_blank" class="song-link"><span class="song-title">♪ My Girl ♪</span><span class="artist-name">The Temptations</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/D6QF4sB40gU" target="_blank" class="song-link"><span class="song-title">♪ Baby Love ♪</span><span class="artist-name">The Supremes</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/8OCtkAGsLhw" target="_blank" class="song-link"><span class="song-title">♪ You Really ♪<br>Got Me</span><span class="artist-name">The Kinks</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/sO7FWHUQyW0" target="_blank" class="song-link"><span class="song-title">♪ Downtown ♪</span><span class="artist-name">Petula Clark</span></a></div>
+            </div>
+            <div class="content-right">
+                <div class="video-grid-2x2"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/6NEh2r9Hbxw" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/D6QF4sB40gU" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/8OCtkAGsLhw" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/sO7FWHUQyW0" frameborder="0" allowfullscreen></iframe></div>
+            </div>
+        </div>
+    </div>
+    <div class="timeline-year timeline-right" id="year-1965">
+        <div class="year-badge">1965</div>
+        <div class="year-content">
+            <div class="content-left">
+                <div class="video-grid-2x2"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/ogKi-58S26Y" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/PWEnpk8Qtnw" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/G6c_OY2KJuM" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/lhPZ8bSnRq8" frameborder="0" allowfullscreen></iframe></div>
+            </div>
+            <div class="content-right">
+                <div class="song-item"><a href="https://youtu.be/ogKi-58S26Y" target="_blank" class="song-link"><span class="song-title">♪ Yesterday ♪</span><span class="artist-name">The Beatles</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/PWEnpk8Qtnw" target="_blank" class="song-link"><span class="song-title">♪ Unchained ♪<br>Melody</span><span class="artist-name">The Righteous Brothers</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/G6c_OY2KJuM" target="_blank" class="song-link"><span class="song-title">♪ I Can't Help Myself ♪<br>(Sugar Pie Honey Bunch)</span><span class="artist-name">The Four Tops</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/lhPZ8bSnRq8" target="_blank" class="song-link"><span class="song-title">♪ Like a Rolling ♪<br>Stone</span><span class="artist-name">Bob Dylan</span></a></div>
+            </div>
+        </div>
+    </div>
+    <div class="timeline-year timeline-left" id="year-1966">
+        <div class="year-badge">1966</div>
+        <div class="year-content">
+            <div class="content-left">
+                <div class="song-item"><a href="https://youtu.be/-cGyvDbJfEo" target="_blank" class="song-link"><span class="song-title">♪ It's a Man's, Man's, ♪<br>Man's World</span><span class="artist-name">James Brown</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/uJQrja_nTN0" target="_blank" class="song-link"><span class="song-title">♪ California ♪<br>Dreamin'</span><span class="artist-name">The Mamas & The Papas</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/5axSI4OSJjw" target="_blank" class="song-link"><span class="song-title">♪ For What ♪<br>It's Worth</span><span class="artist-name">Buffalo Springfield</span></a></div>
+            </div>
+            <div class="content-right">
+                <div class="video-pyramid"><iframe class="video-embed video-single" width="200" height="113" src="https://www.youtube.com/embed/-cGyvDbJfEo" frameborder="0" allowfullscreen></iframe><div class="video-row"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/uJQrja_nTN0" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/5axSI4OSJjw" frameborder="0" allowfullscreen></iframe></div></div>
+            </div>
+        </div>
+    </div>
+    <div class="timeline-year timeline-right" id="year-1967">
+        <div class="year-badge">1967</div>
+        <div class="year-content">
+            <div class="content-left">
+                <div class="video-grid-2x2"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/26TKKUcZvhA" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/0HGqvI-h114" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/eu2gAqn4I2A" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/EmeW30fPjgA" frameborder="0" allowfullscreen></iframe></div>
+            </div>
+            <div class="content-right">
+                <div class="song-item"><a href="https://youtu.be/26TKKUcZvhA" target="_blank" class="song-link"><span class="song-title">♪ Respect ♪</span><span class="artist-name">Aretha Franklin</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/0HGqvI-h114" target="_blank" class="song-link"><span class="song-title">♪ Can't Take My ♪<br>Eyes Off You</span><span class="artist-name">Frankie Valli</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/eu2gAqn4I2A" target="_blank" class="song-link"><span class="song-title">♪ Ain't No Mountain ♪<br>High Enough</span><span class="artist-name">Marvin Gaye & Tammi Terrell</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/EmeW30fPjgA" target="_blank" class="song-link"><span class="song-title">♪ Happy Together ♪</span><span class="artist-name">The Turtles</span></a></div>
+            </div>
+        </div>
+    </div>
+    <div class="timeline-year timeline-left" id="year-1968">
+        <div class="year-badge">1968</div>
+        <div class="year-content">
+            <div class="content-left">
+                <div class="song-item"><a href="https://youtu.be/wOU4YBoa5Ng" target="_blank" class="song-link"><span class="song-title">♪ Hey Jude ♪</span><span class="artist-name">The Beatles</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/AuF7Xsrexgs" target="_blank" class="song-link"><span class="song-title">♪ All Along the ♪<br>Watchtower</span><span class="artist-name">Jimi Hendrix</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/RBxK3CcOQD8" target="_blank" class="song-link"><span class="song-title">♪ Time of the ♪<br>Season</span><span class="artist-name">The Zombies</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/gLUgPmNHQLA" target="_blank" class="song-link"><span class="song-title">♪ (Sittin' On) ♪<br>The Dock of the Bay</span><span class="artist-name">Otis Redding</span></a></div>
+            </div>
+            <div class="content-right">
+                <div class="video-grid-2x2"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/wOU4YBoa5Ng" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/AuF7Xsrexgs" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/RBxK3CcOQD8" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/gLUgPmNHQLA" frameborder="0" allowfullscreen></iframe></div>
+            </div>
+        </div>
+    </div>
+    <div class="timeline-year timeline-right" id="year-1969">
+        <div class="year-badge">1969</div>
+        <div class="year-content">
+            <div class="content-left">
+                <div class="video-pyramid"><iframe class="video-embed video-single" width="200" height="113" src="https://www.youtube.com/embed/0iN-hemcKc8" frameborder="0" allowfullscreen></iframe><div class="video-row"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/6WTq2Xl3qLk" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/d8rPE0n3nDw" frameborder="0" allowfullscreen></iframe></div></div>
+            </div>
+            <div class="content-right">
+                <div class="song-item"><a href="https://youtu.be/0iN-hemcKc8" target="_blank" class="song-link"><span class="song-title">♪ Sweet Caroline ♪</span><span class="artist-name">Neil Diamond</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/6WTq2Xl3qLk" target="_blank" class="song-link"><span class="song-title">♪ Sugar, Sugar ♪</span><span class="artist-name">The Archies</span></a></div>
+                <div class="song-item"><a href="https://youtu.be/d8rPE0n3nDw" target="_blank" class="song-link"><span class="song-title">♪ Gimme Shelter ♪</span><span class="artist-name">The Rolling Stones</span></a></div>
+            </div>
+        </div>
+    </div>
+</div>
+                </div>
+
+                <style>
+                    .result-display { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; pointer-events: auto; cursor: pointer; }
+                    .result-year { font-family: 'Press Start 2P', monospace; font-size: clamp(32px, 8vw, 64px); font-weight: bold; color: #fff; text-shadow: 3px 3px 0 #000; opacity: 0; transform: scale(0.5); transition: all 0.5s ease; background: rgba(248, 216, 72, 0.95); border: 4px solid #000; padding: 20px 30px; border-radius: 8px; box-shadow: 0 6px 0 #d85800, inset 0 0 0 4px #fff; }
+                    .result-year.show { opacity: 1; transform: scale(1); animation: coinBounce 0.6s ease; }
+                    @keyframes coinBounce { 0% { transform: scale(0.5); } 50% { transform: scale(1.1); } 75% { transform: scale(0.95); } 100% { transform: scale(1); } }
+
+                    .piano-wrapper { max-width: 100%; margin: 20px auto; display: flex; flex-direction: column; align-items: center; position: relative; }
+                    .piano-container { position: relative; perspective: 1000px; margin: 20px 0; }
+                    .piano { position: relative; display: inline-flex; background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%); padding: clamp(20px, 4vw, 30px) clamp(15px, 3vw, 20px) clamp(30px, 5vw, 40px) clamp(15px, 3vw, 20px); border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 -5px 20px rgba(0,0,0,0.3); transform-style: preserve-3d; transform: rotateX(5deg); max-width: 90vw; --wk-width: clamp(40px, 6vw, 60px); --wk-margin: 2px; --total-wk: calc(var(--wk-width) + var(--wk-margin)); --bk-width: clamp(28px, 4.5vw, 40px); }
+                    .piano-title { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); font-family: 'Press Start 2P', monospace; font-size: clamp(6px, 1.2vw, 10px); color: #ffd700; text-shadow: 1px 1px 2px #000; letter-spacing: 1px; white-space: nowrap; z-index: 1; }
+
+                    .spotlight { position: absolute; top: -100px; width: clamp(100px, 20vw, 200px); height: 400px; background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.4) 0%, transparent 70%); pointer-events: none; opacity: 0; transition: all 0.5s ease; z-index: 3; }
+                    .spotlight.active { opacity: 1; }
+
+                    .white-key { width: var(--wk-width); height: clamp(180px, 25vw, 250px); background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%); border: 2px solid #333; border-radius: 0 0 5px 5px; position: relative; cursor: pointer; transition: all 0.1s; box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 -10px 20px rgba(0,0,0,0.1); margin: 0 1px; }
+                    .white-key::after { content: attr(data-year); position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); font-family: 'Press Start 2P', monospace; font-size: clamp(7px, 1.2vw, 10px); color: #333; font-weight: bold; writing-mode: vertical-rl; text-orientation: upright; letter-spacing: 2px; }
+                    .white-key:hover { background: linear-gradient(180deg, #f0f0f0 0%, #e5e5e5 100%); }
+                    .white-key:active { transform: translateY(3px); box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 -5px 10px rgba(0,0,0,0.2); }
+                    .white-key.highlight { background: linear-gradient(180deg, #ffd700 0%, #ffed4e 100%); box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+                    .white-key.final-selection { background: linear-gradient(180deg, #ff6b6b 0%, #ee5a6f 100%); animation: finalPulse 1s ease-in-out infinite; box-shadow: 0 0 30px rgba(255, 107, 107, 0.8); }
+                    @keyframes finalPulse { 0%, 100% { transform: scale(1) translateY(0); } 50% { transform: scale(1.05) translateY(-5px); } }
+
+                    .black-key { width: var(--bk-width); height: clamp(110px, 16vw, 150px); background: linear-gradient(180deg, #2c2c2c 0%, #000000 100%); border: 2px solid #000; border-radius: 0 0 3px 3px; position: absolute; top: clamp(20px, 4vw, 30px); left: calc(clamp(15px, 3vw, 20px) + (var(--total-wk) * var(--pos)) - (var(--bk-width) / 2)); transition: all 0.1s; box-shadow: 0 4px 8px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.1); z-index: 2; cursor: default; pointer-events: none; }
+                    .black-1, .black-7 { cursor: pointer; pointer-events: auto; background: linear-gradient(180deg, #444 0%, #1a1a1a 100%); border: 3px solid #ffd700; }
+                    .black-text { font-family: 'Press Start 2P', monospace; font-size: clamp(6px, 1vw, 9px); color: #ffd700; text-shadow: 1px 1px 0 #000; line-height: 1.3; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; font-weight: bold; letter-spacing: 1px; }
+                    .black-1 { --pos: 1; } .black-2 { --pos: 2; } .black-3 { --pos: 4; } .black-4 { --pos: 5; } .black-5 { --pos: 6; } .black-6 { --pos: 8; } .black-7 { --pos: 9; }
+                    .black-1:hover, .black-7:hover { background: linear-gradient(180deg, #555 0%, #2a2a2a 100%); }
+                    .black-1:active, .black-7:active { transform: translateY(3px); box-shadow: 0 2px 4px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.1); }
+
+                    .music-note { position: fixed; font-size: 24px; pointer-events: none; z-index: 1000; animation: floatUp 2s ease-out forwards; }
+                    @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) rotate(0deg); } 100% { opacity: 0; transform: translateY(-200px) rotate(360deg); } }
+
+                    .timeline-scroll-container { flex: 1; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; padding: 0; }
+                    .timeline-wrapper { position: relative; max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+                    .timeline-centerline { position: absolute; left: 50%; top: 0; bottom: 0; width: 6px; background: linear-gradient(180deg, #ffd700 0%, #ff8c00 100%); transform: translateX(-50%); box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); z-index: 1; }
+                    .timeline-year { position: relative; height: 90vh; margin: 5vh 0; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s ease; scroll-margin-top: 0; }
+                    .year-badge { font-family: 'Press Start 2P', monospace; font-size: clamp(36px, 5vw, 48px); color: #ffd700; text-shadow: 4px 4px 0 #000; padding: 20px 40px; background: rgba(0,0,0,0.95); border: 5px solid #ffd700; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.8); z-index: 5; margin-bottom: 30px; }
+                    .year-content { display: flex; width: 100%; max-width: 1300px; gap: 0; align-items: center; justify-content: center; z-index: 2; flex: 1; }
+                    .content-left, .content-right { flex: 1; display: flex; flex-direction: column; justify-content: center; max-height: 65vh; }
+                    .content-left { padding-right: 35px; align-items: flex-end; }
+                    .content-right { padding-left: 35px; align-items: flex-start; }
+
+                    .song-item { background: rgba(0,0,0,0.9); border: 3px solid #ffd700; border-radius: 12px; padding: 20px 28px; margin: 8px 0; transition: all 0.3s ease; box-shadow: 0 6px 12px rgba(0,0,0,0.6); max-width: 550px; width: 100%; min-height: 110px; display: flex; align-items: center; justify-content: center; }
+                    .song-item:hover { transform: scale(1.03); box-shadow: 0 10px 20px rgba(255, 215, 0, 0.7); border-color: #fff; }
+                    .song-link { text-decoration: none; display: block; text-align: center; width: 100%; }
+                    .song-title { font-family: 'Press Start 2P', monospace; font-size: clamp(13px, 1.6vw, 17px); color: #fff; display: block; margin-bottom: 10px; line-height: 1.5; }
+                    .artist-name { font-family: 'Press Start 2P', monospace; font-size: clamp(11px, 1.4vw, 15px); color: #ffd700; display: block; line-height: 1.4; }
+                    .song-link:hover .song-title { color: #ffd700; }
+                    .song-link:hover .artist-name { color: #fff; }
+
+                    .video-grid-2x2 { display: grid; grid-template-columns: 200px 200px; gap: 12px; justify-content: center; }
+                    .video-pyramid { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+                    .video-pyramid .video-row { display: flex; gap: 12px; justify-content: center; }
+                    .video-embed { width: 200px !important; height: 113px !important; max-width: 200px !important; max-height: 113px !important; min-width: 200px !important; min-height: 113px !important; border: 4px solid #ffd700; border-radius: 10px; box-shadow: 0 6px 15px rgba(0,0,0,0.6); transition: all 0.3s ease; display: block; flex-shrink: 0; }
+                    .video-embed:hover { transform: scale(1.05); box-shadow: 0 10px 25px rgba(255, 215, 0, 0.8); border-color: #fff; }
+
+                    .timeline-year.highlight-year .year-badge { animation: glowShine 3s ease-in-out forwards; }
+                    @keyframes glowShine {
+                        0% { filter: brightness(1); box-shadow: 0 10px 20px rgba(0,0,0,0.8); }
+                        16.67% { filter: brightness(1.5); box-shadow: 0 0 40px rgba(255, 215, 0, 1), 0 0 80px rgba(255, 215, 0, 0.8), 0 10px 20px rgba(0,0,0,0.8); }
+                        83.33% { filter: brightness(1.5); box-shadow: 0 0 40px rgba(255, 215, 0, 1), 0 0 80px rgba(255, 215, 0, 0.8), 0 10px 20px rgba(0,0,0,0.8); }
+                        100% { filter: brightness(1); box-shadow: 0 10px 20px rgba(0,0,0,0.8); }
+                    }
+
+                    @media (max-width: 1024px) {
+                        .year-content { flex-direction: column; gap: 20px; }
+                        .content-left, .content-right { padding: 0; align-items: center; width: 100%; max-width: 600px; }
+                        .timeline-year { height: auto; min-height: 90vh; }
+                        .video-grid-2x2 { grid-template-columns: 180px 180px; }
+                        .video-embed { width: 180px !important; height: 101px !important; max-width: 180px !important; max-height: 101px !important; min-width: 180px !important; min-height: 101px !important; }
+                    }
+                </style>
+
+                <script>
+                    let currentDecade = 1960; 
+                    let isAnimating = false;
+                    const decadeToggle = document.getElementById('decadeToggle'); 
+                    const randomKey = document.getElementById('randomKey');
+                    const resultYear = document.getElementById('resultYear'); 
+                    const resultDisplay = document.getElementById('resultDisplay'); 
+                    const spotlight = document.getElementById('spotlight');
+
+                    // Manual click on year box (backup option)
+                    resultDisplay.addEventListener('click', () => { 
+                        const yearText = resultYear.textContent; 
+                        if (yearText) { 
+                            const yearElement = document.getElementById('year-' + yearText); 
+                            if (yearElement) { 
+                                yearElement.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
+                                document.querySelectorAll('[id^="year-"]').forEach(el => el.classList.remove('highlight-year')); 
+                                yearElement.classList.add('highlight-year'); 
+                                resultYear.classList.remove('show'); 
+                                spotlight.classList.remove('active'); 
+                                document.querySelectorAll('.final-selection').forEach(key => key.classList.remove('final-selection')); 
+                            } 
+                        } 
+                    });
+
+                    decadeToggle.addEventListener('click', (e) => { 
+                        e.stopPropagation(); 
+                        if (isAnimating) return; 
+                        if (currentDecade === 1960) currentDecade = 1970; 
+                        else if (currentDecade === 1970) currentDecade = 1980; 
+                        else if (currentDecade === 1980) currentDecade = 1990; 
+                        else currentDecade = 1960; 
+                        decadeToggle.setAttribute('data-decade', currentDecade); 
+                        updateYears(); 
+                    });
+
+                    function updateYears() { 
+                        const whiteKeys = document.querySelectorAll('.white-key'); 
+                        for (let i = 0; i < 10; i++) { 
+                            whiteKeys[i].setAttribute('data-year', currentDecade + i); 
+                        } 
+                    }
+
+                    function createMusicNote(x, y) { 
+                        const note = document.createElement('div'); 
+                        note.className = 'music-note'; 
+                        note.textContent = ['♪', '♫', '♬'][Math.floor(Math.random() * 3)]; 
+                        note.style.left = x + 'px'; 
+                        note.style.top = y + 'px'; 
+                        note.style.color = '#ffd700'; 
+                        note.style.textShadow = '2px 2px 0 #000'; 
+                        document.body.appendChild(note); 
+                        setTimeout(() => note.remove(), 2000); 
+                    }
+
+                    randomKey.addEventListener('click', () => { 
+                        if (isAnimating) return; 
+                        isAnimating = true; 
+                        randomKey.style.pointerEvents = 'none'; 
+                        resultYear.classList.remove('show'); 
+                        spotlight.classList.remove('active'); 
+                        document.querySelectorAll('.final-selection').forEach(key => key.classList.remove('final-selection')); 
+
+                        const whiteKeys = document.querySelectorAll('.white-key'); 
+                        const keysArray = Array.from(whiteKeys); 
+                        let speed = 100; 
+                        let cycleCount = 0; 
+                        const maxCycles = 20; 
+
+                        const cycleInterval = setInterval(() => { 
+                            whiteKeys.forEach(key => key.classList.remove('highlight')); 
+                            const randomIndex = Math.floor(Math.random() * keysArray.length); 
+                            keysArray[randomIndex].classList.add('highlight'); 
+                            cycleCount++; 
+                            if (cycleCount > maxCycles) speed = 30; 
+
+                            if (cycleCount >= maxCycles && speed === 30) { 
+                                clearInterval(cycleInterval); 
+
+                                setTimeout(() => { 
+                                    whiteKeys.forEach(key => key.classList.remove('highlight')); 
+                                    const finalIndex = Math.floor(Math.random() * keysArray.length); 
+                                    const finalKey = keysArray[finalIndex]; 
+                                    finalKey.classList.add('final-selection'); 
+
+                                    const selectedYear = finalKey.getAttribute('data-year'); 
+                                    resultYear.textContent = selectedYear; 
+                                    setTimeout(() => resultYear.classList.add('show'), 100); 
+
+                                    const keyRect = finalKey.getBoundingClientRect(); 
+                                    const pianoRect = document.getElementById('piano').getBoundingClientRect(); 
+                                    spotlight.style.left = (keyRect.left - pianoRect.left - 80) + 'px'; 
+                                    spotlight.classList.add('active'); 
+
+                                    const noteX = keyRect.left + keyRect.width / 2; 
+                                    const noteY = keyRect.top; 
+                                    for (let i = 0; i < 5; i++) { 
+                                        setTimeout(() => { 
+                                            createMusicNote(noteX + (Math.random() - 0.5) * 40, noteY); 
+                                        }, i * 200); 
+                                    }
+
+                                    // AUTO-SCROLL AFTER 3 PULSES (3 seconds)
+                                    setTimeout(() => {
+                                        const yearElement = document.getElementById('year-' + selectedYear);
+                                        if (yearElement) {
+                                            yearElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                            document.querySelectorAll('[id^="year-"]').forEach(el => el.classList.remove('highlight-year'));
+                                            yearElement.classList.add('highlight-year');
+
+                                            // RESET PIANO after scrolling
+                                            setTimeout(() => {
+                                                resultYear.classList.remove('show');
+                                                spotlight.classList.remove('active');
+                                                document.querySelectorAll('.final-selection').forEach(key => key.classList.remove('final-selection'));
+                                            }, 500);
+                                        }
+                                    }, 3000);
+
+                                    isAnimating = false; 
+                                    randomKey.style.pointerEvents = 'auto'; 
+                                }, 200); 
+                            } 
+                        }, speed); 
+                    });
+
+                    // White key click handlers for direct year selection
+                    document.querySelectorAll('.white-key').forEach(whiteKey => {
+                        whiteKey.addEventListener('click', (e) => {
+                            const year = whiteKey.getAttribute('data-year');
+                            if (year) {
+                                const yearElement = document.getElementById('year-' + year);
+                                if (yearElement) {
+                                    yearElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                    document.querySelectorAll('[id^="year-"]').forEach(el => el.classList.remove('highlight-year'));
+                                    yearElement.classList.add('highlight-year');
+                                }
+                            }
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+
+        <!-- DOODLE PADS FRAME -->
+        <div id="doodle" class="frame-container">
+            <div class="frame-content">
+                <h2>DOODLE PADS</h2>
+                <div style="display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="flex: 1;">
+                        <h3>30 Doodle Pads Available</h3>
+                        <img src="https://raw.githubusercontent.com/billkuang-ai/billkuang.com/refs/heads/main/doodle.jpg" alt="Doodle Pads" style="max-width: 100%; width: 100%; height: auto; border-radius: 8px; border: 4px solid #ffd700;">
+                    </div>
+                    <div style="flex: 1;">
+                        <h3>Activities Coming Soon</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAGNETIC TILES FRAME -->
+        <div id="tiles" class="frame-container">
+            <div class="frame-content">
+                <h2>MAGNETIC TILES</h2>
+                <div style="display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="flex: 1;">
+                        <h3>6 Mag Tile Sets Available</h3>
+                        <img src="https://raw.githubusercontent.com/billkuang-ai/billkuang.com/refs/heads/main/magtiles.jpg" alt="Magnetic Tiles" style="max-width: 100%; width: 100%; height: auto; border-radius: 8px; border: 4px solid #ffd700;">
+                    </div>
+                    <div style="flex: 1;">
+                        <h3>Activities Coming Soon</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
+    <footer>
+        <p class="coin-score">⭐ × 415</p>
+        <p>UESF MEMBER<br>SINCE 2013</p>
+        <p>🍄 THANK YOU TEACHERS! 🍄</p>
+    </footer>
+
     <script>
-        // Mobile menu toggle
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-        }
+        // Frame navigation system with dynamic emojis
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const frames = document.querySelectorAll('.frame-container');
 
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', function(event) {
-            const sidebar = document.getElementById('sidebar');
-            const menuToggle = document.querySelector('.menu-toggle');
-
-            if (window.innerWidth <= 768 && 
-                sidebar.classList.contains('open') && 
-                !sidebar.contains(event.target) && 
-                !menuToggle.contains(event.target)) {
-                sidebar.classList.remove('open');
-            }
-        });
-
-        // Active section highlighting
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.toc-link');
-
-        function highlightActiveSection() {
-            let currentSection = '';
-
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-
-                if (window.pageYOffset >= sectionTop - 150) {
-                    currentSection = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + currentSection) {
-                    link.classList.add('active');
-                }
-            });
-        }
-
-        window.addEventListener('scroll', highlightActiveSection);
-        highlightActiveSection(); // Initial call
-
-        // Smooth scroll and close mobile menu
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
+        navButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
                 e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetSection = document.getElementById(targetId);
 
-                if (targetSection) {
-                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                // Get target frame and emoji
+                const targetFrame = this.getAttribute('data-frame');
 
-                    // Close mobile menu after clicking
-                    if (window.innerWidth <= 768) {
-                        document.getElementById('sidebar').classList.remove('open');
-                    }
-                }
+                // Remove active class from all buttons and frames
+                navButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    // Reset all icons to "?"
+                    const icon = btn.querySelector('.btn-icon');
+                    icon.textContent = '?';
+                });
+
+                frames.forEach(frame => frame.classList.remove('active'));
+
+                // Add active class to clicked button and target frame
+                this.classList.add('active');
+
+                // Set the emoji for the active button
+                const activeIcon = this.querySelector('.btn-icon');
+                const emoji = this.getAttribute('data-emoji');
+                activeIcon.textContent = emoji;
+
+                document.getElementById(targetFrame).classList.add('active');
+
+                // Smooth scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         });
     </script>

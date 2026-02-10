@@ -688,12 +688,8 @@
     <script>
         // Rebuild timeline for portrait mode
         function rebuildTimelineForPortrait() {
-            if (window.innerWidth > 950) {
-                return;
-            }
-            if (window.timelineAlreadyRebuilt) {
-                return;
-            }
+            if (window.innerWidth > 950) { return; }
+            if (window.timelineAlreadyRebuilt) { return; }
 
             const years = document.querySelectorAll('.timeline-year');
 

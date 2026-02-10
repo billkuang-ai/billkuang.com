@@ -579,11 +579,11 @@
         @media (max-width: 667px) and (orientation: landscape) {
             .nav-buttons { 
                 grid-template-columns: repeat(5, 1fr);
-                gap: 6px;
+                gap: 4px;
             }
             .nav-btn { 
-                padding: 8px 4px;
-                min-height: 65px;
+                padding: 6px 3px;
+                min-height: 50px;
                 border: 3px solid #000;
                 border-radius: 8px;
                 box-shadow: 0 4px 0 #d85800, inset 0 -3px 0 rgba(255,255,255,0.3);
@@ -596,12 +596,12 @@
                 box-shadow: 0 1px 0 #d85800, inset 0 -3px 0 rgba(255,255,255,0.3);
             }
             .btn-text { 
-                font-size: 0.5em;
-                margin-bottom: 4px;
-                line-height: 1.2;
+                font-size: 0.45em;
+                margin-bottom: 3px;
+                line-height: 1.1;
             }
             .btn-icon { 
-                font-size: 1em;
+                font-size: 0.9em;
             }
             nav {
                 padding: 15px 10px;
@@ -688,8 +688,12 @@
     <script>
         // Rebuild timeline for portrait mode
         function rebuildTimelineForPortrait() {
-            if (window.innerWidth > 950) { return; }
-            if (window.timelineAlreadyRebuilt) { return; }
+            if (window.innerWidth > 950) {
+                return;
+            }
+            if (window.timelineAlreadyRebuilt) {
+                return;
+            }
 
             const years = document.querySelectorAll('.timeline-year');
 

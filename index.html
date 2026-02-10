@@ -681,13 +681,6 @@
         font-size: 0.9em;
         color: #ffd700;
     }
-    .portrait-timeline-item.video,
-    .video-pyramid,
-    .video-grid-2x2,
-    .content-left,
-    .content-right {
-        display: none !important;
-    }
 }
 
 </style>
@@ -695,13 +688,11 @@
     <script>
         // Rebuild timeline for portrait mode
         function rebuildTimelineForPortrait() {
-            // Only run in portrait mode (up to 950px for landscape support)
+            // Only run once
             if (window.innerWidth > 950) {
                 return;
             }
-
-            // Prevent multiple runs
-            if (window.timelineRebuilt) {
+            if (window.timelineAlreadyRebuilt) {
                 return;
             }
 
@@ -776,9 +767,7 @@
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                location.reload();
-            }, 500);
+            // Auto-reload REMOVED - was causing scroll-triggered refresh bug
         });
     </script>
 </head>
@@ -1169,13 +1158,6 @@
         font-size: 0.9em;
         color: #ffd700;
     }
-    .portrait-timeline-item.video,
-    .video-pyramid,
-    .video-grid-2x2,
-    .content-left,
-    .content-right {
-        display: none !important;
-    }
 }
 
 </style>
@@ -1396,7 +1378,7 @@
                 document.getElementById(targetFrame).classList.add('active');
 
                 // Smooth scroll to top
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                // window.scrollTo removed - keeps scroll position
             });
         });
     </script>

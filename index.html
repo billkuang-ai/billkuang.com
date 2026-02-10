@@ -688,10 +688,12 @@
     <script>
         // Rebuild timeline for portrait mode
         function rebuildTimelineForPortrait() {
-            // Only run once
+            // Only run in portrait mode (up to 950px)
             if (window.innerWidth > 950) {
                 return;
             }
+
+            // Prevent running multiple times
             if (window.timelineAlreadyRebuilt) {
                 return;
             }
@@ -767,7 +769,7 @@
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
-            // Auto-reload REMOVED - was causing scroll-triggered refresh bug
+            // Auto-reload removed to fix scroll-triggered refresh bug
         });
     </script>
 </head>
@@ -1377,8 +1379,7 @@
 
                 document.getElementById(targetFrame).classList.add('active');
 
-                // Smooth scroll to top
-                // window.scrollTo removed - keeps scroll position
+                // REMOVED: Scroll to top (was causing jarring experience)
             });
         });
     </script>

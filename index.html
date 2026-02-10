@@ -355,7 +355,435 @@
             pointer-events: none;
         }
 
-    </style>
+    
+        /* ============================================== */
+        /* PORTRAIT MOBILE ONLY - Optimized             */
+        /* ============================================== */
+        @media (max-width: 480px) and (orientation: portrait) {
+
+            /* HEADER - Minimal space, vertically centered */
+            header {
+                padding: 8px 10px !important;
+                min-height: unset !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+
+            header h1 {
+                font-size: 0.85em !important;
+                visibility: hidden;
+                position: relative;
+                margin: 0 !important;
+                padding: 0 !important;
+                line-height: 1.3 !important;
+                height: 1.3em;
+            }
+
+            header h1::after {
+                content: "☁️ MR. KUANG ☁️";
+                visibility: visible;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                white-space: nowrap;
+            }
+
+            /* NAV BAR */
+            nav {
+                padding: 8px 5px !important;
+                background: #f8a848 !important;
+                border-bottom: 4px solid #000;
+            }
+
+            .nav-buttons { 
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: space-evenly !important;
+                gap: 6px !important;
+                grid-template-columns: unset !important;
+            }
+
+            .nav-btn { 
+                background: none !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 4px !important;
+                min-height: unset !important;
+                flex: 1;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                border-radius: 0 !important;
+            }
+
+            .nav-btn.active {
+                background: rgba(255,255,255,0.3) !important;
+            }
+
+            .btn-text { 
+                font-size: 0.4em !important;
+                color: #fff !important;
+                text-shadow: 2px 2px 0 #000 !important;
+                white-space: nowrap;
+            }
+
+            .btn-icon { 
+                font-size: 1.2em !important;
+                color: #ffd700 !important;
+                text-shadow: 1px 1px 0 #000 !important;
+            }
+
+            /* PIANO */
+            .piano { 
+                --wk-width: 28px !important; 
+                padding: 12px 10px 22px 10px !important;
+                max-width: 95vw;
+            }
+
+            .white-key { 
+                width: 28px !important;
+                height: 120px !important;
+            }
+
+            .black-key { 
+                width: 20px !important;
+                height: 78px !important; 
+                top: 12px !important;
+            }
+
+            .black-key.black-1 { left: calc(10px + (30px * 1) - 10px) !important; }
+            .black-key.black-2 { left: calc(10px + (30px * 2) - 10px) !important; }
+            .black-key.black-3 { left: calc(10px + (30px * 4) - 10px) !important; }
+            .black-key.black-4 { left: calc(10px + (30px * 5) - 10px) !important; }
+            .black-key.black-5 { left: calc(10px + (30px * 6) - 10px) !important; }
+            .black-key.black-6 { left: calc(10px + (30px * 8) - 10px) !important; }
+            .black-key.black-7 { left: calc(10px + (30px * 9) - 10px) !important; }
+
+            .piano-title { font-size: 5px !important; }
+            .black-text { font-size: 6px !important; }
+
+            /* TIMELINE */
+            .timeline-centerline { display: none !important; }
+
+            .timeline-year { 
+                height: auto !important; 
+                min-height: 0 !important; /* FIX: Remove forced height */
+                display: block !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .year-badge { 
+                font-size: 18px !important;
+                padding: 0 !important;
+                margin: 8px auto !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                width: 90% !important;
+                max-width: 500px !important;
+                height: 90px !important; /* 90px Fixed Height */
+                background: #ffd700 !important;
+                color: #000 !important;
+                border: 3px solid #000 !important;
+                border-radius: 12px !important;
+                text-shadow: none !important;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
+            }
+
+            .year-content {
+                display: block !important;
+                width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .portrait-timeline-item {
+                width: 90% !important;
+                max-width: 500px !important;
+                margin: 8px auto !important;
+            }
+
+            .portrait-timeline-item.song {
+                background: rgba(0,0,0,0.9);
+                border: 3px solid #ffd700;
+                border-radius: 12px;
+                padding: 10px 14px;
+                height: 90px !important; /* 90px Fixed Height */
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                overflow: hidden !important;
+            }
+
+            .portrait-timeline-item.song a {
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                width: 100% !important;
+                height: 100% !important;
+                text-decoration: none !important;
+            }
+
+            .portrait-timeline-item .song-title {
+                display: -webkit-box !important;
+                -webkit-line-clamp: 2 !important;
+                -webkit-box-orient: vertical !important;
+                overflow: hidden !important;
+                font-size: 15px !important;
+                line-height: 1.3 !important;
+                margin-bottom: 4px !important;
+                color: #fff !important;
+            }
+
+            .portrait-timeline-item .artist-name {
+                display: block !important;
+                font-size: 13px !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                color: #ffd700 !important;
+            }
+
+            .portrait-timeline-item .song-title {
+                display: block;
+                margin-bottom: 4px;
+            }
+
+            .portrait-timeline-item .artist-name {
+                display: block;
+                font-size: 0.9em;
+            }
+
+            .portrait-timeline-item.video {
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            .portrait-timeline-item iframe {
+                width: 100% !important;
+                height: 200px !important;
+                display: block;
+            }
+
+            /* HIDE ALL VIDEOS IN MOBILE PORTRAIT */
+            .video-pyramid,
+            .video-grid-2x2,
+            .video-row,
+            .video-embed,
+            .video-single,
+            iframe.video-embed,
+            .content-left iframe,
+            .content-right iframe,
+            .portrait-timeline-item.video,
+            .portrait-timeline-item iframe {
+                display: none !important;
+            }
+        }
+    
+        /* Mobile Landscape ONLY - Optimized for iPhone SE */
+        @media (max-width: 667px) and (orientation: landscape) {
+            .nav-buttons { 
+                grid-template-columns: repeat(5, 1fr);
+                gap: 6px;
+            }
+            .nav-btn { 
+                padding: 8px 4px;
+                min-height: 65px;
+                border: 3px solid #000;
+                border-radius: 8px;
+                box-shadow: 0 4px 0 #d85800, inset 0 -3px 0 rgba(255,255,255,0.3);
+            }
+            .nav-btn.active {
+                box-shadow: 0 4px 0 #cc9900, inset 0 -3px 0 rgba(255,255,255,0.5);
+            }
+            .nav-btn:active {
+                transform: translateY(3px);
+                box-shadow: 0 1px 0 #d85800, inset 0 -3px 0 rgba(255,255,255,0.3);
+            }
+            .btn-text { 
+                font-size: 0.5em;
+                margin-bottom: 4px;
+                line-height: 1.2;
+            }
+            .btn-icon { 
+                font-size: 1em;
+            }
+            nav {
+                padding: 15px 10px;
+            }
+
+            /* HIDE ALL VIDEOS IN MOBILE LANDSCAPE */
+            .video-pyramid,
+            .video-grid-2x2,
+            .video-row,
+            .video-embed,
+            .video-single,
+            iframe.video-embed,
+            .content-left iframe,
+            .content-right iframe,
+            .year-content iframe,
+            .timeline-year iframe {
+                display: none !important;
+            }
+        }
+
+    
+@media (max-width: 950px) and (orientation: landscape) {
+    .timeline-centerline { display: none !important; }
+    .timeline-year {
+        height: auto !important;
+        min-height: 0 !important; /* Ensure no placeholder here too */
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .year-badge {
+        display: block !important;
+        text-align: center !important;
+        margin: 10px auto !important;
+        position: relative !important;
+        transform: none !important;
+        font-size: 18px !important;
+        padding: 10px 20px !important;
+        background: #ffd700 !important;
+        color: #000 !important;
+        border: 3px solid #000 !important;
+        text-shadow: none !important;
+        border-radius: 12px !important;
+    }
+    .year-content {
+        display: block !important;
+        width: 100% !important;
+        padding: 0 20px !important;
+        margin: 0 !important;
+    }
+    .portrait-timeline-item {
+        display: block !important;
+        width: 100% !important;
+        max-width: 500px !important;
+        margin: 10px auto !important;
+    }
+    .portrait-timeline-item.song {
+        background: rgba(0,0,0,0.9);
+        border: 3px solid #ffd700;
+        border-radius: 12px;
+        padding: 12px 16px;
+        min-height: 60px;
+    }
+    .portrait-timeline-item.song a {
+        font-size: 0.7em !important;
+        line-height: 1.6 !important;
+        color: #fff;
+        text-decoration: none;
+    }
+    .portrait-timeline-item .song-title {
+        display: block;
+        margin-bottom: 6px;
+        color: #fff;
+    }
+    .portrait-timeline-item .artist-name {
+        display: block;
+        font-size: 0.9em;
+        color: #ffd700;
+    }
+    .portrait-timeline-item.video,
+    .video-pyramid,
+    .video-grid-2x2,
+    .content-left,
+    .content-right {
+        display: none !important;
+    }
+}
+
+</style>
+
+    <script>
+        // Rebuild timeline for portrait mode
+        function rebuildTimelineForPortrait() {
+            // Only run in portrait mode
+            if (window.innerWidth > 950) {
+                return;
+            }
+
+            const years = document.querySelectorAll('.timeline-year');
+
+            years.forEach(yearDiv => {
+                const yearContent = yearDiv.querySelector('.year-content');
+                if (!yearContent || yearContent.dataset.portraitProcessed) return;
+
+                // Extract all songs and videos
+                const songs = Array.from(yearContent.querySelectorAll('.song-item'));
+                const videos = Array.from(yearContent.querySelectorAll('.video-embed'));
+
+                // Extract video URLs to match with songs
+                const songUrls = songs.map(s => {
+                    const link = s.querySelector('a');
+                    if (link) {
+                        const href = link.href;
+                        const match = href.match(/youtu\.be\/([^?]+)|[?&]v=([^&]+)/);
+                        return match ? (match[1] || match[2]) : null;
+                    }
+                    return null;
+                });
+
+                // Match videos to songs by URL
+                const pairs = [];
+                songs.forEach((song, i) => {
+                    const songId = songUrls[i];
+                    const matchingVideo = videos.find(v => v.src.includes(songId));
+                    pairs.push({ song, video: matchingVideo });
+                });
+
+                // Clear the year-content
+                yearContent.innerHTML = '';
+
+                // Add pairs: song then video
+                pairs.forEach(pair => {
+                    if (pair.song) {
+                        const songWrapper = document.createElement('div');
+                        songWrapper.className = 'portrait-timeline-item song';
+
+                        // Clone song content and remove ♪ symbols
+                        let songHTML = pair.song.innerHTML;
+                        songHTML = songHTML.replace(/♪\s*/g, '').replace(/\s*♪/g, '');
+
+                        // Remove extra <br> tags
+                        songHTML = songHTML.replace(/<br>\s*/g, ' ');
+
+                        songWrapper.innerHTML = songHTML;
+                        yearContent.appendChild(songWrapper);
+                    }
+
+                    if (pair.video) {
+                        const videoWrapper = document.createElement('div');
+                        videoWrapper.className = 'portrait-timeline-item video';
+                        videoWrapper.appendChild(pair.video.cloneNode(true));
+                        yearContent.appendChild(videoWrapper);
+                    }
+                });
+
+                yearContent.dataset.portraitProcessed = 'true';
+            });
+        }
+
+        // Run on load and resize
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', rebuildTimelineForPortrait);
+        } else {
+            rebuildTimelineForPortrait();
+        }
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                location.reload();
+            }, 500);
+        });
+    </script>
 </head>
 <body>
     <header>
@@ -382,7 +810,7 @@
                 <span class="btn-icon">?</span>
             </a>
             <a href="#" class="nav-btn" data-frame="tiles" data-emoji="🧲">
-                <span class="btn-text">MAG TILES</span>
+                <span class="btn-text">TILES</span>
                 <span class="btn-icon">?</span>
             </a>
         </div>
@@ -649,8 +1077,8 @@
                     .timeline-scroll-container { flex: 1; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; padding: 0; }
                     .timeline-wrapper { position: relative; max-width: 1400px; margin: 0 auto; padding: 0 20px; }
                     .timeline-centerline { position: absolute; left: 50%; top: 0; bottom: 0; width: 6px; background: linear-gradient(180deg, #ffd700 0%, #ff8c00 100%); transform: translateX(-50%); box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); z-index: 1; }
-                    .timeline-year { position: relative; height: 90vh; margin: 5vh 0; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s ease; scroll-margin-top: 0; }
-                    .year-badge { font-family: 'Press Start 2P', monospace; font-size: clamp(36px, 5vw, 48px); color: #ffd700; text-shadow: 4px 4px 0 #000; padding: 20px 40px; background: rgba(0,0,0,0.95); border: 5px solid #ffd700; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.8); z-index: 5; margin-bottom: 30px; }
+                    .timeline-year { position: relative; height: 90vh; margin: 2vh 0; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s ease; scroll-margin-top: 0; }
+                    .year-badge { font-family: 'Press Start 2P', monospace; font-size: clamp(36px, 5vw, 48px); color: #000; text-shadow: 2px 2px 0 rgba(0,0,0,0.2); padding: 20px 40px; background: #ffd700; border: 5px solid #000; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.8); z-index: 5; margin-bottom: 30px; }
                     .year-content { display: flex; width: 100%; max-width: 1300px; gap: 0; align-items: center; justify-content: center; z-index: 2; flex: 1; }
                     .content-left, .content-right { flex: 1; display: flex; flex-direction: column; justify-content: center; max-height: 65vh; }
                     .content-left { padding-right: 35px; align-items: flex-end; }
@@ -685,7 +1113,75 @@
                         .video-grid-2x2 { grid-template-columns: 180px 180px; }
                         .video-embed { width: 180px !important; height: 101px !important; max-width: 180px !important; max-height: 101px !important; min-width: 180px !important; min-height: 101px !important; }
                     }
-                </style>
+                
+@media (max-width: 950px) and (orientation: landscape) {
+    .timeline-centerline { display: none !important; }
+    .timeline-year {
+        height: auto !important;
+        min-height: 0 !important; /* Ensure no placeholder here too */
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .year-badge {
+        display: block !important;
+        text-align: center !important;
+        margin: 10px auto !important;
+        position: relative !important;
+        transform: none !important;
+        font-size: 18px !important;
+        padding: 10px 20px !important;
+        background: #ffd700 !important;
+        color: #000 !important;
+        border: 3px solid #000 !important;
+        text-shadow: none !important;
+        border-radius: 12px !important;
+    }
+    .year-content {
+        display: block !important;
+        width: 100% !important;
+        padding: 0 20px !important;
+        margin: 0 !important;
+    }
+    .portrait-timeline-item {
+        display: block !important;
+        width: 100% !important;
+        max-width: 500px !important;
+        margin: 10px auto !important;
+    }
+    .portrait-timeline-item.song {
+        background: rgba(0,0,0,0.9);
+        border: 3px solid #ffd700;
+        border-radius: 12px;
+        padding: 12px 16px;
+        min-height: 60px;
+    }
+    .portrait-timeline-item.song a {
+        font-size: 0.7em !important;
+        line-height: 1.6 !important;
+        color: #fff;
+        text-decoration: none;
+    }
+    .portrait-timeline-item .song-title {
+        display: block;
+        margin-bottom: 6px;
+        color: #fff;
+    }
+    .portrait-timeline-item .artist-name {
+        display: block;
+        font-size: 0.9em;
+        color: #ffd700;
+    }
+    .portrait-timeline-item.video,
+    .video-pyramid,
+    .video-grid-2x2,
+    .content-left,
+    .content-right {
+        display: none !important;
+    }
+}
+
+</style>
 
                 <script>
                     let currentDecade = 1960; 

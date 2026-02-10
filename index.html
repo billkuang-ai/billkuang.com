@@ -576,35 +576,53 @@
         }
     
         /* Mobile Landscape ONLY - Optimized for iPhone SE */
-        @media (max-width: 667px) and (orientation: landscape) {
-            .nav-buttons { 
-                grid-template-columns: repeat(5, 1fr);
-                gap: 4px;
-            }
-            .nav-btn { 
-                padding: 6px 3px;
-                min-height: 50px;
-                border: 3px solid #000;
-                border-radius: 8px;
-                box-shadow: 0 4px 0 #d85800, inset 0 -3px 0 rgba(255,255,255,0.3);
-            }
-            .nav-btn.active {
-                box-shadow: 0 4px 0 #cc9900, inset 0 -3px 0 rgba(255,255,255,0.5);
-            }
-            .nav-btn:active {
-                transform: translateY(3px);
-                box-shadow: 0 1px 0 #d85800, inset 0 -3px 0 rgba(255,255,255,0.3);
-            }
-            .btn-text { 
-                font-size: 0.45em;
-                margin-bottom: 3px;
-                line-height: 1.1;
-            }
-            .btn-icon { 
-                font-size: 0.9em;
-            }
+        @media (orientation: landscape) and (max-height: 500px) {
+            /* Force navigation to stay in 1 row on ALL landscape devices */
             nav {
-                padding: 15px 10px;
+                padding: 10px 6px !important;
+            }
+
+            .nav-buttons { 
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                gap: 4px !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                grid-template-columns: unset !important;
+            }
+
+            .nav-btn { 
+                flex: 1 1 0 !important;
+                min-width: 0 !important;
+                padding: 6px 2px !important;
+                min-height: 50px !important;
+                border: 2px solid #000 !important;
+                border-radius: 8px !important;
+                box-shadow: 0 3px 0 #d85800, inset 0 -2px 0 rgba(255,255,255,0.3) !important;
+                overflow: hidden !important;
+            }
+
+            .nav-btn.active {
+                box-shadow: 0 3px 0 #cc9900, inset 0 -2px 0 rgba(255,255,255,0.5) !important;
+            }
+
+            .nav-btn:active {
+                transform: translateY(2px) !important;
+                box-shadow: 0 1px 0 #d85800, inset 0 -2px 0 rgba(255,255,255,0.3) !important;
+            }
+
+            .btn-text { 
+                font-size: 0.42em !important;
+                margin-bottom: 2px !important;
+                line-height: 1.05 !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+            }
+
+            .btn-icon { 
+                font-size: 0.85em !important;
             }
 
             /* HIDE ALL VIDEOS IN MOBILE LANDSCAPE */

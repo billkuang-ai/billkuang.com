@@ -466,15 +466,13 @@
 
             /* TIMELINE */
             .timeline-centerline { display: none !important; }
-
             .timeline-year { 
                 height: auto !important; 
-                min-height: 0 !important; /* FIX: Remove forced height */
+                min-height: 0 !important;
                 display: block !important;
                 margin: 0 !important;
                 padding: 0 !important;
             }
-
             .year-badge { 
                 font-size: 18px !important;
                 padding: 0 !important;
@@ -484,7 +482,7 @@
                 justify-content: center !important;
                 width: 90% !important;
                 max-width: 500px !important;
-                height: 90px !important; /* 90px Fixed Height */
+                height: 90px !important;
                 background: #ffd700 !important;
                 color: #000 !important;
                 border: 3px solid #000 !important;
@@ -492,32 +490,28 @@
                 text-shadow: none !important;
                 box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
             }
-
             .year-content {
                 display: block !important;
                 width: 100% !important;
                 padding: 0 !important;
                 margin: 0 !important;
             }
-
             .portrait-timeline-item {
                 width: 90% !important;
                 max-width: 500px !important;
                 margin: 8px auto !important;
             }
-
             .portrait-timeline-item.song {
                 background: rgba(0,0,0,0.9);
                 border: 3px solid #ffd700;
                 border-radius: 12px;
                 padding: 10px 14px;
-                height: 90px !important; /* 90px Fixed Height */
+                height: 90px !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
                 overflow: hidden !important;
             }
-
             .portrait-timeline-item.song a {
                 display: flex !important;
                 flex-direction: column !important;
@@ -526,7 +520,6 @@
                 height: 100% !important;
                 text-decoration: none !important;
             }
-
             .portrait-timeline-item .song-title {
                 display: -webkit-box !important;
                 -webkit-line-clamp: 2 !important;
@@ -537,7 +530,6 @@
                 margin-bottom: 4px !important;
                 color: #fff !important;
             }
-
             .portrait-timeline-item .artist-name {
                 display: block !important;
                 font-size: 13px !important;
@@ -635,7 +627,7 @@
     .timeline-centerline { display: none !important; }
     .timeline-year {
         height: auto !important;
-        min-height: 0 !important; /* Ensure no placeholder here too */
+        min-height: 0 !important;
         display: block !important;
         margin: 0 !important;
         padding: 0 !important;
@@ -703,8 +695,13 @@
     <script>
         // Rebuild timeline for portrait mode
         function rebuildTimelineForPortrait() {
-            // Only run in portrait mode
+            // Only run in portrait mode (up to 950px for landscape support)
             if (window.innerWidth > 950) {
+                return;
+            }
+
+            // Prevent multiple runs
+            if (window.timelineRebuilt) {
                 return;
             }
 
@@ -821,7 +818,7 @@
         <!-- CALENDAR FRAME (Default) -->
         <div id="calendar" class="frame-container active">
             <div class="frame-content">
-                <iframe src="https://calendar.google.com/calendar/embed?src=kuangb%40sfusd.edu&ctz=America%2FLos_Angeles"></iframe>
+                <iframe src="https://calendar.google.com/calendar/embed?src=kuangb%40sfusd.edu&ctz=America%2FLos_Angeles" loading="lazy"></iframe>
             </div>
         </div>
 
@@ -846,12 +843,12 @@
 
                 <!-- Embedded Podcast -->
                 <div class="embed-wrapper" style="max-width: 500px; height: 202px; margin: 10px 0; text-align: left;">
-                    <iframe src="https://player.rss.com/billkuang/2522934?theme=light&v=2" title="Teaching A.I. with Yarn and Tape" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen scrolling="no"><a href="https://rss.com/podcasts/billkuang/2522934/">Teaching A.I. with Yarn and Tape | RSS.com</a></iframe>
+                    <iframe src="https://player.rss.com/billkuang/2522934?theme=light&v=2" title="Teaching A.I. with Yarn and Tape" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen scrolling="no" loading="lazy"><a href="https://rss.com/podcasts/billkuang/2522934/">Teaching A.I. with Yarn and Tape | RSS.com</a></iframe>
                 </div>
 
                 <!-- Embedded YouTube Video -->
                 <div class="embed-wrapper" style="max-width: 500px; height: 280px; margin: 10px 0; text-align: left;">
-                    <iframe src="https://www.youtube.com/embed/zvmURYVmwB8?si=H9wDiZWfFFCfu4Np" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/zvmURYVmwB8?si=H9wDiZWfFFCfu4Np" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
                 </div>
 
                 <ul>
@@ -912,7 +909,7 @@
                 <div class="song-item"><a href="https://youtu.be/R4GLAKEjU4w" target="_blank" class="song-link"><span class="song-title">♪ (What A) ♪<br>Wonderful World</span><span class="artist-name">Sam Cooke</span></a></div>
             </div>
             <div class="content-right">
-                <div class="video-pyramid"><iframe class="video-embed video-single" width="200" height="113" src="https://www.youtube.com/embed/J2m4bqOuyqQ" frameborder="0" allowfullscreen></iframe><div class="video-row"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/tSsiS-v6_6M" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/R4GLAKEjU4w" frameborder="0" allowfullscreen></iframe></div></div>
+                
             </div>
         </div>
     </div>
@@ -920,7 +917,7 @@
         <div class="year-badge">1961</div>
         <div class="year-content">
             <div class="content-left">
-                <div class="video-pyramid"><iframe class="video-embed video-single" width="200" height="113" src="https://www.youtube.com/embed/7rZyI7kPZMI" frameborder="0" allowfullscreen></iframe><div class="video-row"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/pDDolFGoCuE" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/IvdT3Wh9O34" frameborder="0" allowfullscreen></iframe></div></div>
+                
             </div>
             <div class="content-right">
                 <div class="song-item"><a href="https://youtu.be/7rZyI7kPZMI" target="_blank" class="song-link"><span class="song-title">♪ Stand By Me ♪</span><span class="artist-name">Ben E. King</span></a></div>
@@ -939,7 +936,7 @@
                 <div class="song-item"><a href="https://youtu.be/ra8cz6trAU8" target="_blank" class="song-link"><span class="song-title">♪ (I Left My Heart) ♪<br>In San Francisco</span><span class="artist-name">Tony Bennett</span></a></div>
             </div>
             <div class="content-right">
-                <div class="video-grid-2x2"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/NqBIDg4Pl6Y" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/wv8k5IqVquU" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/0oox9bJaGJ8" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/ra8cz6trAU8" frameborder="0" allowfullscreen></iframe></div>
+                
             </div>
         </div>
     </div>
@@ -947,7 +944,7 @@
         <div class="year-badge">1963</div>
         <div class="year-content">
             <div class="content-left">
-                <div class="video-grid-2x2"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/4Bj0ijpptWM" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/k8jqjx5KFLs" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/FwiYC0SsQIc" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/0hLeQCnTGq8" frameborder="0" allowfullscreen></iframe></div>
+                
             </div>
             <div class="content-right">
                 <div class="song-item"><a href="https://youtu.be/4Bj0ijpptWM" target="_blank" class="song-link"><span class="song-title">♪ Be My Baby ♪</span><span class="artist-name">The Ronettes</span></a></div>
@@ -967,7 +964,7 @@
                 <div class="song-item"><a href="https://youtu.be/sO7FWHUQyW0" target="_blank" class="song-link"><span class="song-title">♪ Downtown ♪</span><span class="artist-name">Petula Clark</span></a></div>
             </div>
             <div class="content-right">
-                <div class="video-grid-2x2"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/6NEh2r9Hbxw" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/D6QF4sB40gU" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/8OCtkAGsLhw" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/sO7FWHUQyW0" frameborder="0" allowfullscreen></iframe></div>
+                
             </div>
         </div>
     </div>
@@ -975,7 +972,7 @@
         <div class="year-badge">1965</div>
         <div class="year-content">
             <div class="content-left">
-                <div class="video-grid-2x2"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/ogKi-58S26Y" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/PWEnpk8Qtnw" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/G6c_OY2KJuM" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/lhPZ8bSnRq8" frameborder="0" allowfullscreen></iframe></div>
+                
             </div>
             <div class="content-right">
                 <div class="song-item"><a href="https://youtu.be/ogKi-58S26Y" target="_blank" class="song-link"><span class="song-title">♪ Yesterday ♪</span><span class="artist-name">The Beatles</span></a></div>
@@ -994,7 +991,7 @@
                 <div class="song-item"><a href="https://youtu.be/5axSI4OSJjw" target="_blank" class="song-link"><span class="song-title">♪ For What ♪<br>It's Worth</span><span class="artist-name">Buffalo Springfield</span></a></div>
             </div>
             <div class="content-right">
-                <div class="video-pyramid"><iframe class="video-embed video-single" width="200" height="113" src="https://www.youtube.com/embed/-cGyvDbJfEo" frameborder="0" allowfullscreen></iframe><div class="video-row"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/uJQrja_nTN0" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/5axSI4OSJjw" frameborder="0" allowfullscreen></iframe></div></div>
+                
             </div>
         </div>
     </div>
@@ -1002,7 +999,7 @@
         <div class="year-badge">1967</div>
         <div class="year-content">
             <div class="content-left">
-                <div class="video-grid-2x2"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/26TKKUcZvhA" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/0HGqvI-h114" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/eu2gAqn4I2A" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/EmeW30fPjgA" frameborder="0" allowfullscreen></iframe></div>
+                
             </div>
             <div class="content-right">
                 <div class="song-item"><a href="https://youtu.be/26TKKUcZvhA" target="_blank" class="song-link"><span class="song-title">♪ Respect ♪</span><span class="artist-name">Aretha Franklin</span></a></div>
@@ -1022,7 +1019,7 @@
                 <div class="song-item"><a href="https://youtu.be/gLUgPmNHQLA" target="_blank" class="song-link"><span class="song-title">♪ (Sittin' On) ♪<br>The Dock of the Bay</span><span class="artist-name">Otis Redding</span></a></div>
             </div>
             <div class="content-right">
-                <div class="video-grid-2x2"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/wOU4YBoa5Ng" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/AuF7Xsrexgs" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/RBxK3CcOQD8" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/gLUgPmNHQLA" frameborder="0" allowfullscreen></iframe></div>
+                
             </div>
         </div>
     </div>
@@ -1030,7 +1027,7 @@
         <div class="year-badge">1969</div>
         <div class="year-content">
             <div class="content-left">
-                <div class="video-pyramid"><iframe class="video-embed video-single" width="200" height="113" src="https://www.youtube.com/embed/0iN-hemcKc8" frameborder="0" allowfullscreen></iframe><div class="video-row"><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/6WTq2Xl3qLk" frameborder="0" allowfullscreen></iframe><iframe class="video-embed" width="200" height="113" src="https://www.youtube.com/embed/d8rPE0n3nDw" frameborder="0" allowfullscreen></iframe></div></div>
+                
             </div>
             <div class="content-right">
                 <div class="song-item"><a href="https://youtu.be/0iN-hemcKc8" target="_blank" class="song-link"><span class="song-title">♪ Sweet Caroline ♪</span><span class="artist-name">Neil Diamond</span></a></div>
@@ -1118,7 +1115,7 @@
     .timeline-centerline { display: none !important; }
     .timeline-year {
         height: auto !important;
-        min-height: 0 !important; /* Ensure no placeholder here too */
+        min-height: 0 !important;
         display: block !important;
         margin: 0 !important;
         padding: 0 !important;

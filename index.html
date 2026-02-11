@@ -415,7 +415,7 @@
                 display: flex !important;
                 flex-direction: column !important;
                 align-items: center !important;
-                border-radius: 0 !important;
+                border-radius: 8px !important;
                 box-sizing: border-box !important;
             }
 
@@ -428,25 +428,6 @@
                 color: #fff !important;
                 text-shadow: 2px 2px 0 #000 !important;
                 white-space: nowrap;
-            }
-
-            /* Override text labels for portrait mode only */
-            .nav-btn[data-frame="calendar"] .btn-text {
-                font-size: 0 !important;
-            }
-
-            .nav-btn[data-frame="calendar"] .btn-text::after {
-                content: "CAL";
-                font-size: 10em !important;
-            }
-
-            .nav-btn[data-frame="doodle"] .btn-text {
-                font-size: 0 !important;
-            }
-
-            .nav-btn[data-frame="doodle"] .btn-text::after {
-                content: "DOODLE";
-                font-size: 10em !important;
             }
 
             .btn-icon { 
@@ -857,7 +838,7 @@
     <nav>
         <div class="nav-buttons">
             <a href="#" class="nav-btn active" data-frame="calendar" data-emoji="🗓️">
-                <span class="btn-text">CALENDAR</span>
+                <span class="btn-text">CAL</span>
                 <span class="btn-icon">🗓️</span>
             </a>
             <a href="#" class="nav-btn" data-frame="ai" data-emoji="🤖">
@@ -869,7 +850,7 @@
                 <span class="btn-icon">?</span>
             </a>
             <a href="#" class="nav-btn" data-frame="doodle" data-emoji="✍️">
-                <span class="btn-text">DOODLES</span>
+                <span class="btn-text">DOODLE</span>
                 <span class="btn-icon">?</span>
             </a>
             <a href="#" class="nav-btn" data-frame="tiles" data-emoji="🧲">

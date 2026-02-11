@@ -430,6 +430,25 @@
                 white-space: nowrap;
             }
 
+            /* Override text labels for portrait mode only */
+            .nav-btn[data-frame="calendar"] .btn-text {
+                font-size: 0 !important;
+            }
+
+            .nav-btn[data-frame="calendar"] .btn-text::after {
+                content: "CAL";
+                font-size: 10em !important;
+            }
+
+            .nav-btn[data-frame="doodle"] .btn-text {
+                font-size: 0 !important;
+            }
+
+            .nav-btn[data-frame="doodle"] .btn-text::after {
+                content: "DOODLE";
+                font-size: 10em !important;
+            }
+
             .btn-icon { 
                 font-size: 1.2em !important;
                 color: #ffd700 !important;

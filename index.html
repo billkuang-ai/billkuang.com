@@ -1105,7 +1105,7 @@
                     .white-key:hover { background: linear-gradient(180deg, #f0f0f0 0%, #e5e5e5 100%); }
                     .white-key:active { transform: translateY(3px); box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 -5px 10px rgba(0,0,0,0.2); }
                     .white-key.highlight { background: linear-gradient(180deg, #ffd700 0%, #ffed4e 100%); box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
-                    .white-key.final-selection { background: linear-gradient(180deg, #ff6b6b 0%, #ee5a6f 100%); animation: finalPulse 1s ease-in-out infinite; box-shadow: 0 0 30px rgba(255, 107, 107, 0.8); }
+                    .white-key.final-selection { background: linear-gradient(180deg, #ff6b6b 0%, #ee5a6f 100%); animation: finalPulse 1s ease-in-out; box-shadow: 0 0 30px rgba(255, 107, 107, 0.8); }
                     @keyframes finalPulse { 0%, 100% { transform: scale(1) translateY(0); } 50% { transform: scale(1.05) translateY(-5px); } }
 
                     .black-key { width: var(--bk-width); height: clamp(110px, 16vw, 150px); background: linear-gradient(180deg, #2c2c2c 0%, #000000 100%); border: 2px solid #000; border-radius: 0 0 3px 3px; position: absolute; top: clamp(20px, 4vw, 30px); left: calc(clamp(15px, 3vw, 20px) + (var(--total-wk) * var(--pos)) - (var(--bk-width) / 2)); transition: all 0.1s; box-shadow: 0 4px 8px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.1); z-index: 2; cursor: default; pointer-events: none; }
@@ -1245,6 +1245,7 @@
                         } 
                     });
 
+                    /* Decade toggle disabled until other decades ready
                     decadeToggle.addEventListener('click', (e) => { 
                         e.stopPropagation(); 
                         if (isAnimating) return; 
@@ -1255,13 +1256,16 @@
                         decadeToggle.setAttribute('data-decade', currentDecade); 
                         updateYears(); 
                     });
+                    */
 
+                    /* updateYears function disabled (only 1960s needed for now)
                     function updateYears() { 
                         const whiteKeys = document.querySelectorAll('.white-key'); 
                         for (let i = 0; i < 10; i++) { 
                             whiteKeys[i].setAttribute('data-year', currentDecade + i); 
                         } 
                     }
+                    */
 
                     function createMusicNote(x, y) { 
                         const note = document.createElement('div'); 
@@ -1346,18 +1350,53 @@
                         }, speed); 
                     });
 
-                    // White key click handlers for direct year selection
+                    // White key click handlers with 1s pulse and spotlight
                     document.querySelectorAll('.white-key').forEach(whiteKey => {
                         whiteKey.addEventListener('click', (e) => {
+                            if (isAnimating) return; // Block during any animation
+
                             const year = whiteKey.getAttribute('data-year');
-                            if (year) {
+                            if (!year) return;
+
+                            isAnimating = true;
+
+                            // Add red pulse (1 second)
+                            whiteKey.classList.add('final-selection');
+
+                            // Calculate and show spotlight (auto-positioned for all devices)
+                            const keyRect = whiteKey.getBoundingClientRect();
+                            const pianoRect = document.getElementById('piano').getBoundingClientRect();
+                            spotlight.style.left = (keyRect.left - pianoRect.left + (keyRect.width / 2) - 100) + 'px';
+                            spotlight.classList.add('active');
+
+                            // Create music notes
+                            const noteX = keyRect.left + keyRect.width / 2;
+                            const noteY = keyRect.top;
+                            for (let i = 0; i < 5; i++) {
+                                setTimeout(() => createMusicNote(noteX + (Math.random() - 0.5) * 40, noteY), i * 200);
+                            }
+
+                            // After 1s pulse, scroll to year
+                            setTimeout(() => {
                                 const yearElement = document.getElementById('year-' + year);
                                 if (yearElement) {
                                     yearElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
                                     document.querySelectorAll('[id^="year-"]').forEach(el => el.classList.remove('highlight-year'));
                                     yearElement.classList.add('highlight-year');
+
+                                    // Reset piano after scroll completes (500ms buffer)
+                                    setTimeout(() => {
+                                        whiteKey.classList.remove('final-selection');
+                                        spotlight.classList.remove('active');
+                                        isAnimating = false;
+                                    }, 500);
+                                } else {
+                                    // No year element found, just reset
+                                    whiteKey.classList.remove('final-selection');
+                                    spotlight.classList.remove('active');
+                                    isAnimating = false;
                                 }
-                            }
+                            }, 1000);
                         });
                     });
                 </script>

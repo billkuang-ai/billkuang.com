@@ -1112,7 +1112,9 @@
                     .black-1, .black-7 { cursor: pointer; pointer-events: auto; background: linear-gradient(180deg, #444 0%, #1a1a1a 100%); border: 3px solid #ffd700; }
                     .black-text { font-family: 'Press Start 2P', monospace; font-size: clamp(6px, 1vw, 9px); color: #ffd700; text-shadow: 1px 1px 0 #000; line-height: 1.3; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; font-weight: bold; letter-spacing: 1px; }
                     .black-1 { --pos: 1; } .black-2 { --pos: 2; } .black-3 { --pos: 4; } .black-4 { --pos: 5; } .black-5 { --pos: 6; } .black-6 { --pos: 8; } .black-7 { --pos: 9; }
-                    .black-1:hover, .black-7:hover { background: linear-gradient(180deg, #ffd700 0%, #ff8c00 100%); border-color: #ffffff; box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+                    /* Hide decade toggle until other decades ready - remove this rule to re-enable */
+                    #decadeToggle { display: none !important; }
+                                        .black-1:hover, .black-7:hover { background: linear-gradient(180deg, #ffd700 0%, #ff8c00 100%); border-color: #ffffff; box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
                     .black-1:active, .black-7:active { transform: translateY(3px); box-shadow: 0 2px 4px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.1); }
 
                     .music-note { position: fixed; font-size: 24px; pointer-events: none; z-index: 1000; animation: floatUp 2s ease-out forwards; }

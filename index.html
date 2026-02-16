@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Favicon for browser tabs -->
+    <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/billkuang-ai/billkuang.com/main/avatar.jpg">
+    <link rel="shortcut icon" type="image/jpeg" href="https://raw.githubusercontent.com/billkuang-ai/billkuang.com/main/avatar.jpg">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/billkuang-ai/billkuang.com/main/avatar.jpg">
+
+    <!-- Open Graph meta tags for link previews (Facebook, iMessage, WhatsApp, etc.) -->
+    <meta property="og:image" content="https://raw.githubusercontent.com/billkuang-ai/billkuang.com/main/avatar.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:title" content="Music Appreciation - Piano Time Machine">
+    <meta property="og:description" content="Explore classic songs from the 1960s with interactive musical lessons">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card meta tags for Twitter link previews -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/billkuang-ai/billkuang.com/main/avatar.jpg">
+    <meta name="twitter:title" content="Music Appreciation - Piano Time Machine">
+    <meta name="twitter:description" content="Explore classic songs from the 1960s with interactive musical lessons">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MR. KUANG'S CLASSROOM</title>
@@ -595,7 +615,45 @@
                 display: block;
             }
 
-            /* HIDE ALL VIDEOS IN MOBILE PORTRAIT */
+            /* 
+    /* ========================================
+       FIX: Safari iOS Button Sizing in Portrait
+       Prevent auto-scaling of radio/info buttons
+       ======================================== */
+    .portrait-timeline-item .radio-btn,
+    .portrait-timeline-item .info-btn {
+        width: 28px !important;       /* 28px fixed size */
+        height: 28px !important;      /* 28px fixed size */
+        min-width: 28px !important;   /* Lock size */
+        min-height: 28px !important;  /* Lock size */
+        max-width: 28px !important;   /* Lock size */
+        max-height: 28px !important;  /* Lock size */
+        font-size: 14px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+        -webkit-appearance: none !important; /* Stop iOS resizing */
+        appearance: none !important;
+        flex-shrink: 0 !important;
+        flex-grow: 0 !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+        position: absolute !important;
+        z-index: 10 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .portrait-timeline-item .radio-btn {
+        left: 6px !important;
+        bottom: 6px !important;
+    }
+
+    .portrait-timeline-item .info-btn {
+        right: 6px !important;
+        bottom: 6px !important;
+    }
+
+    HIDE ALL VIDEOS IN MOBILE PORTRAIT */
             .video-pyramid,
             .video-grid-2x2,
             .video-row,
@@ -1403,7 +1461,9 @@
             document.addEventListener('DOMContentLoaded', rebuildTimelineForPortrait);
         } else {
             rebuildTimelineForPortrait();
-        }
+        
+    initMusicTooltips(); /* FIX: Re-bind listeners for new elements */
+}
 
         let resizeTimer;
         window.addEventListener('resize', () => {
@@ -1428,7 +1488,7 @@
         function initDesktopTooltips() {
             // Backdrop removed
 
-            const songItems = document.querySelectorAll('.song-item');
+            const songItems = document.querySelectorAll('.song-item, .portrait-timeline-item.song');
 
             songItems.forEach(item => {
                 const infoBtn = item.querySelector('.info-btn');
@@ -1488,7 +1548,7 @@
                 });
             }
 
-            const songItems = document.querySelectorAll('.song-item');
+            const songItems = document.querySelectorAll('.song-item, .portrait-timeline-item.song');
 
             songItems.forEach(item => {
                 const infoBtn = item.querySelector('.info-btn');
@@ -2836,7 +2896,10 @@
     
   height: auto !important;
   display: block !important;
-  }}
+  
+        height: auto !important;
+        display: block !important;
+    }
 
     /* Year badge - CRITICAL: position static to flow with songs */
     body .portrait-timeline-item .timeline-year .year-badge,
@@ -2875,7 +2938,10 @@
     
   max-height: none !important;
   display: block !important;
-  }}
+  
+        max-height: none !important;
+        display: block !important;
+    }
 
     /* Song items - ensure they're also static */
     body .timeline-year .song-item,

@@ -1435,8 +1435,8 @@
                     if (pair.song) {
                         const songWrapper = document.createElement('div');
                         songWrapper.className = 'portrait-timeline-item song';
-
-                        // Clone song content and remove ♪ symbols
+                        if (pair.song.dataset.fact) { songWrapper.dataset.fact = pair.song.dataset.fact; }
+                        if (pair.song.dataset.instruments) { songWrapper.dataset.instruments = pair.song.dataset.instruments; }
                         let songHTML = pair.song.innerHTML;
                         songHTML = songHTML.replace(/♪\s*/g, '').replace(/\s*♪/g, '');
 
@@ -1489,41 +1489,30 @@
         }
 
         function initDesktopTooltips() {
-            // Backdrop removed
-
-            const songItems = document.querySelectorAll('.song-item, .portrait-timeline-item.song');
-
-            songItems.forEach(item => {
-                const infoBtn = item.querySelector('.info-btn');
-                const tooltip = item.querySelector('.song-tooltip');
-                const closeBtn = tooltip ? tooltip.querySelector('.tooltip-close-btn') : null;
-
-                if (infoBtn && tooltip) {
-                    const newInfoBtn = infoBtn.cloneNode(true);
-                    infoBtn.parentNode.replaceChild(newInfoBtn, infoBtn);
-
-                    newInfoBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        const isActive = tooltip.classList.contains('active');
-                        closeAllTooltips();
-
-                        if (!isActive) {
-                            tooltip.classList.add('active');
-                            // Backdrop removed
-                        }
-                    });
-
-                    if (closeBtn) {
-                        closeBtn.addEventListener('click', function(e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            closeAllTooltips();
-                        });
-                    }
-                }
-            });
+            const timelineWrapper = document.querySelector('.timeline-wrapper');
+            if (timelineWrapper && !timelineWrapper.dataset.desktopTooltipDelegated) {
+                timelineWrapper.addEventListener('click', function(e) {
+                    const infoBtn = e.target.closest('.info-btn');
+                    if (!infoBtn) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const songItem = infoBtn.closest('.song-item, .portrait-timeline-item.song');
+                    if (!songItem) return;
+                    const tooltip = songItem.querySelector('.song-tooltip');
+                    if (!tooltip) return;
+                    const isActive = tooltip.classList.contains('active');
+                    closeAllTooltips();
+                    if (!isActive) { tooltip.classList.add('active'); }
+                });
+                timelineWrapper.addEventListener('click', function(e) {
+                    const closeBtn = e.target.closest('.tooltip-close-btn');
+                    if (!closeBtn) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeAllTooltips();
+                });
+                timelineWrapper.dataset.desktopTooltipDelegated = 'true';
+            }
         }
 
         function closeAllTooltips() {
@@ -1543,32 +1532,25 @@
                 modalBackdrop.className = 'mobile-modal-backdrop';
                 modalBackdrop.innerHTML = '<div class="mobile-modal" id="mobile-modal"></div>';
                 document.body.appendChild(modalBackdrop);
-
                 modalBackdrop.addEventListener('click', function(e) {
-                    if (e.target === modalBackdrop) {
-                        closeMobileModal();
-                    }
+                    if (e.target === modalBackdrop) { closeMobileModal(); }
                 });
             }
-
-            const songItems = document.querySelectorAll('.song-item, .portrait-timeline-item.song');
-
-            songItems.forEach(item => {
-                const infoBtn = item.querySelector('.info-btn');
-                const fact = item.dataset.fact;
-                const instruments = item.dataset.instruments;
-
-                if (infoBtn && fact && instruments) {
-                    const newInfoBtn = infoBtn.cloneNode(true);
-                    infoBtn.parentNode.replaceChild(newInfoBtn, infoBtn);
-
-                    newInfoBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        openMobileModal(fact, instruments);
-                    });
-                }
-            });
+            const timelineWrapper = document.querySelector('.timeline-wrapper');
+            if (timelineWrapper && !timelineWrapper.dataset.infoBtnDelegated) {
+                timelineWrapper.addEventListener('click', function(e) {
+                    const infoBtn = e.target.closest('.info-btn');
+                    if (!infoBtn) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const songItem = infoBtn.closest('.song-item, .portrait-timeline-item.song');
+                    if (!songItem) return;
+                    const fact = songItem.dataset.fact || 'No fact available for this song yet.';
+                    const instruments = songItem.dataset.instruments || 'Instruments not listed yet.';
+                    openMobileModal(fact, instruments);
+                });
+                timelineWrapper.dataset.infoBtnDelegated = 'true';
+            }
         }
 
         function openMobileModal(fact, instruments) {

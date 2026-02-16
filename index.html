@@ -2983,6 +2983,244 @@
 </style>
 
                 <script>
+        // Rebuild timeline for portrait mode
+        function rebuildTimelineForPortrait() {
+            if (window.innerWidth > 950) {
+                return;
+            }
+            if (window.timelineAlreadyRebuilt) {
+                return;
+            }
+
+            const years = document.querySelectorAll('.timeline-year');
+
+            years.forEach(yearDiv => {
+                const yearContent = yearDiv.querySelector('.year-content');
+                if (!yearContent || yearContent.dataset.portraitProcessed) return;
+
+                // Extract all songs and videos
+                const songs = Array.from(yearContent.querySelectorAll('.song-item'));
+                const videos = Array.from(yearContent.querySelectorAll('.video-embed'));
+
+                // Extract video URLs to match with songs
+                const songUrls = songs.map(s => {
+                    const link = s.querySelector('a');
+                    if (link) {
+                        const href = link.href;
+                        const match = href.match(/youtu\.be\/([^?]+)|[?&]v=([^&]+)/);
+                        return match ? (match[1] || match[2]) : null;
+                    }
+                    return null;
+                });
+
+                // Match videos to songs by URL
+                const pairs = [];
+                songs.forEach((song, i) => {
+                    const songId = songUrls[i];
+                    const matchingVideo = videos.find(v => v.src.includes(songId));
+                    pairs.push({ song, video: matchingVideo });
+                });
+
+                // Clear the year-content
+                yearContent.innerHTML = '';
+
+                // Add pairs: song then video
+                pairs.forEach(pair => {
+                    if (pair.song) {
+                        const songWrapper = document.createElement('div');
+                        songWrapper.className = 'portrait-timeline-item song';
+
+                        // COPY DATA ATTRIBUTES (critical for mobile modal)
+                        if (pair.song.dataset.fact) {
+                            songWrapper.dataset.fact = pair.song.dataset.fact;
+                        }
+                        if (pair.song.dataset.instruments) {
+                            songWrapper.dataset.instruments = pair.song.dataset.instruments;
+                        }
+
+                        // Clone song content and remove ♪ symbols
+                        let songHTML = pair.song.innerHTML;
+                        songHTML = songHTML.replace(/♪\s*/g, '').replace(/\s*♪/g, '');
+
+                        // Remove extra <br> tags
+                        songHTML = songHTML.replace(/<br>\s*/g, ' ');
+
+                        songWrapper.innerHTML = songHTML;
+                        yearContent.appendChild(songWrapper);
+                    }
+
+                    if (pair.video) {
+                        const videoWrapper = document.createElement('div');
+                        videoWrapper.className = 'portrait-timeline-item video';
+                        videoWrapper.appendChild(pair.video.cloneNode(true));
+                        yearContent.appendChild(videoWrapper);
+                    }
+                });
+
+                yearContent.dataset.portraitProcessed = 'true';
+            });
+        }
+
+        // Run on load and resize
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', rebuildTimelineForPortrait);
+        } else {
+            rebuildTimelineForPortrait();
+        
+    initMusicTooltips(); /* FIX: Re-bind listeners for new elements */
+}
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            // Auto-reload REMOVED
+        });
+
+        // ========================================
+        // MUSIC TOOLTIP & MODAL FUNCTIONALITY
+        // ========================================
+
+        function initMusicTooltips() {
+            const isDesktop = window.innerWidth > 768;
+
+            if (isDesktop) {
+                initDesktopTooltips();
+            } else {
+                initMobileModals();
+            }
+        }
+
+        function initDesktopTooltips() {
+            const timelineWrapper = document.querySelector('.timeline-wrapper');
+
+            if (timelineWrapper && !timelineWrapper.dataset.desktopTooltipDelegated) {
+                // Event delegation for info buttons
+                timelineWrapper.addEventListener('click', function(e) {
+                    const infoBtn = e.target.closest('.info-btn');
+                    if (!infoBtn) return;
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const songItem = infoBtn.closest('.song-item, .portrait-timeline-item.song');
+                    if (!songItem) return;
+
+                    const tooltip = songItem.querySelector('.song-tooltip');
+                    if (!tooltip) return;
+
+                    const isActive = tooltip.classList.contains('active');
+                    closeAllTooltips();
+
+                    if (!isActive) {
+                        tooltip.classList.add('active');
+                    }
+                });
+
+                // Event delegation for close buttons
+                timelineWrapper.addEventListener('click', function(e) {
+                    const closeBtn = e.target.closest('.tooltip-close-btn');
+                    if (!closeBtn) return;
+
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeAllTooltips();
+                });
+
+                timelineWrapper.dataset.desktopTooltipDelegated = 'true';
+            }
+        }
+
+        function closeAllTooltips() {
+            document.querySelectorAll('.song-tooltip.active').forEach(tooltip => {
+                tooltip.classList.remove('active');
+            });
+            const backdrop = document.getElementById('tooltip-backdrop');
+            if (backdrop) {
+                backdrop.classList.remove('active');
+            }
+        }
+
+        function initMobileModals() {
+            // Create modal backdrop once
+            if (!document.getElementById('mobile-modal-backdrop')) {
+                const modalBackdrop = document.createElement('div');
+                modalBackdrop.id = 'mobile-modal-backdrop';
+                modalBackdrop.className = 'mobile-modal-backdrop';
+                modalBackdrop.innerHTML = '<div class="mobile-modal" id="mobile-modal"></div>';
+                document.body.appendChild(modalBackdrop);
+
+                modalBackdrop.addEventListener('click', function(e) {
+                    if (e.target === modalBackdrop) {
+                        closeMobileModal();
+                    }
+                });
+            }
+
+            // EVENT DELEGATION: One listener on stable parent
+            const timelineWrapper = document.querySelector('.timeline-wrapper');
+
+            if (timelineWrapper && !timelineWrapper.dataset.infoBtnDelegated) {
+                timelineWrapper.addEventListener('click', function(e) {
+                    const infoBtn = e.target.closest('.info-btn');
+                    if (!infoBtn) return;
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Works for both .song-item AND .portrait-timeline-item.song
+                    const songItem = infoBtn.closest('.song-item, .portrait-timeline-item.song');
+                    if (!songItem) return;
+
+                    const fact = songItem.dataset.fact || 'No fact available for this song yet.';
+                    const instruments = songItem.dataset.instruments || 'Instruments not listed yet.';
+
+                    openMobileModal(fact, instruments);
+                });
+
+                timelineWrapper.dataset.infoBtnDelegated = 'true';
+            }
+        }
+
+        function openMobileModal(fact, instruments) {
+            const modal = document.getElementById('mobile-modal');
+            const backdrop = document.getElementById('mobile-modal-backdrop');
+
+            if (modal && backdrop) {
+                modal.innerHTML = `
+                    <button class="modal-close-btn" onclick="closeMobileModal()">×</button>
+                    <div class="modal-content">
+                        <div class="modal-fact">${fact}</div>
+                        <div class="modal-instruments">
+                            <strong>Instruments:</strong>
+                            ${instruments}
+                        </div>
+                    </div>
+                `;
+                backdrop.classList.add('active');
+            }
+        }
+
+        function closeMobileModal() {
+            const backdrop = document.getElementById('mobile-modal-backdrop');
+            if (backdrop) {
+                backdrop.classList.remove('active');
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initMusicTooltips);
+        } else {
+            initMusicTooltips();
+        }
+
+        let tooltipResizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(tooltipResizeTimer);
+            tooltipResizeTimer = setTimeout(initMusicTooltips, 250);
+        });
+
+    
+
                     let currentDecade = 1960; 
                     let isAnimating = false;
                     const decadeToggle = document.getElementById('decadeToggle'); 
@@ -3161,7 +3399,222 @@
                             }, 1000);
                         });
                     });
-                </script>
+                
+
+        // Frame navigation system with dynamic emojis
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const frames = document.querySelectorAll('.frame-container');
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Get target frame and emoji
+                const targetFrame = this.getAttribute('data-frame');
+
+                // Remove active class from all buttons and frames
+                navButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    // Reset all icons to "?"
+                    const icon = btn.querySelector('.btn-icon');
+                    icon.textContent = '?';
+                });
+
+                frames.forEach(frame => frame.classList.remove('active'));
+
+                // Add active class to clicked button and target frame
+                this.classList.add('active');
+
+                // Set the emoji for the active button
+                const activeIcon = this.querySelector('.btn-icon');
+                const emoji = this.getAttribute('data-emoji');
+                activeIcon.textContent = emoji;
+
+                document.getElementById(targetFrame).classList.add('active');
+
+                // Smooth scroll to top
+                // scrollTo removed
+            });
+        });
+    
+
+        const lessonSteps = [
+            {
+                step: 1,
+                stepName: "Intro",
+                timeDisplay: "20 min (total)",
+                instruction: "Emojis & Doodle Pads (SEL Lesson)"
+            },
+            {
+                step: 2,
+                stepName: "Reading",
+                timeDisplay: "6 min",
+                instruction: "Do you have any of these feelings right now?"
+            },
+            {
+                step: 3,
+                stepName: "Warm-Up",
+                timeDisplay: "2 min",
+                instruction: "Doodle anything you want."
+            },
+            {
+                step: 4,
+                stepName: "Draw",
+                timeDisplay: "5 min",
+                instruction: "Draw the emoji that you feel like right now."
+            },
+            {
+                step: 5,
+                stepName: "Share",
+                timeDisplay: "2 min",
+                instruction: "Show a partner and tell what feeling you drew."
+            },
+            {
+                step: 6,
+                stepName: "Wrap-Up",
+                timeDisplay: "5 min",
+                instruction: "All feelings are OK. Ask for help anytime."
+            }
+        ];
+
+        let currentStepIndex = 0;
+        const stepNumberEl = document.getElementById('current-step');
+        const stepTitleEl = document.getElementById('step-title-bottom');
+        const timerDisplayEl = document.getElementById('timer-display');
+        const instructionEl = document.getElementById('instruction-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        function shrinkTextToFit(element, maxFontSize = 1.5, minFontSize = 0.4) {
+            const container = element.parentElement;
+            const containerWidth = container.clientWidth - 70;
+
+            if (containerWidth < 100) {
+                return;
+            }
+
+            let fontSize = maxFontSize;
+            element.style.fontSize = fontSize + 'em';
+
+            while (element.scrollWidth > containerWidth && fontSize > minFontSize) {
+                fontSize -= 0.05;
+                element.style.fontSize = fontSize + 'em';
+            }
+        }
+
+        function updateDisplay() {
+            const step = lessonSteps[currentStepIndex];
+
+            stepNumberEl.textContent = step.step;
+            stepTitleEl.textContent = step.stepName;
+            timerDisplayEl.textContent = step.timeDisplay;
+            instructionEl.textContent = step.instruction;
+
+            shrinkTextToFit(instructionEl);
+
+            prevBtn.disabled = currentStepIndex === 0;
+            nextBtn.disabled = currentStepIndex === lessonSteps.length - 1;
+        }
+
+        function goToPrevStep() {
+            if (currentStepIndex > 0) {
+                currentStepIndex--;
+                updateDisplay();
+            }
+        }
+
+        function goToNextStep() {
+            if (currentStepIndex < lessonSteps.length - 1) {
+                currentStepIndex++;
+                updateDisplay();
+            }
+        }
+
+        prevBtn.addEventListener('click', goToPrevStep);
+        nextBtn.addEventListener('click', goToNextStep);
+
+        document.addEventListener('keydown', (e) => {
+            const doodleFrame = document.getElementById('doodle');
+            if (!doodleFrame || !doodleFrame.classList.contains('active')) return;
+
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                goToPrevStep();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                goToNextStep();
+            }
+        });
+
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                shrinkTextToFit(instructionEl);
+            }, 100);
+        });
+
+        function initializeText() {
+            stepNumberEl.textContent = lessonSteps[0].step;
+            stepTitleEl.textContent = lessonSteps[0].stepName;
+            timerDisplayEl.textContent = lessonSteps[0].timeDisplay;
+            instructionEl.textContent = lessonSteps[0].instruction;
+
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    shrinkTextToFit(instructionEl);
+                    prevBtn.disabled = true;
+                    nextBtn.disabled = lessonSteps.length <= 1;
+                }, 50);
+            });
+        }
+
+        initializeText();
+    
+
+        // Format Step 1 time to break into 2 lines (portrait only)
+        function formatTimerDisplay() {
+            const timerDisplay = document.getElementById('timer-display');
+            const currentStep = parseInt(document.getElementById('current-step').textContent);
+
+            // Check if portrait mode
+            const isPortrait = window.matchMedia('(max-width: 767px) and (orientation: portrait)').matches;
+
+            if (currentStep === 1 && isPortrait) {
+                timerDisplay.classList.add('step-1-time');
+                const timeText = timerDisplay.textContent.trim();
+                if (timeText.includes('(total)') && !timeText.includes('<br>')) {
+                    timerDisplay.innerHTML = timeText.replace('(total)', '<br>(total)');
+                }
+            } else {
+                timerDisplay.classList.remove('step-1-time');
+                // Remove br tag if exists
+                const timeText = timerDisplay.innerHTML;
+                if (timeText.includes('<br>')) {
+                    timerDisplay.innerHTML = timeText.replace('<br>', ' ');
+                }
+            }
+        }
+
+        // Run on page load
+        document.addEventListener('DOMContentLoaded', formatTimerDisplay);
+
+        // Update on navigation
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'prev-btn' || e.target.id === 'next-btn') {
+                setTimeout(formatTimerDisplay, 50);
+            }
+        });
+
+        // Update on orientation change
+        window.addEventListener('orientationchange', function() {
+            setTimeout(formatTimerDisplay, 100);
+        });
+
+        window.addEventListener('resize', function() {
+            setTimeout(formatTimerDisplay, 100);
+        });
+    </script>
             </div>
         </div>
 

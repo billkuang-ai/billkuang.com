@@ -209,21 +209,21 @@
             text-align: left;
         }
 
-        .frame-content li {
+        .tiles-list li {
             color: #fff;
             font-size: 0.8em;
             line-height: 2;
             margin: 8px 0;
-            padding-left: 20px;
             text-shadow: 1px 1px 0 #005800;
-            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .frame-content li::before {
+        .tiles-list li::before {
             content: '⭐';
-            position: absolute;
-            left: 0;
             font-size: 0.9em;
+            flex-shrink: 0;
         }
 
         .frame-content a {
@@ -1103,9 +1103,9 @@
             border-radius: 8px;
             padding: 14px 18px;
             min-width: 280px;
-            max-width: 320px;
+            max-width: 440px;
             font-family: 'Press Start 2P', monospace;
-            font-size: 0.42em;
+            font-size: 12px;
             color: #333;
             line-height: 1.7;
             text-align: left;
@@ -1241,7 +1241,7 @@
                 position: static;
                 transform: none;
                 margin-top: 8px;
-                font-size: 0.35em;
+                font-size: 8px;
                 min-width: auto;
                 max-width: none;
             }
@@ -1476,6 +1476,10 @@
     }
 }
 
+.tiles-main-title {
+    font-size: 1em;
+}
+
 /* Desktop ONLY: Increase text box font sizes to match header */
 @media (min-width: 768px) {
     .tiles-main-title {
@@ -1507,6 +1511,83 @@
     }
 }
 
+
+        /* ── Doodle Playlist Wrapper ── */
+        .doodle-playlist-wrapper {
+            position: relative;
+            padding-bottom: 75%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #000;
+        }
+        .doodle-playlist-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: none;
+        }
+
+        /* ══ MOBILE TOUCH: Emoji Cell Interactions ══════════════════════════
+           Desktop :hover is completely untouched.
+           On touch: :hover suppressed; tap applies zone-colored highlight
+           via .touch-active — same colors as desktop :hover.
+        ═══════════════════════════════════════════════════════════════════ */
+        @media (hover: none) {
+
+            /* Suppress :hover tooltip */
+            .feeling-cell:hover .feeling-definition {
+                display: none;
+            }
+
+            /* Suppress :hover visual highlight on all zones */
+            .feeling-cell:hover,
+            .green-zone .feeling-cell:hover,
+            .yellow-zone .feeling-cell:hover,
+            .red-zone .feeling-cell:hover,
+            .blue-zone .feeling-cell:hover {
+                background: rgba(255, 255, 255, 0.9);
+                box-shadow: none;
+                border-color: #333;
+                border-width: 3px;
+                z-index: auto;
+            }
+
+            /* .touch-active: mirror the exact same highlight as desktop :hover */
+            .feeling-cell.touch-active {
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+                border-color: #000;
+                border-width: 4px;
+                z-index: 10;
+            }
+            .green-zone .feeling-cell.touch-active {
+                background: rgba(212, 237, 218, 0.95);
+            }
+            .yellow-zone .feeling-cell.touch-active {
+                background: rgba(255, 243, 205, 0.95);
+            }
+            .red-zone .feeling-cell.touch-active {
+                background: rgba(248, 215, 218, 0.95);
+            }
+            .blue-zone .feeling-cell.touch-active {
+                background: rgba(209, 236, 241, 0.95);
+            }
+
+            /* Show tooltip on tap */
+            .feeling-cell.touch-active .feeling-definition {
+                display: block;
+                bottom: 100%;
+                top: auto;
+                margin-bottom: 12px;
+                max-width: min(360px, 88vw);
+                font-size: 10px;
+                z-index: 200;
+            }
+            .feeling-cell.touch-active .feeling-definition::before,
+            .feeling-cell.touch-active .feeling-definition::after {
+                display: block;
+            }
+        }
 </style>
 
     <script>
@@ -3289,7 +3370,7 @@
                     <div class="tiles-box tiles-text-box">
                         <div style="text-align: center;">
                             <h4 class="tiles-video-title tiles-main-title" style="margin-bottom: 20px;">30 Doodle Pads Available!</h4>
-                            <ul class="tiles-list" style="list-style: none; padding: 0; margin: 0; font-size: 0.85em; line-height: 1.8; color: #fff;">
+                            <ul class="tiles-list" style="list-style: none; padding: 0; margin: 0; line-height: 1.8; color: #fff;">
                                 <li>Drawing</li>
                                 <li>Sight Words</li>
                                 <li>Spelling</li>
@@ -3300,6 +3381,29 @@
                     </div>
                 </div>
 
+
+
+                <!-- Doodle Playlist Grid -->
+                <div class="tiles-video-grid">
+                    <div class="tiles-video-item">
+                        <h4 class="tiles-video-title">Zoodle Zen Doodling</h4>
+                        <div class="doodle-playlist-wrapper">
+                            <iframe src="https://www.youtube.com/embed/videoseries?list=PLvLIvOFxRJxtS9xPq5E4EUVIyYorzwq3H"
+                                    title="Zoodle Zen Doodling" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen loading="lazy"></iframe>
+                        </div>
+                    </div>
+                    <div class="tiles-video-item">
+                        <h4 class="tiles-video-title">How to Draw Cute Things</h4>
+                        <div class="doodle-playlist-wrapper">
+                            <iframe src="https://www.youtube.com/embed/videoseries?list=PLrzWinNaF5YfjzXwu4ycD_0fyYCa_dFZ3"
+                                    title="How to Draw Cute Things" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- SEL Lesson Teleprompter - 6 Steps -->
                 <div class="lesson-teleprompter-compact">
@@ -3427,7 +3531,7 @@
                     <div class="tiles-box tiles-text-box">
                         <div style="text-align: center;">
                             <h4 class="tiles-video-title tiles-main-title" style="margin-bottom: 20px;">6 Mag Tile Sets Available!</h4>
-                            <ul class="tiles-list" style="list-style: none; padding: 0; margin: 0; font-size: 0.85em; line-height: 1.8; color: #fff;">
+                            <ul class="tiles-list" style="list-style: none; padding: 0; margin: 0; line-height: 1.8; color: #fff;">
                                 <li>Colors</li>
                                 <li>Shapes</li>
                                 <li>Letters</li>
@@ -3725,6 +3829,33 @@
         window.addEventListener('resize', function() {
             setTimeout(formatTimerDisplay, 100);
         });
+    </script>
+
+
+    <script>
+        /* ── MOBILE: Tap to show tooltip + zone-color highlight via .touch-active ──
+           .touch-active handles both tooltip visibility and highlight color.
+           Desktop :hover is completely unaffected.                              ── */
+        (function () {
+            var cells = document.querySelectorAll('.feeling-cell');
+            var isTouch = function () { return window.matchMedia('(hover: none)').matches; };
+
+            cells.forEach(function (cell) {
+                cell.addEventListener('click', function (e) {
+                    if (!isTouch()) return;
+                    e.stopPropagation();
+                    var wasActive = this.classList.contains('touch-active');
+                    cells.forEach(function (c) { c.classList.remove('touch-active'); });
+                    if (!wasActive) this.classList.add('touch-active');
+                });
+            });
+
+            /* Tap anywhere outside → close tooltip and remove highlight */
+            document.addEventListener('click', function () {
+                if (!isTouch()) return;
+                cells.forEach(function (c) { c.classList.remove('touch-active'); });
+            });
+        })();
     </script>
 
 </body>

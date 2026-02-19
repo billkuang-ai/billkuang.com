@@ -1512,10 +1512,16 @@
 }
 
 
-        /* ── Doodle Playlist Wrapper ── */
+        /* ── Doodle Playlist Wrapper ──────────────────────────────────────────
+           One class for both playlists — consistent height in the 2-col grid.
+           Mobile  → 56.25% (16:9): no black bar, YouTube fills the box cleanly
+           Desktop → 75%    (4:3):  extra height reveals the sidebar playlist panel
+           Portrait videos in "How to Draw Cute Things" will have side letterbox
+           bars (unavoidable — YouTube cannot crop/rotate embed content).
+        ──────────────────────────────────────────────────────────────────── */
         .doodle-playlist-wrapper {
             position: relative;
-            padding-bottom: 75%;
+            padding-bottom: 56.25%;   /* mobile default: pure 16:9 */
             height: 0;
             overflow: hidden;
             border-radius: 8px;
@@ -1527,20 +1533,15 @@
             width: 100%; height: 100%;
             border: none;
         }
-
-        /* ══ MOBILE TOUCH: Emoji Cell Interactions ══════════════════════════
-           Desktop :hover is completely untouched.
-           On touch: :hover suppressed; tap applies zone-colored highlight
-           via .touch-active — same colors as desktop :hover.
-        ═══════════════════════════════════════════════════════════════════ */
-        @media (hover: none) {
-
-            /* Suppress :hover tooltip */
-            .feeling-cell:hover .feeling-definition {
-                display: none;
+        /* Desktop: expand to 4:3 to show playlist sidebar panel */
+        @media (min-width: 768px) {
+            .doodle-playlist-wrapper {
+                padding-bottom: 75%;
             }
+        }
 
-            /* Suppress :hover visual highlight on all zones */
+        @media (hover: none) {
+            .feeling-cell:hover .feeling-definition { display: none; }
             .feeling-cell:hover,
             .green-zone .feeling-cell:hover,
             .yellow-zone .feeling-cell:hover,
@@ -1552,41 +1553,26 @@
                 border-width: 3px;
                 z-index: auto;
             }
-
-            /* .touch-active: mirror the exact same highlight as desktop :hover */
             .feeling-cell.touch-active {
                 box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
                 border-color: #000;
                 border-width: 4px;
                 z-index: 10;
             }
-            .green-zone .feeling-cell.touch-active {
-                background: rgba(212, 237, 218, 0.95);
-            }
-            .yellow-zone .feeling-cell.touch-active {
-                background: rgba(255, 243, 205, 0.95);
-            }
-            .red-zone .feeling-cell.touch-active {
-                background: rgba(248, 215, 218, 0.95);
-            }
-            .blue-zone .feeling-cell.touch-active {
-                background: rgba(209, 236, 241, 0.95);
-            }
-
-            /* Show tooltip on tap */
+            .green-zone .feeling-cell.touch-active  { background: rgba(212, 237, 218, 0.95); }
+            .yellow-zone .feeling-cell.touch-active { background: rgba(255, 243, 205, 0.95); }
+            .red-zone .feeling-cell.touch-active    { background: rgba(248, 215, 218, 0.95); }
+            .blue-zone .feeling-cell.touch-active   { background: rgba(209, 236, 241, 0.95); }
             .feeling-cell.touch-active .feeling-definition {
                 display: block;
-                bottom: 100%;
-                top: auto;
+                bottom: 100%; top: auto;
                 margin-bottom: 12px;
                 max-width: min(360px, 88vw);
                 font-size: 10px;
                 z-index: 200;
             }
             .feeling-cell.touch-active .feeling-definition::before,
-            .feeling-cell.touch-active .feeling-definition::after {
-                display: block;
-            }
+            .feeling-cell.touch-active .feeling-definition::after { display: block; }
         }
 </style>
 
@@ -3833,13 +3819,9 @@
 
 
     <script>
-        /* ── MOBILE: Tap to show tooltip + zone-color highlight via .touch-active ──
-           .touch-active handles both tooltip visibility and highlight color.
-           Desktop :hover is completely unaffected.                              ── */
         (function () {
             var cells = document.querySelectorAll('.feeling-cell');
             var isTouch = function () { return window.matchMedia('(hover: none)').matches; };
-
             cells.forEach(function (cell) {
                 cell.addEventListener('click', function (e) {
                     if (!isTouch()) return;
@@ -3849,8 +3831,6 @@
                     if (!wasActive) this.classList.add('touch-active');
                 });
             });
-
-            /* Tap anywhere outside → close tooltip and remove highlight */
             document.addEventListener('click', function () {
                 if (!isTouch()) return;
                 cells.forEach(function (c) { c.classList.remove('touch-active'); });

@@ -1512,32 +1512,23 @@
 }
 
 
-        /* ── Doodle Playlist Wrapper ──────────────────────────────────────────
-           One class for both playlists — consistent height in the 2-col grid.
-           Mobile  → 56.25% (16:9): no black bar, YouTube fills the box cleanly
-           Desktop → 75%    (4:3):  extra height reveals the sidebar playlist panel
-           Portrait videos in "How to Draw Cute Things" will have side letterbox
-           bars (unavoidable — YouTube cannot crop/rotate embed content).
+        /* ── Doodle Playlist Thumbnail Cards ─────────────────────────────────
+           Plain image links — no iframes, no embed bugs, works on all devices.
+           Clicking opens the playlist on YouTube in a new tab.
         ──────────────────────────────────────────────────────────────────── */
-        .doodle-playlist-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;   /* mobile default: pure 16:9 */
-            height: 0;
-            overflow: hidden;
+        .playlist-thumb-link {
+            display: block;
             border-radius: 8px;
-            background: #000;
+            overflow: hidden;
+            line-height: 0;
+            cursor: pointer;
         }
-        .doodle-playlist-wrapper iframe {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            border: none;
-        }
-        /* Desktop: expand to 4:3 to show playlist sidebar panel */
-        @media (min-width: 768px) {
-            .doodle-playlist-wrapper {
-                padding-bottom: 75%;
-            }
+        .playlist-thumb {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            display: block;
+            border-radius: 8px;
         }
 
         @media (hover: none) {
@@ -3373,21 +3364,29 @@
                 <div class="tiles-video-grid">
                     <div class="tiles-video-item">
                         <h4 class="tiles-video-title">Zoodle Zen Doodling</h4>
-                        <div class="doodle-playlist-wrapper">
-                            <iframe src="https://www.youtube.com/embed/videoseries?list=PLvLIvOFxRJxtS9xPq5E4EUVIyYorzwq3H"
-                                    title="Zoodle Zen Doodling" frameborder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen loading="lazy"></iframe>
-                        </div>
+                        <a class="playlist-thumb-link"
+                           href="https://www.youtube.com/watch?v=C4ZD5aGNZqI&list=PLvLIvOFxRJxtS9xPq5E4EUVIyYorzwq3H"
+                           target="_blank" rel="noopener noreferrer"
+                           aria-label="Open Zoodle Zen Doodling playlist on YouTube">
+                            <img class="playlist-thumb"
+                                 src="https://i.ytimg.com/vi/C4ZD5aGNZqI/maxresdefault.jpg"
+                                 onerror="this.src='https://i.ytimg.com/vi/C4ZD5aGNZqI/hqdefault.jpg'"
+                                 alt="Zoodle Zen Doodling playlist thumbnail"
+                                 loading="lazy">
+                        </a>
                     </div>
                     <div class="tiles-video-item">
                         <h4 class="tiles-video-title">How to Draw Cute Things</h4>
-                        <div class="doodle-playlist-wrapper">
-                            <iframe src="https://www.youtube.com/embed/videoseries?list=PLrzWinNaF5YfjzXwu4ycD_0fyYCa_dFZ3"
-                                    title="How to Draw Cute Things" frameborder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen loading="lazy"></iframe>
-                        </div>
+                        <a class="playlist-thumb-link"
+                           href="https://www.youtube.com/watch?v=yMHB0-d2ZAQ&list=PLrzWinNaF5YfjzXwu4ycD_0fyYCa_dFZ3"
+                           target="_blank" rel="noopener noreferrer"
+                           aria-label="Open How to Draw Cute Things playlist on YouTube">
+                            <img class="playlist-thumb"
+                                 src="https://i.ytimg.com/vi/yMHB0-d2ZAQ/maxresdefault.jpg"
+                                 onerror="this.src='https://i.ytimg.com/vi/yMHB0-d2ZAQ/hqdefault.jpg'"
+                                 alt="How to Draw Cute Things playlist thumbnail"
+                                 loading="lazy">
+                        </a>
                     </div>
                 </div>
 

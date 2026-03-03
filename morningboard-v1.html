@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍎 Morning Board</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;min-height:100vh;padding:16px;transition:background .6s}
+
+/* ── Rainbow Themes (8 options, no pink/space) ── */
+body.t-seasonal{background:linear-gradient(135deg,#fff3e0,#ffe0b2,#ffccbc);--acc:#f4511e;--deep:#bf360c;--lite:#fff5ee;--card:#fff;--tally:#f4511e}
+body.t-red     {background:linear-gradient(135deg,#ffebee,#ffcdd2,#ef9a9a);--acc:#e53935;--deep:#b71c1c;--lite:#ffebee;--card:#fff;--tally:#e53935}
+body.t-orange  {background:linear-gradient(135deg,#fff3e0,#ffe0b2,#ffcc80);--acc:#f57c00;--deep:#e65100;--lite:#fff8f0;--card:#fff;--tally:#f57c00}
+body.t-yellow  {background:linear-gradient(135deg,#fffde7,#fff9c4,#fff176);--acc:#f9a825;--deep:#f57f17;--lite:#fffde7;--card:#fff;--tally:#f9a825}
+body.t-green   {background:linear-gradient(135deg,#f1f8e9,#dcedc8,#c5e1a5);--acc:#558b2f;--deep:#1b5e20;--lite:#f1f8e9;--card:#fff;--tally:#558b2f}
+body.t-blue    {background:linear-gradient(135deg,#e3f2fd,#bbdefb,#90caf9);--acc:#1565c0;--deep:#0d47a1;--lite:#e3f2fd;--card:#fff;--tally:#1565c0}
+body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc:#7b1fa2;--deep:#4a148c;--lite:#f3e5f5;--card:#fff;--tally:#7b1fa2}
+
+/* ── Layout ── */
+.wrap{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:14px;min-height:calc(100vh - 32px)}
+
+/* ── Header ── */
+.header{background:var(--acc);border-radius:22px;padding:12px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.header-left{display:flex;flex-direction:column;gap:2px;flex:1;min-width:160px}
+.header-title{font-family:'Fredoka One',cursive;font-size:2.2rem;color:#fff;text-shadow:2px 3px 0 rgba(0,0,0,.2);cursor:pointer;outline:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.header-title:focus{background:rgba(255,255,255,.2);border-radius:8px;padding:0 6px}
+.header-sub{color:rgba(255,255,255,.88);font-weight:800;font-size:.85rem;cursor:pointer;outline:none}
+.header-sub:focus{background:rgba(255,255,255,.2);border-radius:6px;padding:0 4px}
+.header-season{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.2);border-radius:14px;padding:7px 14px;white-space:nowrap}
+.season-header-emoji{font-size:1.8rem;line-height:1}
+.season-header-info{display:flex;flex-direction:column;gap:1px}
+.season-header-name{font-family:'Fredoka One',cursive;font-size:1.1rem;color:#fff;line-height:1}
+.season-header-months{font-size:.68rem;font-weight:800;color:rgba(255,255,255,.82);line-height:1}
+.header-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.hbtn{background:rgba(255,255,255,.25);color:#fff;border:none;border-radius:10px;padding:6px 11px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.78rem;cursor:pointer;transition:background .2s;white-space:nowrap;position:relative}
+.hbtn:hover{background:rgba(255,255,255,.4)}
+.hbtn::after{content:attr(title);position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);background:rgba(0,0,0,.75);color:#fff;font-size:.65rem;font-weight:700;padding:4px 8px;border-radius:7px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;font-family:'Nunito',sans-serif}
+.hbtn:hover::after{opacity:1}
+.theme-dots{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.tdot{width:19px;height:19px;border-radius:50%;cursor:pointer;border:3px solid rgba(255,255,255,.3);transition:transform .15s,border-color .15s;flex-shrink:0}
+.tdot:hover,.tdot.active{transform:scale(1.3);border-color:#fff}
+.tdot[data-theme="t-seasonal"]{background:conic-gradient(#e53935,#f57c00,#f9a825,#558b2f,#0097a7,#1565c0,#7b1fa2,#e53935)}
+.tdot[data-theme="t-red"]    {background:#e53935}
+.tdot[data-theme="t-orange"] {background:#f57c00}
+.tdot[data-theme="t-yellow"] {background:#f9a825}
+.tdot[data-theme="t-green"]  {background:#558b2f}
+.tdot[data-theme="t-blue"]   {background:#1565c0}
+.tdot[data-theme="t-purple"] {background:#7b1fa2}
+
+/* ── Grid ── */
+.main-grid{display:grid;grid-template-columns:1fr 300px;gap:14px;align-items:start;flex:1;min-height:0;min-width:0}
+.left-col{display:flex;flex-direction:column;gap:14px;height:100%;min-width:0}
+.right-col{display:flex;flex-direction:column;gap:14px;min-width:0}
+
+/* ── Collapsible Card ── */
+.card{background:var(--card);border-radius:20px;box-shadow:0 4px 14px rgba(0,0,0,.09);overflow:hidden}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;user-select:none;gap:8px}
+.card-header:hover{background:rgba(0,0,0,.02)}
+.card-title{font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--deep);flex:1}
+.card-chevron{font-size:.9rem;color:var(--acc);transition:transform .25s;flex-shrink:0}
+.card-preview{font-family:'Fredoka One',cursive;font-size:.82rem;color:var(--acc);background:var(--lite);border-radius:8px;padding:3px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;transition:opacity .2s}
+.card:not(.collapsed) .card-preview{opacity:0;pointer-events:none}
+.card.collapsed .card-preview{opacity:1}
+.card.collapsed .card-chevron{transform:rotate(-90deg)}
+.collapse-content{padding:0 16px 16px;overflow:hidden;transition:max-height .3s ease,opacity .25s}
+.card.collapsed .collapse-content{max-height:0!important;opacity:0;padding-bottom:0}
+.card.no-collapse .card-header{cursor:default}
+.card.no-collapse .card-chevron{display:none}
+
+/* ── Analog Clock ── */
+.clock-card-inner{background:var(--lite);border-radius:16px;padding:14px;text-align:center}
+.clock-svg-wrap{width:190px;height:190px;margin:0 auto 8px}
+.clock-face{fill:white;stroke:var(--acc);stroke-width:4}
+.clock-num{font-family:'Fredoka One',cursive;font-size:19px;fill:#e53935;text-anchor:middle;dominant-baseline:central;font-weight:bold}
+.clock-tick{stroke:#ddd;stroke-width:1.5}
+.clock-tick-maj{stroke:var(--deep);stroke-width:3}
+.clock-hour{stroke:var(--deep);stroke-width:7;stroke-linecap:round}
+.clock-min{stroke:#1565c0;stroke-width:4.5;stroke-linecap:round}
+.clock-sec{stroke:#e53935;stroke-width:2.5;stroke-linecap:round}
+.clock-tail{stroke:#e53935;stroke-width:2.5;stroke-linecap:round}
+.clock-center-outer{fill:#555}
+.clock-center-inner{fill:#e53935}
+.clock-digital{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--deep);letter-spacing:1px;margin-top:2px}
+
+/* ── Calendar ── */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.nav-btn{background:var(--acc);color:#fff;border:none;border-radius:50%;width:35px;height:35px;font-size:.95rem;cursor:pointer;font-weight:900;transition:transform .15s}
+.nav-btn:hover{transform:scale(1.15)}
+.cal-month{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--deep)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.dh{text-align:center;font-weight:900;font-size:.72rem;color:var(--acc);padding:4px 0;text-transform:uppercase;letter-spacing:.4px}
+.dc{min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:11px;border:2px solid transparent;cursor:pointer;transition:transform .15s,border-color .15s;font-size:.98rem;font-weight:800;gap:1px;padding:3px 2px}
+.dc:not(.empty):hover{transform:scale(1.07);border-color:var(--acc)}
+.dc.empty{cursor:default;pointer-events:none}
+.dc.weekend{background:#f0f0f0;color:#bbb}
+.dc.noschool{background:#ffe0e0;border-color:#ffb3b3}
+.dc.holiday{background:#fff9c4;border-color:#ffe082}
+.dc.has-event{background:var(--lite);border-color:var(--acc)}
+.dc.today{background:var(--acc);color:#fff;border-color:var(--deep);animation:todayBounce 2.5s ease-in-out infinite;box-shadow:0 4px 14px rgba(0,0,0,.22)}
+.dc.today .hi,.dc.today .hn,.dc.today .ev-dot{color:#fff;background:rgba(255,255,255,.3)}
+.hi{font-size:.78rem;line-height:1}
+.hn{font-size:.45rem;text-align:center;line-height:1.1;max-width:98%;font-weight:700;color:#777}
+.ev-dot{font-size:.42rem;background:var(--acc);color:#fff;border-radius:5px;padding:1px 4px;font-weight:800;max-width:98%;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+@keyframes todayBounce{0%,100%{transform:scale(1.04) translateY(0)}50%{transform:scale(1.04) translateY(-4px)}}
+.cal-hint{font-size:.62rem;color:#bbb;text-align:right;margin-top:5px;font-style:italic}
+
+/* ── Modal ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:20px;padding:24px;min-width:280px;max-width:360px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.modal h3{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--deep);margin-bottom:14px;text-align:center}
+.modal input{width:100%;border:2px solid #e0e0e0;border-radius:10px;padding:10px 12px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;outline:none;margin-bottom:10px}
+.modal input:focus{border-color:var(--acc)}
+.modal-btns{display:flex;gap:8px;justify-content:center}
+.mbtn{background:var(--acc);color:#fff;border:none;border-radius:10px;padding:9px 18px;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;transition:transform .15s}
+.mbtn:hover{transform:scale(1.07)}
+.mbtn.del{background:#ef5350}
+.mbtn.cancel{background:#bdbdbd}
+.modal-color-btn{border-radius:50%;cursor:pointer;transition:transform .1s}
+.modal-color-btn:hover{transform:scale(1.25)}
+.modal-color-btn.active{transform:scale(1.3);outline:3px solid var(--deep);outline-offset:2px}
+.dc.custom-green{background:#e8f5e9;border-color:#a5d6a7}
+.dc.custom-purple{background:#f3e5f5;border-color:#ce93d8}
+.dc.custom-blue{background:#e3f2fd;border-color:#90caf9}
+.dc.custom-orange{background:#fff3e0;border-color:#ffcc80}
+
+/* ── Our Days ── */
+.our-days-row{display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:10px}
+.day-col{border-radius:14px;padding:12px 10px;text-align:center;display:flex;flex-direction:column;gap:5px}
+.day-col.yest{background:#f0f0f0}
+.day-col.tod{background:var(--acc);box-shadow:0 3px 12px rgba(0,0,0,.15)}
+.day-col.tom{background:var(--lite)}
+.day-lbl{font-weight:900;font-size:.68rem;text-transform:uppercase;letter-spacing:.8px;color:#888}
+.day-col.tod .day-lbl{color:rgba(255,255,255,.8)}
+.day-name{font-family:'Fredoka One',cursive;font-size:1.3rem;color:#333;line-height:1.1}
+.day-col.tod .day-name{color:#fff}
+.day-date{font-size:.78rem;font-weight:800;color:#999}
+.day-col.tod .day-date{color:rgba(255,255,255,.85)}
+
+/* ── Days of School ── */
+.dos-wrap{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.dos-info{flex:0 0 auto;background:var(--lite);border-radius:14px;padding:10px 14px;display:flex;flex-direction:column;min-width:110px}
+.dos-stat-num{font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--acc);line-height:1;display:block}
+.dos-stat-label{font-size:.7rem;color:#aaa;font-weight:700;display:block;margin-top:1px;margin-bottom:7px}
+.dos-stat-label:last-child{margin-bottom:0}
+.dos-left{flex:0 0 auto;text-align:center;min-width:110px}
+.dos-right{flex:1;min-width:0}
+.counter-num{font-family:'Fredoka One',cursive;font-size:4.8rem;line-height:1;color:var(--acc);text-shadow:3px 3px 0 rgba(0,0,0,.1)}
+.counter-num.custom-edit{border-bottom:3px dashed var(--acc);outline:none;min-width:80px;display:inline-block;cursor:text}
+.counter-label{font-size:.74rem;color:#999;font-weight:700}
+.milestone-msg{font-size:.78rem;font-weight:800;color:var(--deep);margin:3px 0 2px;min-height:16px}
+.dos-remaining{display:contents}
+.break-cd{display:contents}
+.break-cd span{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--acc)}
+.auto-note{font-size:.62rem;color:#ccc;text-align:center;margin-top:4px;font-style:italic}
+.dos-mode-btn{background:var(--acc);color:#fff;border:2px solid var(--deep);border-radius:8px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:.68rem;padding:3px 8px;transition:all .2s}
+.dos-mode-btn:hover{opacity:.85}
+.dos-mode-btn.custom-on{background:#e0e0e0;color:#999;border-color:#ccc;font-style:normal}
+.dos-right{flex:1;min-width:0}
+.rep-tabs{display:flex;gap:5px;margin-bottom:7px}
+.rtab{background:#f0f0f0;border:2px solid transparent;border-radius:8px;padding:4px 10px;font-size:.7rem;font-weight:800;cursor:pointer;color:#666;transition:all .15s}
+.rtab.active{background:var(--acc);color:#fff;border-color:var(--deep)}
+
+/* ── Tally ── */
+.tally-wrap{display:flex;flex-wrap:wrap;gap:5px;align-items:flex-end}
+.tally-group{position:relative;display:inline-flex;gap:4px;align-items:center;padding:5px 8px;background:var(--lite);border-radius:8px;height:48px}
+.tally-group.complete::after{content:'';position:absolute;left:4px;right:4px;top:50%;height:3px;background:var(--tally);border-radius:2px;transform:translateY(-50%);opacity:.9}
+.t-bar{width:4px;height:32px;background:var(--tally);border-radius:2px;flex-shrink:0}
+
+/* ── Base-10 Blocks ── */
+.blocks-wrap{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.block-col{text-align:center}
+.block-label{font-size:.6rem;font-weight:800;color:#999;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
+.block-grid{display:grid;grid-template-columns:repeat(5,15px);gap:3px}
+.b-unit{width:15px;height:15px;background:var(--acc);border-radius:2px;opacity:.85}
+.b-ten{width:15px;height:72px;background:var(--deep);border-radius:3px;opacity:.8}
+.b-hundred{width:72px;height:72px;background:var(--tally);border-radius:4px;opacity:.75;border:2px solid var(--deep)}
+
+/* ── Whiteboard ── */
+.wb-toolbar{display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap;align-items:center}
+.wb-btn{background:#e0e0e0;border:none;border-radius:7px;padding:5px 9px;font-size:.78rem;font-weight:800;cursor:pointer;color:#444;font-family:'Nunito',sans-serif;transition:background .15s}
+.wb-btn:hover{background:#ccc}
+.wb-size{background:#e0e0e0;border:none;border-radius:7px;padding:5px 8px;font-size:.72rem;font-weight:800;cursor:pointer;color:#444;font-family:'Nunito',sans-serif;transition:all .15s}
+.wb-size:hover{background:#ccc}
+.wb-size.active{background:var(--acc);color:#fff}
+.wb-color{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;flex-shrink:0;transition:transform .15s}
+.wb-color:hover,.wb-color.active{transform:scale(1.3);border-color:#444}
+.wb-board{width:100%;min-height:200px;flex:1;border-radius:14px;padding:14px 16px;background:#2d5a27;color:#f0ffe0;font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;line-height:1.6;outline:none;border:3px solid #1a3a16;box-shadow:inset 0 2px 8px rgba(0,0,0,.3);cursor:text}
+.wb-board:empty::before{content:attr(data-placeholder);color:rgba(240,255,224,.35);pointer-events:none}
+.wb-hint{font-size:.62rem;color:#bbb;text-align:right;margin-top:4px;font-style:italic}
+#preview-bday{white-space:normal;overflow:visible;text-overflow:unset;max-width:220px;line-height:1.3}
+.card.collapsed #preview-bday{max-width:none;width:100%}
+#card-wb{flex:1;display:flex;flex-direction:column;min-height:0}
+#card-wb.collapsed{flex:none!important}
+#card-wb .collapse-content{flex:1;display:flex;flex-direction:column;padding-bottom:12px;overflow:visible}
+
+
+/* ── Table Points ── */
+.tables-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin-bottom:10px}
+.table-card{background:var(--lite);border-radius:11px;padding:8px 4px;text-align:center;position:relative}
+.table-remove{position:absolute;top:3px;right:3px;background:none;border:none;font-size:.7rem;cursor:pointer;opacity:.4;transition:opacity .15s,background .15s;color:#e53935;line-height:1;padding:2px 3px;border-radius:5px}
+.table-remove:hover{opacity:1;background:rgba(229,57,53,.13)}
+.table-name-input{background:transparent;border:none;border-bottom:2px dashed rgba(0,0,0,.15);outline:none;font-family:'Fredoka One',cursive;font-size:.95rem;color:#e53935;width:100%;text-align:center;margin-bottom:5px;cursor:pointer;padding-right:12px}
+.table-name-input:focus{border-bottom-color:var(--acc);background:rgba(255,255,255,.5);border-radius:4px}
+.table-crown{position:absolute;top:-7px;left:50%;transform:translateX(-50%);font-size:.9rem}
+.table-points{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--acc);line-height:1;margin-bottom:5px}
+.table-btns{display:flex;gap:4px;justify-content:center}
+.tbl-btn{border:none;border-radius:7px;width:28px;height:28px;font-size:1rem;font-weight:900;cursor:pointer;transition:transform .15s;font-family:'Fredoka One',cursive}
+.tbl-btn:hover{transform:scale(1.15)}
+.tbl-btn.plus{background:var(--acc);color:#fff}
+.tbl-btn.minus{background:#e0e0e0;color:#555}
+.tables-footer{display:flex;gap:6px}
+.tbl-footer-btn{flex:1;background:#f0f0f0;border:none;border-radius:9px;padding:7px;font-family:'Nunito',sans-serif;font-size:.74rem;font-weight:800;cursor:pointer;color:#555}
+.tbl-footer-btn:hover{background:#e0e0e0}
+.tbl-footer-btn.danger{color:#e53935}
+
+/* weather-loc-btn styles moved to header section */
+.weather-loc-row{display:none;align-items:center;gap:6px;margin-top:8px;flex-wrap:wrap}
+.weather-zip-input{flex:1;min-width:0;border:2px solid #e0e0e0;border-radius:9px;padding:5px 9px;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:700;outline:none;color:#333;background:#fff}
+.weather-zip-input:focus{border-color:var(--acc)}
+.weather-zip-go{background:var(--acc);color:#fff;border:none;border-radius:9px;padding:5px 12px;font-family:'Fredoka One',cursive;font-size:.88rem;cursor:pointer}
+.weather-zip-sf{background:#f0f0f0;color:#555;border:none;border-radius:9px;padding:5px 10px;font-family:'Nunito',sans-serif;font-size:.75rem;font-weight:800;cursor:pointer}
+.weather-zip-sf:hover{background:#e0e0e0}
+.w-hdr-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;flex:1;min-width:0}
+.w-hdr-col{display:flex;flex-direction:column;justify-content:space-between}
+.w-hdr-center{align-items:center;text-align:center}
+.w-hdr-right{align-items:flex-end;text-align:right}
+.w-hdr-title{font-family:'Fredoka One',cursive;font-size:1.15rem;color:var(--deep);line-height:1.1}
+.w-hdr-temp{font-family:'Fredoka One',cursive;font-size:1.15rem;color:var(--deep);line-height:1;cursor:pointer;border-bottom:2px dashed transparent;transition:border-color .2s}
+.w-hdr-temp:hover{border-bottom-color:var(--deep)}
+.w-hdr-temp[contenteditable="true"]{border-bottom-color:var(--deep);outline:none;min-width:48px;text-align:center}
+.w-hdr-feels{font-family:'Nunito',sans-serif;font-size:.68rem;color:#999;font-weight:800;white-space:nowrap}
+.w-hdr-season{font-family:'Fredoka One',cursive;font-size:1.15rem;color:var(--deep);line-height:1;display:flex;align-items:center;gap:2px;justify-content:flex-end}
+.w-hdr-months{font-family:'Nunito',sans-serif;font-size:.68rem;font-weight:800;color:#999;text-align:right}
+.weather-loc-btn{background:none;border:none;font-family:'Nunito',sans-serif;font-size:.68rem;color:#999;font-weight:800;font-style:normal;cursor:pointer;padding:0;margin:0;text-align:left;transition:color .2s;text-decoration:none;display:block;line-height:1}
+.weather-loc-btn:hover{color:var(--acc)}
+.weather-loc-btn.custom-on{color:var(--acc);font-weight:800}
+/* ── Weather ── */
+.weather-horiz{display:flex;align-items:center;gap:12px}
+.weather-temp-block{display:flex;flex-direction:column;align-items:center;flex-shrink:0;min-width:66px}
+.temp-num{font-family:'Fredoka One',cursive;font-size:2.2rem;color:var(--acc);line-height:1}
+.temp-feels{font-size:.65rem;color:#999;font-weight:700;text-align:center;white-space:nowrap;margin-top:2px}
+.weather-btns-row{display:flex;gap:5px;flex:1;flex-wrap:wrap;justify-content:center}
+.wbtn{background:#f5f5f5;border:3px solid transparent;border-radius:11px;padding:8px 4px;cursor:pointer;transition:transform .15s;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;display:flex;flex-direction:column;align-items:center;gap:3px;color:#555;min-width:0;flex:1;white-space:nowrap}
+.wbtn:hover{transform:scale(1.07)}
+.wbtn.sel{border-color:var(--acc);background:var(--lite)}
+.wico{font-size:2.2rem;line-height:1}
+.weather-status{font-size:.6rem;color:#bbb;font-style:italic;flex-shrink:0;align-self:flex-end;text-align:right;min-width:72px;padding-bottom:1px}
+
+/* ── Birthdays ── */
+.bday-toprow{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.bday-famous-toggle{background:#f5f5f5;border:2px solid #e0e0e0;border-radius:8px;padding:4px 9px;font-size:.68rem;font-weight:800;cursor:pointer;color:#555;transition:all .15s}
+.bday-famous-toggle.on{background:var(--acc);color:#fff;border-color:var(--deep)}
+.bday-month-lbl{font-family:'Fredoka One',cursive;font-size:.95rem;color:var(--deep)}
+.bday-list{display:flex;flex-direction:column;gap:5px;margin-bottom:8px;max-height:180px;overflow-y:auto}
+.bday-item{display:flex;align-items:center;gap:7px;background:var(--lite);border-radius:10px;padding:6px 9px}
+.bday-item.famous{background:#f9f9f9;opacity:.82}
+.bday-name{flex:1;font-weight:800;font-size:.82rem;color:#333}
+.bday-date-lbl{font-size:.7rem;color:#999;font-weight:700;white-space:nowrap}
+.bday-del{background:none;border:none;cursor:pointer;font-size:.9rem;opacity:.4}
+.bday-del:hover{opacity:1}
+.bday-badge{background:var(--acc);color:#fff;border-radius:7px;padding:1px 6px;font-size:.58rem;font-weight:800;white-space:nowrap}
+.bday-add-row{display:flex;gap:5px;flex-wrap:wrap}
+.bday-input{border:2px solid #e0e0e0;border-radius:9px;padding:6px 8px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:700;outline:none;min-width:0}
+.bday-input:focus{border-color:var(--acc)}
+.bday-input.name-in{flex:1}
+.bday-input.date-in{width:110px}
+.bday-add-btn{background:var(--acc);color:#fff;border:none;border-radius:9px;padding:6px 12px;font-family:'Fredoka One',cursive;font-size:.9rem;cursor:pointer}
+
+/* ── Timer ── */
+.timer-ring-wrap{position:relative;width:220px;height:220px;margin:0 auto 8px}
+.timer-ring-wrap svg{transform:rotate(-90deg)}
+.timer-ring-bg{fill:none;stroke:#e0e0e0;stroke-width:10}
+.timer-ring-fg{fill:none;stroke:var(--acc);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset .9s linear}
+.timer-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.timer-time{font-family:'Fredoka One',cursive;font-size:3.2rem;color:var(--acc);line-height:1;letter-spacing:1px}
+.timer-presets{display:flex;flex-wrap:nowrap;gap:5px;margin-bottom:8px;justify-content:center}
+.timer-preset{background:#f0f0f0;border:2px solid transparent;border-radius:8px;padding:5px 8px;font-size:.72rem;font-weight:800;cursor:pointer;color:#555;font-family:'Nunito',sans-serif;transition:all .15s}
+.timer-preset:hover{background:#e0e0e0}
+.timer-preset.active{background:var(--acc);color:#fff;border-color:var(--deep)}
+.timer-custom-row{display:flex;gap:6px;margin-bottom:8px;align-items:center}
+.timer-custom{flex:1;border:2px solid #e0e0e0;border-radius:8px;padding:5px 8px;font-family:'Nunito',sans-serif;font-size:.82rem;font-weight:800;outline:none;color:#333;background:#fff}
+.timer-custom:focus{border-color:var(--acc)}
+.timer-btns{display:flex;gap:6px;margin-bottom:10px}
+.timer-btn{flex:1;border:none;border-radius:10px;padding:8px;font-family:'Fredoka One',cursive;font-size:.95rem;cursor:pointer;transition:transform .15s}
+.timer-btn:hover{transform:scale(1.05)}
+.timer-btn.start{background:var(--acc);color:#fff}
+.timer-btn.pause{background:#ff9800;color:#fff}
+.timer-btn.reset{background:#e0e0e0;color:#555}
+.timer-sound-row{display:flex;gap:5px;justify-content:center}
+.timer-sound-btn{background:#f0f0f0;border:2px solid transparent;border-radius:8px;padding:4px 9px;font-size:.7rem;font-weight:800;cursor:pointer;color:#555;font-family:'Nunito',sans-serif;transition:all .15s}
+.timer-sound-btn:hover{background:#e0e0e0}
+.timer-sound-btn.active{background:var(--acc);color:#fff;border-color:var(--deep)}
+@keyframes timerFlash{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 12px rgba(239,83,80,.35),0 0 0 24px rgba(239,83,80,.15)}}
+.timer-done{animation:timerFlash .6s ease-in-out 4}
+
+/* ── Randomizer ── */
+.rand-name{font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--acc);line-height:1;transition:filter .1s}
+.rand-name.spinning{filter:blur(3px)}
+.rand-subtext{font-size:.7rem;color:#999;font-weight:700}
+.rand-pick-btn{background:var(--acc);color:#fff;border:none;border-radius:12px;padding:10px;font-family:'Fredoka One',cursive;font-size:1.1rem;cursor:pointer;width:100%;margin-top:6px;margin-bottom:0;transition:transform .15s}
+.rand-result-wrap{text-align:center;margin:0}
+.rand-result-name{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--acc);line-height:1.1;transition:filter .1s;display:none}
+.rand-result-name.spinning{filter:blur(3px)}
+.rand-result-sub{font-size:.7rem;color:#999;font-weight:700;display:none}
+.rand-pick-btn:hover{transform:scale(1.03)}
+.rand-pick-btn:disabled{opacity:.5;cursor:default;transform:none}
+.rand-history{display:none}
+.rand-list-wrap{position:relative;margin-bottom:8px}
+.rand-list{max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
+.rand-list-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:32px;background:linear-gradient(transparent,var(--card,#fff));pointer-events:none;border-radius:0 0 9px 9px}
+.rand-student{display:flex;align-items:center;gap:6px;padding:5px 8px;background:#f5f5f5;border-radius:9px}
+.rand-absent .rand-sname{opacity:.4;text-decoration:line-through}
+.rand-num{font-size:.65rem;font-weight:900;color:#bbb;width:16px;flex-shrink:0}
+.rand-sname{flex:1;font-size:.8rem;font-weight:700;color:#333;border:none;background:transparent;outline:none;font-family:'Nunito',sans-serif;min-width:0}
+.rand-absent-btn{background:none;border:1.5px solid #ddd;border-radius:6px;padding:2px 5px;font-size:.58rem;font-weight:800;cursor:pointer;color:#aaa;white-space:nowrap}
+.rand-absent-btn.marked{background:#ffccbc;border-color:#ff8a65;color:#bf360c}
+.rand-del{background:none;border:none;cursor:pointer;font-size:.85rem;opacity:.35;padding:0}
+.rand-del:hover{opacity:1}
+.rand-controls{display:flex;gap:5px;flex-wrap:wrap}
+.rand-ctrl-btn{flex:1;background:#f0f0f0;border:none;border-radius:9px;padding:6px 8px;font-family:'Nunito',sans-serif;font-size:.72rem;font-weight:800;cursor:pointer;color:#555}
+.rand-ctrl-btn:hover{background:#e0e0e0}
+
+/* ── Schedule ── */
+.sched-list{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.sched-row{display:flex;align-items:center;gap:5px;border-bottom:1.5px solid #f0f0f0;padding:5px 4px 5px 2px}
+.sched-time{width:74px;min-width:0;border:none;border-radius:0;border-bottom:2px solid #e0e0e0;padding:3px 4px;font-family:'Fredoka One',cursive;font-size:.95rem;font-weight:900;outline:none;color:var(--acc);background:transparent}
+.sched-time:focus{border-bottom-color:var(--acc)}
+.sched-label{flex:1;min-width:0;border:none;border-bottom:2px solid transparent;padding:3px 4px;font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:800;outline:none;color:#333;background:transparent}
+.sched-label:focus{border-bottom:2px solid var(--acc)}
+.sched-del{background:none;border:none;cursor:pointer;font-size:.9rem;opacity:.3;padding:0 4px;flex-shrink:0;line-height:1}
+.sched-del:hover{opacity:1}
+.sched-add{background:var(--acc);color:#fff;border:none;border-radius:9px;padding:6px 14px;font-family:'Fredoka One',cursive;font-size:.88rem;cursor:pointer;width:100%}
+.sched-hint{font-size:.62rem;color:#bbb;text-align:center;margin-top:4px;font-style:italic}
+
+/* ── Confetti ── */
+#confettiCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:200;display:none}
+
+/* ── Print ── */
+@media print{
+  body{background:#fff!important;padding:0}
+  .header-controls,#confettiCanvas,.modal-overlay,.rep-tabs,.bday-add-row,
+  .wb-toolbar,.nav-btn,.sched-add,.cal-hint,.wb-hint,.sched-hint,
+  .weather-btns-row,.weather-status,.auto-note,.card-chevron,.timer-btns,.timer-presets,
+  .rand-controls,.rand-pick-btn,.tables-footer,.table-remove{display:none!important}
+  .card.collapsed .collapse-content{max-height:none!important;opacity:1!important;padding-bottom:16px!important}
+  .main-grid{grid-template-columns:1fr!important}
+  .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid;margin-bottom:8px}
+  .wb-board{background:#f5f5f5!important;color:#222!important;border:1px solid #ccc!important}
+}
+
+/* ── Responsive ── */
+@media(max-width:880px){
+  .main-grid{grid-template-columns:1fr}
+  .right-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .header-title{font-size:1.7rem}
+  .tables-grid{grid-template-columns:repeat(6,1fr)}
+}
+@media(max-width:520px){
+  .right-col{grid-template-columns:1fr}
+  .dc{min-height:42px;font-size:.85rem}
+  .header-title{font-size:1.3rem}
+  .counter-num{font-size:3.8rem}
+  .dos-wrap{flex-direction:column}
+  .our-days-row{grid-template-columns:1fr}
+  .tables-grid{grid-template-columns:repeat(3,1fr)}
+  .weather-btns-row{flex-wrap:wrap}
+  .wbtn{flex:1 1 calc(25% - 5px);min-width:72px;white-space:normal;text-align:center;font-size:.75rem;padding:6px 3px}
+  .wico{font-size:1.6rem}
+  .timer-presets{flex-wrap:wrap}
+  .tally-wrap{gap:3px}
+  .tally-group{padding:3px 4px;gap:2px;height:34px;border-radius:6px}
+  .tally-group.complete::after{height:2px}
+  .t-bar{width:2.5px;height:22px;border-radius:1.5px}
+}
+
+/* ── Mobile Portrait: break after purple dot ── */
+.hbtn-break{display:none;width:100%}
+@media(max-width:600px) and (orientation:portrait){
+  .hbtn-break{display:block}
+}
+
+/* ── Mobile Portrait: align wrapped weather title under "Today's" ── */
+@media(max-width:600px) and (orientation:portrait){
+  .w-hdr-title{
+    display:flex;
+    align-items:flex-start;
+    gap:0.3em;
+    white-space:normal;
+  }
+  .w-hdr-title-emoji{flex-shrink:0;line-height:1.1}
+  .w-hdr-title-text{white-space:normal;line-height:1.1}
+}
+
+/* ── Mobile Landscape: Partly Cloudy line break ── */
+.partly-nl{display:none}
+.partly-inline{display:inline}
+@media(max-height:500px) and (orientation:landscape){
+  .partly-nl{display:inline}
+  .partly-inline{display:none}
+}
+
+/* ── Birthdays & Schedule: preview on 2nd row when collapsed ── */
+.card-header-previewrow{align-items:center}
+.card-header-previewrow .card-title{white-space:nowrap}
+/* Preview row hidden when expanded */
+.card-header-previewrow .card-preview-row{
+  display:none;
+}
+.card.collapsed .card-header-previewrow{
+  flex-wrap:wrap;
+  padding-left:0;
+  padding-right:0;
+  padding-bottom:0;
+}
+/* Re-add padding only to the title+chevron row items when collapsed */
+.card.collapsed .card-header-previewrow .card-title{padding-left:16px}
+.card.collapsed .card-header-previewrow .card-chevron{padding-right:16px}
+.card.collapsed .card-header-previewrow .card-preview-row{
+  display:block;
+  width:100%;
+  order:3;
+}
+.card.collapsed .card-header-previewrow .card-preview-row .card-preview{
+  display:block;
+  max-width:none;
+  width:100%;
+  white-space:normal;
+  overflow:visible;
+  text-overflow:unset;
+  opacity:1;
+  pointer-events:auto;
+  text-align:left;
+  border-radius:0 0 20px 20px;
+  padding:6px 16px;
+  box-sizing:border-box;
+}
+/* Keep the inline preview hidden for these cards */
+.card-header-previewrow .card-preview{opacity:0;pointer-events:none}
+.card.collapsed .card-header-previewrow .card-preview{opacity:1}
+
+/* ── Mobile Portrait: allow editable preview spans to wrap ── */
+@media(max-width:600px) and (orientation:portrait){
+  .card-editable-preview{
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:unset!important;
+    max-width:none!important;
+    line-height:1.3!important;
+  }
+
+  /* Table Points & Whiteboard: editable box on full-width 2nd row */
+  #card-tables .card-header-editable,
+  #card-wb .card-header-editable{
+    display:grid!important;
+    grid-template-columns:1fr auto!important;
+    grid-template-rows:auto auto!important;
+    grid-template-areas:"title chevron" "editable editable"!important;
+    padding:13px 16px 0!important;
+    gap:0!important;
+    row-gap:8px!important;
+  }
+  #card-tables .card-header-editable .card-title,
+  #card-wb .card-header-editable .card-title{grid-area:title}
+  #card-tables .card-header-editable .card-editable-chevron,
+  #card-wb .card-header-editable .card-editable-chevron{grid-area:chevron;margin-left:0}
+  #card-tables .card-header-editable .card-editable-preview,
+  #card-wb .card-header-editable .card-editable-preview{
+    grid-area:editable;
+    margin-left:0!important;
+    max-width:none!important;
+    text-align:left!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:unset!important;
+    width:calc(100% + 32px)!important;
+    margin-left:-16px!important;
+    border-radius:0 0 20px 20px!important;
+    border:none!important;
+    border-top:1.5px dashed var(--acc)!important;
+    padding:6px 16px!important;
+    box-sizing:border-box!important;
+  }
+}
+
+/* ── Mobile Landscape: editable boxes for Table Points & Whiteboard full-width ── */
+@media(max-height:500px) and (orientation:landscape){
+  #card-tables .card-header-editable,
+  #card-wb .card-header-editable{
+    display:grid!important;
+    grid-template-columns:1fr auto!important;
+    grid-template-rows:auto auto!important;
+    grid-template-areas:"title chevron" "editable editable"!important;
+    padding:13px 16px 0!important;
+    gap:0!important;
+    row-gap:8px!important;
+  }
+  #card-tables .card-header-editable .card-title,
+  #card-wb .card-header-editable .card-title{grid-area:title}
+  #card-tables .card-header-editable .card-editable-chevron,
+  #card-wb .card-header-editable .card-editable-chevron{grid-area:chevron;margin-left:0}
+  #card-tables .card-header-editable .card-editable-preview,
+  #card-wb .card-header-editable .card-editable-preview{
+    grid-area:editable;
+    margin-left:0!important;
+    max-width:none!important;
+    text-align:left!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:unset!important;
+    width:calc(100% + 32px)!important;
+    margin-left:-16px!important;
+    border-radius:0 0 20px 20px!important;
+    border:none!important;
+    border-top:1.5px dashed var(--acc)!important;
+    padding:6px 16px!important;
+    box-sizing:border-box!important;
+  }
+}
+
+/* ── Table Points & Whiteboard editable header (desktop) ── */
+.card-header-editable{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  padding:13px 16px!important;
+  gap:8px!important;
+}
+.card-header-editable .card-title{white-space:nowrap;flex-shrink:0}
+.card-header-editable .card-editable-chevron{flex-shrink:0}
+.card-header-editable .card-editable-preview{
+  margin-left:auto;
+  font-family:'Fredoka One',cursive;
+  font-size:1.05rem;
+  color:var(--acc);
+  text-align:right;
+  background:var(--lite);
+  border-radius:7px;
+  padding:4px 8px;
+  cursor:text;
+  outline:none;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  line-height:1.3;
+  border:1.5px dashed var(--acc);
+  min-width:0;
+  max-width:55%;
+}
+#wbQuote{font-style:italic}
+.site-footer{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;margin-top:2px}
+.site-footer-text{font-size:.65rem;color:rgba(0,0,0,.35);font-weight:700;font-family:'Nunito',sans-serif;text-align:center;line-height:1.5}
+.site-footer-x{background:none;border:none;cursor:pointer;font-size:.65rem;color:rgba(0,0,0,.25);font-weight:900;padding:0 0 0 4px;font-family:'Nunito',sans-serif;line-height:1;flex-shrink:0}
+.site-footer-x:hover{color:rgba(0,0,0,.5)}
+
+/* Manual temp mode indicator */
+.w-hdr-temp.manual-mode{border-bottom:2px dashed var(--deep);opacity:.85}
+
+/* ── Mobile Portrait: DOS 2-column layout ── */
+@media(max-width:600px) and (orientation:portrait){
+  .dos-wrap{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:auto auto;
+    gap:10px;
+    flex-direction:unset;
+  }
+  .dos-left{
+    grid-column:1;
+    grid-row:1;
+    min-width:0;
+  }
+  .dos-info{
+    grid-column:2;
+    grid-row:1;
+    min-width:0;
+  }
+  .dos-right{
+    grid-column:1 / span 2;
+    grid-row:2;
+    min-width:0;
+  }
+}
+</style>
+</head>
+<body class="t-seasonal">
+<canvas id="confettiCanvas"></canvas>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle">📅 Edit Day</h3>
+    <input type="text" id="modalInput" placeholder="🎒 Field Trip  or  Picture Day" maxlength="30">
+    <div style="font-size:.65rem;color:#bbb;margin:-6px 0 10px;font-style:italic">Start with an emoji to show it as an icon</div>
+    <div style="margin-bottom:12px">
+      <div style="font-size:.72rem;font-weight:800;color:#999;margin-bottom:7px;text-transform:uppercase;letter-spacing:.5px">Day Color</div>
+      <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
+        <button class="modal-color-btn active" data-color="" style="background:#fff;border:2px solid #ddd;border-radius:50%;width:24px;height:24px;padding:0;flex-shrink:0" title="Default (clear)" onclick="setModalColor(this)"></button>
+        <button class="modal-color-btn" data-color="noschool"      style="background:#e53935;border:2px solid rgba(255,255,255,.3);border-radius:50%;width:24px;height:24px;padding:0;flex-shrink:0" title="No School / Break" onclick="setModalColor(this)"></button>
+        <button class="modal-color-btn" data-color="custom-orange" style="background:#f57c00;border:2px solid rgba(255,255,255,.3);border-radius:50%;width:24px;height:24px;padding:0;flex-shrink:0" title="Orange" onclick="setModalColor(this)"></button>
+        <button class="modal-color-btn" data-color="holiday"       style="background:#f9a825;border:2px solid rgba(255,255,255,.3);border-radius:50%;width:24px;height:24px;padding:0;flex-shrink:0" title="Holiday / Yellow" onclick="setModalColor(this)"></button>
+        <button class="modal-color-btn" data-color="custom-green"  style="background:#558b2f;border:2px solid rgba(255,255,255,.3);border-radius:50%;width:24px;height:24px;padding:0;flex-shrink:0" title="Green" onclick="setModalColor(this)"></button>
+        <button class="modal-color-btn" data-color="custom-blue"   style="background:#1565c0;border:2px solid rgba(255,255,255,.3);border-radius:50%;width:24px;height:24px;padding:0;flex-shrink:0" title="Blue" onclick="setModalColor(this)"></button>
+        <button class="modal-color-btn" data-color="custom-purple" style="background:#7b1fa2;border:2px solid rgba(255,255,255,.3);border-radius:50%;width:24px;height:24px;padding:0;flex-shrink:0" title="Purple" onclick="setModalColor(this)"></button>
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button class="mbtn" onclick="saveEvent()">Save ✓</button>
+      <button class="mbtn del" id="modalDelBtn" onclick="deleteEvent()">Delete</button>
+      <button class="mbtn" id="modalResetBtn" onclick="resetEvent()" style="background:#78909c">↺ Reset</button>
+      <button class="mbtn cancel" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="header-title" id="headerTitle" contenteditable="true" spellcheck="false"
+         onblur="saveTitle()" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">Our Morning Board</div>
+    <div class="header-sub" id="headerSub" contenteditable="true" spellcheck="false"
+         onblur="saveSub()" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">Inspired by Mr. Fung's technological curiosity and motivational calendars. Click to edit.</div>
+  </div>
+
+  <div class="header-controls">
+    <div class="theme-dots">
+      <div class="tdot active" data-theme="t-seasonal" onclick="setTheme('t-seasonal')" title="Seasonal Auto"></div>
+      <div class="tdot" data-theme="t-red"    onclick="setTheme('t-red')"    title="Red"></div>
+      <div class="tdot" data-theme="t-orange" onclick="setTheme('t-orange')" title="Orange"></div>
+      <div class="tdot" data-theme="t-yellow" onclick="setTheme('t-yellow')" title="Yellow"></div>
+      <div class="tdot" data-theme="t-green"  onclick="setTheme('t-green')"  title="Green"></div>
+      <div class="tdot" data-theme="t-blue"   onclick="setTheme('t-blue')"   title="Blue"></div>
+      <div class="tdot" data-theme="t-purple" onclick="setTheme('t-purple')" title="Purple"></div>
+    </div><span class="hbtn-break"></span>
+    <button class="hbtn" id="muteBtn" onclick="toggleMute()" title="Sound on/off">🔔</button>
+    <button class="hbtn" onclick="savePageSnapshot()" title="Save a copy">💾</button>
+    <button class="hbtn" id="collapseAllBtn" onclick="toggleCollapseAll()" title="Show / hide all">⊟</button>
+    <button class="hbtn" onclick="toggleFS()" id="fsBtn" title="Enter fullscreen">⛶</button>
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main-grid">
+<div class="left-col">
+
+  <!-- Weather -->
+  <div class="card" id="card-weather">
+    <div class="card-header" onclick="toggleCard('card-weather')">
+      <div class="w-hdr-grid">
+        <div class="w-hdr-col">
+          <span class="w-hdr-title"><span class="w-hdr-title-emoji">🌤️</span><span class="w-hdr-title-text">Today's Weather</span></span>
+          <button class="weather-loc-btn" id="weatherLocBtn" onclick="event.stopPropagation();toggleWeatherLoc()" title="Click to change location">Loading…</button>
+        </div>
+        <div class="w-hdr-col w-hdr-center">
+          <div class="w-hdr-temp" id="tempNum"
+               onclick="event.stopPropagation();toggleManualTemp()"
+               title="Click to enter manually">—</div>
+          <div class="w-hdr-feels" id="tempFeels"></div>
+        </div>
+        <div class="w-hdr-col w-hdr-right">
+          <div class="w-hdr-season"><span id="seasonHeaderEmoji"></span> <span id="seasonHeaderName"></span></div>
+          <div class="w-hdr-months" id="seasonHeaderMonths"></div>
+        </div>
+      </div>
+      <span class="card-chevron" style="align-self:center;flex-shrink:0;margin-left:4px">▾</span>
+    </div>
+    <div class="collapse-content" style="padding-top:8px">
+      <div class="weather-btns-row">
+        <button class="wbtn" data-w="sunny"         onclick="pickW(this)"><span class="wico">☀️</span>Sunny</button>
+        <button class="wbtn" data-w="partly_cloudy" onclick="pickW(this)"><span class="wico">⛅</span><span class="partly-nl">Partly<br>Cloudy</span><span class="partly-inline">Partly Cloudy</span></button>
+        <button class="wbtn" data-w="cloudy"        onclick="pickW(this)"><span class="wico">☁️</span>Cloudy</button>
+        <button class="wbtn" data-w="rainy"         onclick="pickW(this)"><span class="wico">🌧️</span>Rainy</button>
+        <button class="wbtn" data-w="stormy"        onclick="pickW(this)"><span class="wico">⛈️</span>Stormy</button>
+        <button class="wbtn" data-w="snowy"         onclick="pickW(this)"><span class="wico">❄️</span>Snowy</button>
+        <button class="wbtn" data-w="windy"         onclick="pickW(this)"><span class="wico">💨</span>Windy</button>
+        <button class="wbtn" data-w="foggy"         onclick="pickW(this)"><span class="wico">🌫️</span>Foggy</button>
+      </div>
+      <div class="weather-loc-row" id="weatherLocRow">
+        <input class="weather-zip-input" id="weatherZipInput" type="text" placeholder="ZIP code or city (e.g. 94102, Oakland)" maxlength="40"
+               onkeydown="if(event.key==='Enter')applyCustomWeather()">
+        <button class="weather-zip-go" onclick="applyCustomWeather()">Go</button>
+        <button class="weather-zip-sf" onclick="resetToSFWeather()">← Back to SF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calendar -->
+  <div class="card" id="card-cal">
+    <div class="card-header" onclick="toggleCard('card-cal')">
+      <span class="card-title">📅 Calendar</span>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span class="card-preview" id="preview-cal"></span>
+        <span class="card-chevron">▾</span>
+      </div>
+    </div>
+    <div class="collapse-content" style="padding-top:0">
+      <div class="our-days-row" style="margin-bottom:12px">
+        <div class="day-col yest">
+          <div class="day-lbl">Yesterday was</div>
+          <div class="day-name" id="dYestName"></div>
+          <div class="day-date" id="dYestDate"></div>
+        </div>
+        <div class="day-col tod">
+          <div class="day-lbl">Today is</div>
+          <div class="day-name" id="dTodayName"></div>
+          <div class="day-date" id="dTodayDate"></div>
+        </div>
+        <div class="day-col tom">
+          <div class="day-lbl">Tomorrow will be</div>
+          <div class="day-name" id="dTomName"></div>
+          <div class="day-date" id="dTomDate"></div>
+        </div>
+      </div>
+      <div class="cal-nav">
+        <button class="nav-btn" onclick="changeMonth(-1)">◀</button>
+        <span class="cal-month" id="calMonthYear"></span>
+        <button class="nav-btn" onclick="changeMonth(1)">▶</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-hint">Click any date to add a custom event</div>
+    </div>
+  </div>
+
+  <!-- Days of School -->
+  <div class="card" id="card-dos">
+    <div class="card-header" onclick="toggleCard('card-dos')">
+      <span class="card-title">🏫 Days of School</span>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span class="card-preview" id="preview-dos"></span>
+        <span class="card-chevron">▾</span>
+      </div>
+    </div>
+    <div class="collapse-content" style="padding-top:0">
+      <div class="dos-wrap">
+        <div class="dos-left">
+          <div class="counter-num" id="counterNum">—</div>
+          <div class="counter-label">days of learning!</div>
+          <button class="dos-mode-btn" id="dosModeBtn" onclick="toggleDosMode()" title="Toggle custom day count" style="margin-top:6px;align-self:center">SFUSD 2025–26</button>
+          <div class="milestone-msg" id="milestoneMsg"></div>
+        </div>
+        <div class="dos-info">
+          <div id="dosRemaining"></div>
+          <div id="breakCountdown"></div>
+        </div>
+        <div class="dos-right">
+          <div class="rep-tabs">
+            <button class="rtab active" onclick="switchRep('tally',this)">Tally Marks</button>
+            <button class="rtab" onclick="switchRep('blocks',this)">Base-10 Blocks</button>
+          </div>
+          <div id="tallyView"></div>
+          <div id="blocksView" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Points -->
+  <div class="card" id="card-tables">
+    <div class="card-header card-header-editable" onclick="toggleCard('card-tables')">
+      <span class="card-title">🏆 Table Points</span>
+      <span class="card-rules card-editable-preview" id="tableRules" contenteditable="true" spellcheck="false"
+            onclick="event.stopPropagation()"
+            onblur="localStorage.setItem('tableRules',this.textContent)"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">Be Safe, Be Respectful, Be Responsible</span>
+      <span class="card-chevron card-editable-chevron">▾</span>
+    </div>
+    <div class="collapse-content">
+      <div class="tables-grid" id="tablesGrid"></div>
+      <div class="tables-footer">
+        <button class="tbl-footer-btn" onclick="addTable()">＋ Add Table</button>
+        <button class="tbl-footer-btn danger" onclick="resetAllTables()">↺ Reset All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Whiteboard -->
+  <div class="card" id="card-wb">
+    <div class="card-header card-header-editable" onclick="toggleCard('card-wb')">
+      <span class="card-title">🖊️ Whiteboard</span>
+      <span id="wbQuote" class="card-editable-preview" contenteditable="true" spellcheck="false"
+            onclick="event.stopPropagation()"
+            onblur="localStorage.setItem('wbQuote',this.textContent)"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">"History Has Its Eyes on You"</span>
+      <span class="card-chevron card-editable-chevron">▾</span>
+    </div>
+    <div class="collapse-content">
+      <div class="wb-toolbar">
+        <button class="wb-btn" onclick="wbExec('bold')"><b>B</b></button>
+        <button class="wb-btn" onclick="wbExec('italic')"><i>I</i></button>
+        <button class="wb-btn" onclick="wbExec('underline')"><u>U</u></button>
+        <button class="wb-btn" onclick="wbExec('insertUnorderedList')">• List</button>
+        <button class="wb-btn" onclick="wbExec('insertOrderedList')">1. List</button>
+        <span style="width:1px;background:#ddd;height:18px;display:inline-block;margin:0 2px"></span>
+        <button class="wb-size active" data-size="16" onclick="setWBSize(this)">M</button>
+        <button class="wb-size" data-size="20" onclick="setWBSize(this)">L</button>
+        <button class="wb-size" data-size="26" onclick="setWBSize(this)">XL</button>
+        <button class="wb-size" data-size="34" onclick="setWBSize(this)">XXL</button>
+        <span style="width:1px;background:#ddd;height:18px;display:inline-block;margin:0 2px"></span>
+        <div class="wb-color active" data-color="#f0ffe0" style="background:#f0ffe0" onclick="wbColor(this)"></div>
+        <div class="wb-color" data-color="#ffeb3b" style="background:#ffeb3b" onclick="wbColor(this)"></div>
+        <div class="wb-color" data-color="#ff8a65" style="background:#ff8a65" onclick="wbColor(this)"></div>
+        <div class="wb-color" data-color="#80cbc4" style="background:#80cbc4" onclick="wbColor(this)"></div>
+        <span style="flex:1"></span>
+        <button class="wb-btn" onclick="clearWB()" style="color:#e53935">✕ Clear</button>
+      </div>
+      <div class="wb-board" id="wbBoard" contenteditable="true" spellcheck="true"
+           data-placeholder="Write anything — agenda, math problems, announcements…"
+           oninput="saveWB()"></div>
+      <div class="wb-hint">Auto-saved</div>
+    </div>
+  </div>
+
+
+</div><!-- /left-col -->
+<div class="right-col">
+
+  <!-- Analog Clock -->
+  <div class="card" id="card-clock">
+    <div class="card-header" onclick="toggleCard('card-clock')" style="position:relative">
+      <span class="card-title">🕐 Clock</span>
+      <div style="position:absolute;left:50%;transform:translateX(-50%)">
+        <button class="bday-famous-toggle" id="clockDigiToggle" onclick="event.stopPropagation();toggleDigiClock()">🔢 Digital</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-left:auto">
+        <span class="card-preview" id="preview-clock"></span>
+        <span class="card-chevron">▾</span>
+      </div>
+    </div>
+    <div class="collapse-content" style="padding-top:0">
+      <div class="clock-card-inner">
+        <div class="clock-svg-wrap">
+          <svg id="clockSVG" viewBox="0 0 200 200" width="190" height="190">
+            <circle class="clock-face" cx="100" cy="100" r="94"/>
+            <g id="clockTicks"></g>
+            <g id="clockNums"></g>
+            <!-- All hands drawn from exact center; JS sets both x1y1 and x2y2 -->
+            <line id="clockHour" class="clock-hour" x1="100" y1="100" x2="100" y2="48"/>
+            <line id="clockMin"  class="clock-min"  x1="100" y1="100" x2="100" y2="28"/>
+            <line id="clockSec"  class="clock-sec"  x1="100" y1="100" x2="100" y2="22"/>
+            <line id="clockTail" class="clock-tail" x1="100" y1="100" x2="100" y2="115"/>
+            <circle class="clock-center-outer" cx="100" cy="100" r="6"/>
+            <circle class="clock-center-inner" cx="100" cy="100" r="3.5"/>
+          </svg>
+        </div>
+        <div class="clock-digital" id="clockDigital">12:00:00 PM</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Birthdays -->
+  <div class="card" id="card-bday">
+    <div class="card-header card-header-previewrow" onclick="toggleCard('card-bday')">
+      <span class="card-title">🎂 Birthdays</span>
+      <span class="card-chevron" style="margin-left:auto">▾</span>
+      <div class="card-preview-row">
+        <span class="card-preview" id="preview-bday"></span>
+      </div>
+    </div>
+    <div class="collapse-content">
+      <div class="bday-toprow">
+        <div class="bday-month-lbl" id="bdayMonthLbl"></div>
+        <button class="bday-famous-toggle" id="famousToggle" onclick="toggleFamous()">🌟 Famous</button>
+      </div>
+      <div class="bday-list" id="bdayList"></div>
+      <div class="bday-add-row">
+        <input class="bday-input name-in" id="bdayName" type="text" placeholder="Student name" maxlength="24">
+        <input class="bday-input date-in" id="bdayDate" type="date">
+        <button class="bday-add-btn" onclick="addBday()">＋</button>
+      </div>
+    </div>
+  </div>
+  <!-- Schedule -->
+  <div class="card" id="card-sched">
+    <div class="card-header card-header-previewrow" onclick="toggleCard('card-sched')">
+      <span class="card-title">📋 Today's Schedule</span>
+      <span class="card-chevron" style="margin-left:auto">▾</span>
+      <div class="card-preview-row">
+        <span class="card-preview" id="preview-sched"></span>
+      </div>
+    </div>
+    <div class="collapse-content">
+      <div class="sched-list" id="schedList"></div>
+      <button class="sched-add" onclick="addSchedRow()">＋ Add Time Slot</button>
+      <div class="sched-hint">Saved automatically</div>
+    </div>
+  </div>
+
+  <!-- Class Roster -->
+  <div class="card" id="card-rand">
+    <div class="card-header" onclick="toggleCard('card-rand')">
+      <span class="card-title">📋 Class Roster</span>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span class="card-preview" id="preview-roster"></span>
+        <span class="card-chevron">▾</span>
+      </div>
+    </div>
+    <div class="collapse-content">
+      <div class="rand-controls" style="margin-bottom:8px">
+        <button class="rand-ctrl-btn" onclick="addRandStudent()">＋ Add</button>
+        <div id="attendanceCounter" style="background:#1565c0;color:#fff;border-radius:9px;padding:6px 12px;font-family:'Fredoka One',cursive;font-size:.85rem;white-space:nowrap;cursor:default"></div>
+      </div>
+      <div class="rand-list-wrap"><div class="rand-list" id="randList"></div></div>
+      <button class="rand-pick-btn" id="randPickBtn" onclick="pickStudent()">🎲 Pick a Student</button>
+      <div class="rand-result-wrap">
+        <div class="rand-result-name" id="randName"></div>
+        <div class="rand-result-sub" id="randSub"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timer -->
+  <div class="card" id="card-timer">
+    <div class="card-header" onclick="toggleCard('card-timer')">
+      <span class="card-title">⏱️ Timer</span>
+      <div style="display:flex;align-items:center;gap:6px;margin-left:auto">
+        <div id="timerCollapseControls" style="display:none;align-items:center;gap:4px">
+          <span id="timerCollapseDisplay"
+            onclick="event.stopPropagation();timerCollapseEdit()"
+            title="Tap to edit"
+            style="font-family:'Fredoka One',cursive;font-size:1rem;color:var(--acc);background:var(--lite);border-radius:7px;padding:2px 8px;cursor:pointer;min-width:48px;text-align:center"></span>
+          <input id="timerCollapseInput" type="text" placeholder="m:ss"
+            onclick="event.stopPropagation()"
+            onkeydown="timerCollapseKey(event)"
+            onblur="timerCollapseBlur()"
+            style="display:none;width:56px;font-family:'Fredoka One',cursive;font-size:1rem;color:var(--acc);background:var(--lite);border:2px solid var(--acc);border-radius:7px;padding:2px 6px;outline:none;text-align:center">
+          <button onclick="event.stopPropagation();timerStartPause()" id="timerCollapsePauseBtn"
+            style="background:var(--acc);color:#fff;border:none;border-radius:7px;width:28px;height:28px;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center">▶</button>
+          <button onclick="event.stopPropagation();timerReset()"
+            style="background:#e0e0e0;color:#555;border:none;border-radius:7px;width:28px;height:28px;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center">↺</button>
+        </div>
+        <span class="card-chevron">▾</span>
+      </div>
+    </div>
+    <div class="collapse-content">
+      <div class="timer-ring-wrap" id="timerRingWrap">
+        <svg width="220" height="220" viewBox="0 0 220 220">
+          <circle class="timer-ring-bg" cx="110" cy="110" r="95"/>
+          <circle class="timer-ring-fg" id="timerRingFg" cx="110" cy="110" r="95" stroke-dasharray="597" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-center"><div class="timer-time" id="timerDisplay">5:00</div></div>
+      </div>
+      <div class="timer-presets">
+        <button class="timer-preset" data-min="2"  onclick="setTimerPreset(this)">2m</button>
+        <button class="timer-preset active" data-min="5"  onclick="setTimerPreset(this)">5m</button>
+        <button class="timer-preset" data-min="10" onclick="setTimerPreset(this)">10m</button>
+        <button class="timer-preset" data-min="15" onclick="setTimerPreset(this)">15m</button>
+        <button class="timer-preset" data-min="20" onclick="setTimerPreset(this)">20m</button>
+      </div>
+      <div class="timer-custom-row">
+        <input class="timer-custom" id="timerCustom" type="number" min="1" max="99" placeholder="Custom min">
+        <button class="timer-preset" onclick="setCustomTimer()">Set</button>
+      </div>
+      <div class="timer-btns">
+        <button class="timer-btn start" id="timerStartBtn" onclick="timerStartPause()">▶ Start</button>
+        <button class="timer-btn reset" onclick="timerReset()">↺ Reset</button>
+      </div>
+      <div class="timer-sound-row">
+        <button class="timer-sound-btn active" data-sound="bell"    onclick="setTimerSound(this)">🔔 Bell</button>
+        <button class="timer-sound-btn"        data-sound="alarm"   onclick="setTimerSound(this)">⏰ Alarm</button>
+        <button class="timer-sound-btn"        data-sound="fanfare" onclick="setTimerSound(this)">🎵 Fanfare</button>
+      </div>
+    </div>
+  </div>
+
+
+</div><!-- /right-col -->
+</div><!-- /main-grid -->
+</div><!-- /wrap -->
+
+<footer class="site-footer" id="siteFooter">
+  <span class="site-footer-text">Free to use &amp; edit · Made for teachers, by a teacher · <a href="https://github.com/YOUR-USERNAME/YOUR-REPO" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Bill Kuang</a> · © 2026</span>
+  <button class="site-footer-x" onclick="dismissFooter()" title="Dismiss">✕</button>
+</footer>
+<script>
+function safeParse(key, fallback) { try { const val = localStorage.getItem(key); return val ? JSON.parse(val) : fallback; } catch (e) { return fallback; } }
+// ── SFUSD DATA ──
+const NO_SCHOOL=new Set(['2025-08-12','2025-08-13','2025-08-14','2025-08-15','2025-09-01','2025-10-13','2025-11-11','2025-11-24','2025-11-25','2025-11-26','2025-11-27','2025-11-28','2025-12-22','2025-12-23','2025-12-24','2025-12-25','2025-12-26','2025-12-29','2025-12-30','2025-12-31','2026-01-01','2026-01-02','2026-01-19','2026-02-16','2026-02-17','2026-03-27','2026-03-28','2026-03-29','2026-03-30','2026-03-31','2026-04-01','2026-04-02','2026-04-03','2026-05-25']);
+const BREAKS=[{name:'Fall Recess',emoji:'🍂',start:'2025-11-24'},{name:'Winter Break',emoji:'⛄',start:'2025-12-22'},{name:'Spring Break',emoji:'🌸',start:'2026-03-27'},{name:'Summer Break',emoji:'☀️',start:'2026-06-04'}];
+const SCHOOL_START=new Date(2025,7,18),SCHOOL_END=new Date(2026,5,3);
+const HOLIDAY_LABELS={'2025-09-01':{n:'Labor Day',i:'🔨'},'2025-10-13':{n:"Indigenous People's Day",i:'🪶'},'2025-11-11':{n:'Veterans Day',i:'🎖️'},'2025-11-26':{n:'Thanksgiving',i:'🦃'},'2025-11-27':{n:'Fall Recess',i:'🍂'},'2025-11-28':{n:'Fall Recess',i:'🍂'},'2025-12-25':{n:'Christmas',i:'🎄'},'2026-01-01':{n:"New Year's Day",i:'🎆'},'2026-01-19':{n:'MLK Day',i:'✊'},'2026-02-14':{n:"Valentine's Day",i:'❤️'},'2026-02-16':{n:"Presidents' Day",i:'🦅'},'2026-02-17':{n:'Lunar New Year',i:'🧧'},'2026-03-17':{n:"St. Patrick's Day",i:'🍀'},'2026-03-31':{n:'Cesar Chavez Day',i:'✊'},'2026-05-05':{n:'Cinco de Mayo',i:'🎉'},'2026-05-25':{n:'Memorial Day',i:'🇺🇸'}};
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const DAYSSHORT=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const FAMOUS=[{n:'Albert Einstein',d:'03-14',cat:'🔬'},{n:'Marie Curie',d:'11-07',cat:'🔬'},{n:'Isaac Newton',d:'01-04',cat:'🔬'},{n:'Charles Darwin',d:'02-12',cat:'🔬'},{n:'Nikola Tesla',d:'07-10',cat:'🔬'},{n:'Neil deGrasse Tyson',d:'10-05',cat:'🔬'},{n:'Jane Goodall',d:'04-03',cat:'🔬'},{n:'Stephen Hawking',d:'01-08',cat:'🔬'},{n:'Ada Lovelace',d:'12-10',cat:'🔬'},{n:'Mae Jemison',d:'10-17',cat:'🔬'},{n:'Dr. Seuss',d:'03-02',cat:'✍️'},{n:'Roald Dahl',d:'09-13',cat:'✍️'},{n:'Beverly Cleary',d:'04-12',cat:'✍️'},{n:'J.K. Rowling',d:'07-31',cat:'✍️'},{n:'Laura Ingalls Wilder',d:'02-07',cat:'✍️'},{n:'Shel Silverstein',d:'09-25',cat:'✍️'},{n:'Eric Carle',d:'06-25',cat:'✍️'},{n:'Mo Willems',d:'02-11',cat:'✍️'},{n:'Maya Angelou',d:'04-04',cat:'✍️'},{n:'Mark Twain',d:'11-30',cat:'✍️'},{n:'Frida Kahlo',d:'07-06',cat:'🎨'},{n:'Pablo Picasso',d:'10-25',cat:'🎨'},{n:'Leonardo da Vinci',d:'04-15',cat:'🎨'},{n:'Vincent van Gogh',d:'03-30',cat:'🎨'},{n:'Andy Warhol',d:'08-06',cat:'🎨'},{n:"Georgia O'Keeffe",d:'11-15',cat:'🎨'},{n:'Abraham Lincoln',d:'02-12',cat:'🏛️'},{n:'Martin Luther King Jr.',d:'01-15',cat:'🏛️'},{n:'George Washington',d:'02-22',cat:'🏛️'},{n:'Harriet Tubman',d:'03-10',cat:'🏛️'},{n:'Amelia Earhart',d:'07-24',cat:'🏛️'},{n:'Rosa Parks',d:'02-04',cat:'🏛️'},{n:'Nelson Mandela',d:'07-18',cat:'🏛️'},{n:'Malala Yousafzai',d:'07-12',cat:'🏛️'},{n:'Helen Keller',d:'06-27',cat:'🏛️'},{n:'Susan B. Anthony',d:'02-15',cat:'🏛️'},{n:'Serena Williams',d:'09-26',cat:'🏅'},{n:'LeBron James',d:'12-30',cat:'🏅'},{n:'Simone Biles',d:'03-14',cat:'🏅'},{n:'Muhammad Ali',d:'01-17',cat:'🏅'},{n:'Mia Hamm',d:'03-17',cat:'🏅'},{n:'Michael Jordan',d:'02-17',cat:'🏅'},{n:'Usain Bolt',d:'08-21',cat:'🏅'},{n:'Lionel Messi',d:'06-24',cat:'🏅'},{n:'Beethoven',d:'12-17',cat:'🎵'},{n:'Mozart',d:'01-27',cat:'🎵'},{n:'Ella Fitzgerald',d:'04-25',cat:'🎵'},{n:'Louis Armstrong',d:'08-04',cat:'🎵'},{n:'Beyoncé',d:'09-04',cat:'🎵'},{n:'Michael Jackson',d:'08-29',cat:'🎵'},{n:'Taylor Swift',d:'12-13',cat:'🎵'},{n:'John Legend',d:'12-28',cat:'🎵'}];
+
+function dk(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function isSchoolDay(d){const dt=new Date(d.getFullYear(),d.getMonth(),d.getDate());if(dt<SCHOOL_START||dt>SCHOOL_END)return false;if(dt.getDay()===0||dt.getDay()===6)return false;return!NO_SCHOOL.has(dk(dt));}
+function countSchoolDays(upTo){let n=0;const c=new Date(SCHOOL_START);const e=new Date(upTo.getFullYear(),upTo.getMonth(),upTo.getDate());while(c<=e){if(isSchoolDay(c))n++;c.setDate(c.getDate()+1);}return n;}
+function schoolDaysRemaining(from){let n=0;const c=new Date(from.getFullYear(),from.getMonth(),from.getDate());c.setDate(c.getDate()+1);while(c<=SCHOOL_END){if(isSchoolDay(c))n++;c.setDate(c.getDate()+1);}return n;}
+function daysUntilBreak(today){for(const br of BREAKS){const bs=new Date(br.start+'T00:00:00');if(bs>today){let n=0;const c=new Date(today.getFullYear(),today.getMonth(),today.getDate());while(c<bs){if(isSchoolDay(c))n++;c.setDate(c.getDate()+1);}return{...br,days:n};}}return null;}
+
+// ── COLLAPSIBLE ──
+function toggleCard(id){
+  const card=document.getElementById(id);
+  card.classList.toggle('collapsed');
+  const collapsed=card.classList.contains('collapsed');
+  const content=card.querySelector('.collapse-content');
+  if(content)content.style.maxHeight=collapsed?'0':content.scrollHeight+300+'px';
+  const s=safeParse('cardStates', {});
+  s[id]=collapsed;
+  localStorage.setItem('cardStates',JSON.stringify(s));
+  if(id==='card-timer'){
+    const ctrl=document.getElementById('timerCollapseControls');
+    if(ctrl)ctrl.style.display=collapsed?'flex':'none';
+    if(collapsed)syncTimerCollapseDisplay();
+  }
+}
+function restoreCardStates(){const s=safeParse('cardStates', {});Object.entries(s).forEach(([id,col])=>{const c=document.getElementById(id);if(c&&col)c.classList.add('collapsed');});document.querySelectorAll('.collapse-content').forEach(el=>{el.style.maxHeight=el.closest('.card').classList.contains('collapsed')?'0':el.scrollHeight+300+'px';});const tc=document.getElementById('card-timer');if(tc&&tc.classList.contains('collapsed')){const ctrl=document.getElementById('timerCollapseControls');if(ctrl){ctrl.style.display='flex';syncTimerCollapseDisplay();}}}
+
+// ── SEASONS / THEME ──
+const SEASONS=[
+  {key:'winter',cls:'t-blue',  name:'Winter',emoji:'⛄',months:[11,0,1], short:'Dec · Jan · Feb'},
+  {key:'spring',cls:'t-green', name:'Spring',emoji:'🌸',months:[2,3,4],  short:'Mar · Apr · May'},
+  {key:'summer',cls:'t-yellow',name:'Summer',emoji:'☀️',months:[5,6,7],  short:'Jun · Jul · Aug'},
+  {key:'fall',  cls:'t-orange',name:'Fall',  emoji:'🍂',months:[8,9,10], short:'Sep · Oct · Nov'}
+];
+function getSeason(m){return SEASONS.find(s=>s.months.includes(m));}
+let customTheme=localStorage.getItem('classTheme')||'t-seasonal';
+let displayDate=new Date();
+function setTheme(t){customTheme=t;localStorage.setItem('classTheme',t);applyTheme();}
+function applyTheme(){
+  const mo=displayDate.getMonth();
+  const season=getSeason(mo);
+  const cls=customTheme==='t-seasonal'?season.cls:customTheme;
+  document.body.className=cls;
+  document.querySelectorAll('.tdot').forEach(d=>d.classList.toggle('active',d.dataset.theme===customTheme));
+  document.getElementById('seasonHeaderEmoji').textContent=season.emoji;
+  document.getElementById('seasonHeaderName').textContent=season.name;
+  document.getElementById('seasonHeaderMonths').textContent=season.short;
+}
+
+// ── ANALOG CLOCK (fixed: all hands originate from exact center 100,100) ──
+const NUM_POSITIONS=[
+  {h:12,x:100.0,y:30.0},  {h:1,x:135.0,y:39.3},  {h:2,x:160.7,y:65.0},
+  {h:3,x:170.0,y:100.0},  {h:4,x:160.7,y:135.0},  {h:5,x:135.0,y:160.7},
+  {h:6,x:100.0,y:170.0},  {h:7,x:65.0,y:160.7},  {h:8,x:39.3,y:135.0},
+  {h:9,x:30.0,y:100.0},  {h:10,x:39.3,y:65.0},  {h:11,x:65.0,y:39.3}
+];
+function buildClock(){
+  // Ticks
+  const tg=document.getElementById('clockTicks');tg.innerHTML='';
+  for(let i=0;i<60;i++){
+    const a=(i/60)*Math.PI*2,maj=i%5===0;
+    const r1=maj?80:86,r2=92;
+    const x1=100+r1*Math.sin(a),y1=100-r1*Math.cos(a),x2=100+r2*Math.sin(a),y2=100-r2*Math.cos(a);
+    const ln=document.createElementNS('http://www.w3.org/2000/svg','line');
+    ln.setAttribute('x1',x1);ln.setAttribute('y1',y1);ln.setAttribute('x2',x2);ln.setAttribute('y2',y2);
+    ln.setAttribute('class',maj?'clock-tick-maj':'clock-tick');
+    tg.appendChild(ln);
+  }
+  // Numbers
+  const ng=document.getElementById('clockNums');ng.innerHTML='';
+  NUM_POSITIONS.forEach(p=>{
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',p.x);t.setAttribute('y',p.y);
+    t.setAttribute('class','clock-num');t.textContent=p.h;
+    ng.appendChild(t);
+  });
+}
+function handPt(angleDeg,len){
+  const a=angleDeg*Math.PI/180;
+  return{x:100+len*Math.sin(a),y:100-len*Math.cos(a)};
+}
+function setHand(id,x2,y2,x1,y1){
+  const el=document.getElementById(id);
+  el.setAttribute('x1',x1!==undefined?x1:100);
+  el.setAttribute('y1',y1!==undefined?y1:100);
+  el.setAttribute('x2',x2);el.setAttribute('y2',y2);
+}
+function tickClock(){
+  const n=new Date();
+  const h=n.getHours(),m=n.getMinutes(),s=n.getSeconds(),ms=n.getMilliseconds();
+  // Hour hand (short, thick)
+  const ha=(h%12+m/60)*30;const hp=handPt(ha,52);
+  setHand('clockHour',hp.x,hp.y);
+  // Minute hand (long, blue)
+  const ma=(m+s/60)*6;const mp=handPt(ma,70);
+  setHand('clockMin',mp.x,mp.y);
+  // Second hand (thin, red) — tip forward, small tail backward
+  const sa=s*6;const sp=handPt(sa,72);const st=handPt(sa+180,14);
+  setHand('clockSec',sp.x,sp.y);
+  setHand('clockTail',st.x,st.y); // tail in opposite direction
+  // Digital
+  const h12=h%12||12,ap=h>=12?'PM':'AM';
+  document.getElementById('clockDigital').textContent=`${h12}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} ${ap}`;
+  updatePreviewClock();
+}
+
+// ── TOGGLE DIGITAL CLOCK ──
+let digiClockVisible = localStorage.getItem('digiClockVisible') !== '0';
+function toggleDigiClock(){
+  digiClockVisible = !digiClockVisible;
+  localStorage.setItem('digiClockVisible', digiClockVisible ? '1' : '0');
+  const el = document.getElementById('clockDigital');
+  const btn = document.getElementById('clockDigiToggle');
+  el.style.display = digiClockVisible ? '' : 'none';
+  btn.classList.toggle('on', digiClockVisible);
+}
+function initDigiClock(){
+  const el = document.getElementById('clockDigital');
+  const btn = document.getElementById('clockDigiToggle');
+  if(!digiClockVisible){ el.style.display='none'; }
+  else { btn.classList.add('on'); }
+}
+
+buildClock();
+tickClock();
+initDigiClock();
+setInterval(tickClock,1000);
+
+// ── TITLE ──
+function saveTitle(){const v=document.getElementById('headerTitle').textContent.trim();localStorage.setItem('classTitle',v||'Our Morning Board');}
+function saveSub(){const v=document.getElementById('headerSub').textContent.trim();localStorage.setItem('classSub',v||'SFUSD 2025–26');}
+function restoreTitles(){const t=localStorage.getItem('classTitle');if(t)document.getElementById('headerTitle').textContent=t;const s=localStorage.getItem('classSub');if(s)document.getElementById('headerSub').textContent=s;const r=localStorage.getItem('tableRules');if(r)document.getElementById('tableRules').textContent=r;const wbq=localStorage.getItem('wbQuote');if(wbq!==null&&wbq!==''){const el=document.getElementById('wbQuote');if(el)el.textContent=wbq;}}
+
+// ── CALENDAR ──
+let customEvents=safeParse('calEvents', {});
+function renderCalendar(){
+  const y=displayDate.getFullYear(),mo=displayDate.getMonth(),today=new Date();
+  applyTheme();
+  document.getElementById('calMonthYear').textContent=`${MONTHS[mo]} ${y}`;
+  const first=new Date(y,mo,1).getDay(),dim=new Date(y,mo+1,0).getDate();
+  const grid=document.getElementById('calGrid');grid.innerHTML='';
+  DAYSSHORT.forEach(d=>{const h=document.createElement('div');h.className='dh';h.textContent=d;grid.appendChild(h);});
+  for(let i=0;i<first;i++){const e=document.createElement('div');e.className='dc empty';grid.appendChild(e);}
+  for(let d=1;d<=dim;d++){
+    const cell=document.createElement('div');cell.className='dc';
+    const dStr=`${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dow=new Date(y,mo,d).getDay();
+    const isToday=today.getDate()===d&&today.getMonth()===mo&&today.getFullYear()===y;
+    if(isToday)cell.classList.add('today');
+    else if(dow===0||dow===6)cell.classList.add('weekend');
+    else if(NO_SCHOOL.has(dStr))cell.classList.add('noschool');
+    const hol=HOLIDAY_LABELS[dStr];
+    const cev=customEvents[dStr];
+    const isCleared=cev?.cleared===true;
+    const evColor=typeof cev==='object'?cev.color||'':'';
+    const evText=typeof cev==='object'?cev.text||'':cev||'';
+
+    // Apply holiday class unless teacher cleared/overrode it
+    if(hol&&!isCleared&&!evColor)cell.classList.add('holiday');
+
+    if(cev&&!isCleared){
+      if(evColor){
+        cell.classList.remove('holiday','noschool','weekend');
+        cell.classList.add(evColor);
+      } else if(evText){
+        cell.classList.add('has-event');
+      }
+    } else if(isCleared){
+      // Teacher explicitly cleared this holiday — remove default styling
+      cell.classList.remove('holiday','noschool');
+    }
+
+    cell.innerHTML=`<span>${d}</span>`;
+    // Always show holiday emoji/name unless teacher explicitly cleared the day
+    if(hol&&!isCleared)cell.innerHTML+=`<span class="hi">${hol.i}</span><span class="hn">${hol.n}</span>`;
+    // Render custom text in the same hi/hn style — split leading emoji if present
+    if(evText&&!isCleared&&!(hol&&(evText===hol.n||evText===`${hol.i} ${hol.n}`))){
+      const emojiMatch=evText.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)\s*/u);
+      if(emojiMatch){
+        const icon=emojiMatch[0].trim();
+        const label=evText.slice(emojiMatch[0].length).trim();
+        cell.innerHTML+=`<span class="hi">${icon}</span>${label?`<span class="hn">${label}</span>`:''}`;
+      } else {
+        cell.innerHTML+=`<span class="hn" style="font-size:.48rem">${evText}</span>`;
+      }
+    }
+    cell.addEventListener('click',()=>openModal(dStr,d));
+    grid.appendChild(cell);
+  }
+  document.querySelectorAll('.collapse-content').forEach(el=>{if(!el.closest('.card').classList.contains('collapsed'))el.style.maxHeight=el.scrollHeight+300+'px';});
+  updatePreviewCal();
+}
+let modalKey='';
+let modalColor='';
+function setModalColor(btn){
+  document.querySelectorAll('.modal-color-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  modalColor=btn.dataset.color;
+}
+function openModal(key,day){
+  modalKey=key;
+  const mo=displayDate.getMonth();
+  const hol=HOLIDAY_LABELS[key];
+  document.getElementById('modalTitle').textContent=`📌 ${MONTHS[mo]} ${day}`;
+
+  // Determine existing custom event or fall back to holiday defaults
+  const existing=customEvents[key];
+  const existingText=typeof existing==='object'?existing?.text||'':existing||'';
+  const existingColor=typeof existing==='object'?existing?.color||'':'';
+
+  // Pre-fill text: custom text first, else holiday emoji + name combined
+  document.getElementById('modalInput').value=existingText||(hol?`${hol.i} ${hol.n}`:'')||'';
+
+  // Pre-fill color: custom color first, else infer from holiday/no-school status
+  let defaultColor='';
+  if(!existingColor && !existing){
+    if(NO_SCHOOL.has(key)) defaultColor='noschool';
+    if(hol) defaultColor='holiday';
+  }
+  modalColor=existingColor||defaultColor;
+  document.querySelectorAll('.modal-color-btn').forEach(b=>{b.classList.toggle('active',b.dataset.color===modalColor);});
+
+  // Show delete if there's already a custom event OR a holiday (so teacher can clear it)
+  document.getElementById('modalDelBtn').style.display=(existing||hol||NO_SCHOOL.has(key))?'':'none';
+  // Show reset only when a holiday/no-school day has been customised
+  document.getElementById('modalResetBtn').style.display=(existing&&(hol||NO_SCHOOL.has(key)))?'':'none';
+  document.getElementById('modalOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('modalInput').focus(),50);
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');modalKey='';}
+function resetEvent(){
+  // Wipe any saved override so the original holiday data shows again
+  delete customEvents[modalKey];
+  localStorage.setItem('calEvents',JSON.stringify(customEvents));
+  closeModal();renderCalendar();
+}
+function saveEvent(){
+  const v=document.getElementById('modalInput').value.trim();
+  if(v||modalColor){
+    customEvents[modalKey]={text:v,color:modalColor};
+  } else {
+    delete customEvents[modalKey];
+  }
+  localStorage.setItem('calEvents',JSON.stringify(customEvents));
+  closeModal();renderCalendar();
+}
+function deleteEvent(){
+  // For holidays/no-school days, store a cleared marker so the pre-populated data doesn't return
+  if(HOLIDAY_LABELS[modalKey]||NO_SCHOOL.has(modalKey)){
+    customEvents[modalKey]={text:'',color:'',cleared:true};
+  } else {
+    delete customEvents[modalKey];
+  }
+  localStorage.setItem('calEvents',JSON.stringify(customEvents));
+  closeModal();renderCalendar();
+}
+document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('modalOverlay'))closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();if(e.key==='Enter'&&document.getElementById('modalOverlay').classList.contains('open'))saveEvent();});
+function changeMonth(d){displayDate=new Date(displayDate.getFullYear(),displayDate.getMonth()+d,1);renderCalendar();}
+
+// ── OUR DAYS ──
+function updateDates(){
+  const t=new Date(),yest=new Date(t),tom=new Date(t);yest.setDate(t.getDate()-1);tom.setDate(t.getDate()+1);
+  function set(pfx,d){document.getElementById(pfx+'Name').textContent=DAYS[d.getDay()];document.getElementById(pfx+'Date').textContent=`${MONTHS[d.getMonth()]} ${d.getDate()}`;}
+  set('dYest',yest);set('dToday',t);set('dTom',tom);
+}
+
+
+// ── DAYS OF SCHOOL CUSTOM MODE ──
+let dosCustomMode = localStorage.getItem('dosCustomMode') === '1';
+let dosCustomVal  = parseInt(localStorage.getItem('dosCustomVal') || '0') || 0;
+function toggleDosMode(){
+  dosCustomMode = !dosCustomMode;
+  localStorage.setItem('dosCustomMode', dosCustomMode ? '1' : '0');
+  const btn = document.getElementById('dosModeBtn');
+  const el  = document.getElementById('counterNum');
+  if(dosCustomMode){
+    btn.textContent = '✏️ Custom Mode';
+    btn.classList.add('custom-on');
+    el.classList.add('custom-edit');
+    el.contentEditable = 'true';
+    el.textContent = dosCustomVal || '';
+    el.focus();
+    el.oninput = ()=>{
+      const v = parseInt(el.textContent);
+      dosCustomVal = isNaN(v) ? 0 : v;
+      localStorage.setItem('dosCustomVal', dosCustomVal);
+      renderTally(dosCustomVal); renderBlocks(dosCustomVal);
+    };
+  } else {
+    btn.textContent = 'SFUSD 2025–26';
+    btn.classList.remove('custom-on');
+    el.classList.remove('custom-edit');
+    el.contentEditable = 'false';
+    el.oninput = null;
+    lastCount = -1;
+    updateCounter();
+  }
+}
+function initDosMode(){
+  if(dosCustomMode){
+    const btn = document.getElementById('dosModeBtn');
+    const el  = document.getElementById('counterNum');
+    btn.textContent = '✏️ Custom Mode';
+    btn.classList.add('custom-on');
+    el.classList.add('custom-edit');
+    el.contentEditable = 'true';
+    el.textContent = dosCustomVal || '';
+    el.oninput = ()=>{
+      const v = parseInt(el.textContent);
+      dosCustomVal = isNaN(v) ? 0 : v;
+      localStorage.setItem('dosCustomVal', dosCustomVal);
+      renderTally(dosCustomVal); renderBlocks(dosCustomVal);
+    };
+    renderTally(dosCustomVal); renderBlocks(dosCustomVal);
+  }
+}
+
+// ── DAYS OF SCHOOL ──
+const MILESTONES=[10,25,50,100,150,175,180];
+const MILESTONE_MSG={10:'🎉 Ten whole days!',25:'⭐ 25 days — on a roll!',50:'🏆 Halfway to 100!',100:'🎊 100 DAYS OF SCHOOL! 🎊',150:'🚀 150 days! Almost there!',175:'⚡ So close!',180:'🎓 Amazing year!'};
+let lastCount=-1;
+function updateCounter(){
+  if(dosCustomMode) return;
+  const today=new Date();
+  let count=today>=SCHOOL_START&&today<=SCHOOL_END?countSchoolDays(today):today>SCHOOL_END?180:0;
+  document.getElementById('counterNum').textContent=count;
+  document.getElementById('milestoneMsg').textContent=MILESTONE_MSG[count]||'';
+  const rem=schoolDaysRemaining(today);
+  const remEl=document.getElementById('dosRemaining');
+  if(today>=SCHOOL_START&&today<=SCHOOL_END)remEl.innerHTML=`<span class='dos-stat-num'>${rem}</span><span class='dos-stat-label'>school days left</span>`;
+  else if(today<SCHOOL_START)remEl.innerHTML=`<span class='dos-stat-label'>School starts Aug 18</span>`;
+  else remEl.innerHTML=`<span class='dos-stat-label'>Year complete! 🎓</span>`;
+  const br=daysUntilBreak(today),bc=document.getElementById('breakCountdown');
+  if(br)bc.innerHTML=br.days===0?`<span class='dos-stat-label'>${br.emoji} ${br.name} today!</span>`:`<span class='dos-stat-num'>${br.days}</span><span class='dos-stat-label'>days until ${br.name} ${br.emoji}</span>`;
+  else bc.innerHTML=`<span class='dos-stat-label'>🎓 Have a great summer!</span>`;
+  if(count!==lastCount){renderTally(count);renderBlocks(count);if(MILESTONES.includes(count)&&count>0){launchConfetti();playChime();}lastCount=count;}
+  updatePreviewDOS();
+}
+function renderTally(n){
+  const wrap=document.getElementById('tallyView');wrap.innerHTML='';
+  if(!n){wrap.innerHTML='<span style="color:#bbb;font-size:.78rem">No school days yet</span>';return;}
+  const outer=document.createElement('div');outer.className='tally-wrap';
+  function addBreak(){const br=document.createElement('div');br.style.cssText='width:100%;height:0;flex-basis:100%';outer.appendChild(br);}
+  const totalGrps=Math.floor(n/5);
+  for(let g=0;g<totalGrps;g++){
+    if(g>0&&g%10===0)addBreak();
+    const grp=document.createElement('div');grp.className='tally-group complete';
+    for(let i=0;i<4;i++){const b=document.createElement('div');b.className='t-bar';grp.appendChild(b);}
+    outer.appendChild(grp);
+  }
+  const r=n%5;if(r){
+    if(totalGrps>0&&totalGrps%10===0)addBreak();
+    const grp=document.createElement('div');grp.className='tally-group';
+    for(let i=0;i<r;i++){const b=document.createElement('div');b.className='t-bar';grp.appendChild(b);}
+    outer.appendChild(grp);
+  }
+  wrap.appendChild(outer);
+}
+function renderBlocks(n){
+  const wrap=document.getElementById('blocksView');wrap.innerHTML='';
+  if(!n){wrap.innerHTML='<span style="color:#bbb;font-size:.78rem">No school days yet</span>';return;}
+  const h=Math.floor(n/100),t=Math.floor((n%100)/10),o=n%10;
+  const outer=document.createElement('div');outer.className='blocks-wrap';
+  if(h){const col=document.createElement('div');col.className='block-col';col.innerHTML='<div class="block-label">Hundreds</div>';for(let i=0;i<h;i++){const b=document.createElement('div');b.className='b-hundred';col.appendChild(b);}outer.appendChild(col);}
+  if(t){const col=document.createElement('div');col.className='block-col';col.innerHTML='<div class="block-label">Tens</div>';const bg=document.createElement('div');bg.style='display:flex;gap:3px';for(let i=0;i<t;i++){const b=document.createElement('div');b.className='b-ten';bg.appendChild(b);}col.appendChild(bg);outer.appendChild(col);}
+  if(o||(n>0&&!h&&!t)){const col=document.createElement('div');col.className='block-col';col.innerHTML='<div class="block-label">Ones</div>';const bg=document.createElement('div');bg.className='block-grid';for(let i=0;i<o;i++){const b=document.createElement('div');b.className='b-unit';bg.appendChild(b);}col.appendChild(bg);outer.appendChild(col);}
+  wrap.appendChild(outer);
+}
+function switchRep(mode,btn){document.querySelectorAll('.rtab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('tallyView').style.display=mode==='tally'?'':'none';document.getElementById('blocksView').style.display=mode==='blocks'?'':'none';}
+
+// ── CONFETTI + SOUND ──
+function launchConfetti(){
+  const cv=document.getElementById('confettiCanvas');cv.style.display='block';
+  const ctx=cv.getContext('2d');cv.width=window.innerWidth;cv.height=window.innerHeight;
+  const pcs=[],cols=['#f4511e','#4caf50','#4a90d9','#ff9800','#e91e63','#9c27b0','#ffeb3b'];
+  for(let i=0;i<180;i++)pcs.push({x:Math.random()*cv.width,y:-10-Math.random()*200,w:7+Math.random()*9,h:4+Math.random()*4,color:cols[~~(Math.random()*cols.length)],rot:Math.random()*360,vx:(Math.random()-.5)*4,vy:2+Math.random()*4,vr:(Math.random()-.5)*8,alpha:1});
+  let fr=0;(function draw(){ctx.clearRect(0,0,cv.width,cv.height);pcs.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;if(fr>120)p.alpha=Math.max(0,p.alpha-.014);ctx.save();ctx.globalAlpha=p.alpha;ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();});fr++;if(fr<220)requestAnimationFrame(draw);else{ctx.clearRect(0,0,cv.width,cv.height);cv.style.display='none';}})();
+}
+let muted=localStorage.getItem('muted')==='1';
+function toggleMute(){muted=!muted;localStorage.setItem('muted',muted?'1':'0');document.getElementById('muteBtn').textContent=muted?'🔇':'🔔';}
+function playTone(freq,dur,type,vol,delay){try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=freq;o.type=type||'sine';const t=a.currentTime+(delay||0);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol||.28,t+.04);g.gain.exponentialRampToValueAtTime(.001,t+dur);o.start(t);o.stop(t+dur);}catch(e){}}
+function playChime(){if(muted)return;[523,659,784,1047].forEach((f,i)=>playTone(f,.45,'sine',.28,i*.18));}
+
+// ── WHITEBOARD ──
+function wbExec(cmd){document.getElementById('wbBoard').focus();document.execCommand(cmd,false,null);}
+function wbColor(dot){document.querySelectorAll('.wb-color').forEach(d=>d.classList.remove('active'));dot.classList.add('active');document.getElementById('wbBoard').focus();document.execCommand('foreColor',false,dot.dataset.color);}
+function setWBSize(btn){document.querySelectorAll('.wb-size').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('wbBoard').style.fontSize=btn.dataset.size+'px';localStorage.setItem('wbSize',btn.dataset.size);}
+function saveWB(){localStorage.setItem('wbContent',document.getElementById('wbBoard').innerHTML);}
+function clearWB(){if(confirm('Clear the whiteboard?')){document.getElementById('wbBoard').innerHTML='';saveWB();}}
+function restoreWB(){const c=localStorage.getItem('wbContent');if(c)document.getElementById('wbBoard').innerHTML=c;const sz=localStorage.getItem('wbSize')||'16';document.getElementById('wbBoard').style.fontSize=sz+'px';document.querySelectorAll('.wb-size').forEach(b=>b.classList.toggle('active',b.dataset.size===sz));}
+
+// ── TABLE POINTS ──
+let tables = safeParse('tablePts', null);
+if(!tables||!tables.length){tables=Array.from({length:6},(_,i)=>({name:`Table ${i+1}`,pts:0}));localStorage.setItem('tablePts',JSON.stringify(tables));}
+function saveTables(){localStorage.setItem('tablePts',JSON.stringify(tables));}
+function renderTables(){
+  const mx=Math.max(...tables.map(t=>t.pts),0);
+  const grid=document.getElementById('tablesGrid');grid.innerHTML='';
+  tables.forEach((t,i)=>{
+    const lead=t.pts>0&&t.pts===mx;
+    const div=document.createElement('div');div.className='table-card';
+    div.innerHTML=`${lead?'<div class="table-crown">👑</div>':''}
+      <button class="table-remove" onclick="removeTable(${i})" title="Remove table">✕</button>
+      <input class="table-name-input" value="${t.name}" onchange="tables[${i}].name=this.value;saveTables()">
+      <div class="table-points">${t.pts}</div>
+      <div class="table-btns">
+        <button class="tbl-btn minus" onclick="adjustPts(${i},-1)">−</button>
+        <button class="tbl-btn plus"  onclick="adjustPts(${i},1)">＋</button>
+      </div>`;
+    grid.appendChild(div);
+  });
+}
+function adjustPts(i,d){tables[i].pts=Math.max(0,tables[i].pts+d);saveTables();renderTables();if(d>0&&!muted){playTone(660,.08,'sine',.15,0);playTone(880,.2,'sine',.18,.09);}}
+function removeTable(i){if(!confirm(`Remove "${tables[i].name}"?`))return;tables.splice(i,1);saveTables();renderTables();}
+function addTable(){tables.push({name:`Table ${tables.length+1}`,pts:0});saveTables();renderTables();}
+function resetAllTables(){if(!confirm('Reset all table points to zero?'))return;tables.forEach(t=>t.pts=0);saveTables();renderTables();}
+
+// ── WEATHER ──
+let weatherCustomMode  = localStorage.getItem('weatherCustomMode') === '1';
+let weatherCustomLat   = parseFloat(localStorage.getItem('weatherCustomLat')  || '37.7749');
+let weatherCustomLon   = parseFloat(localStorage.getItem('weatherCustomLon')  || '-122.4194');
+let weatherCustomLabel = localStorage.getItem('weatherCustomLabel') || 'SF';
+
+function wmoToKey(wc,w){if(wc===0)return'sunny';if(wc<=2)return'partly_cloudy';if(wc===3)return'cloudy';if(wc===45||wc===48)return'foggy';if(wc>=51&&wc<=82)return'rainy';if((wc>=71&&wc<=77)||(wc>=85&&wc<=86))return'snowy';if(wc>=95)return'stormy';if(w>30)return'windy';return'cloudy';}
+function pickW(btn){document.querySelectorAll('.wbtn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');localStorage.setItem('weatherPick',btn.dataset.w);}
+
+function toggleManualTemp(){
+  const el=document.getElementById('tempNum');
+  if(el.contentEditable==='true')return; // already editing
+  if(localStorage.getItem('manualTemp')){
+    // Revert to auto
+    localStorage.removeItem('manualTemp');
+    localStorage.removeItem('manualFeels');
+    el.textContent='…';
+    el.title='Click to enter manually';
+    el.classList.remove('manual-mode');
+    document.getElementById('tempFeels').textContent='Fetching…';
+    fetchWeather(weatherCustomLat,weatherCustomLon,weatherCustomLabel);
+  } else {
+    enableManualTemp();
+  }
+}
+function enableManualTemp(){
+  const el=document.getElementById('tempNum');
+  if(el.contentEditable==='true')return;
+  el.contentEditable='true';
+  el.focus();
+  // Select all text
+  const range=document.createRange();range.selectNodeContents(el);
+  const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
+  el.onblur=()=>{
+    el.contentEditable='false';
+    let v=el.textContent.trim();
+    // Auto-append °F if teacher just typed a number
+    if(v&&!/°/.test(v))v=v+'°F';
+    el.textContent=v||'—';
+    localStorage.setItem('manualTemp',el.textContent);
+    document.getElementById('tempFeels').textContent='Manual · tap to undo';
+    localStorage.setItem('manualFeels','Manual');
+    el.classList.add('manual-mode');
+    el.title='Click to return to automatic';
+  };
+  el.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();el.blur();}};
+}
+
+function applyWeatherData(data, label){
+  const wc=data.current;
+  document.getElementById('tempNum').textContent=`${Math.round(wc.temperature_2m)}°F`;
+  document.getElementById('tempFeels').textContent=`Feels ${Math.round(wc.apparent_temperature)}°F · ${Math.round(wc.wind_speed_10m)}mph`;
+  localStorage.removeItem('manualTemp');
+  localStorage.removeItem('manualFeels');
+  const wbtn=document.querySelector(`.wbtn[data-w="${wmoToKey(wc.weather_code,wc.wind_speed_10m)}"]`);
+  if(wbtn){document.querySelectorAll('.wbtn').forEach(b=>b.classList.remove('sel'));wbtn.classList.add('sel');}
+  const locBtn=document.getElementById('weatherLocBtn');
+  locBtn.textContent=`Live · ${label}`;
+  locBtn.classList.add('on');
+}
+
+async function fetchWeather(lat,lon,label){
+  const tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'America/Los_Angeles';
+  try{
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=${encodeURIComponent(tz)}`);
+    const d=await r.json();
+    applyWeatherData(d,label);
+  }catch{
+    const locBtn=document.getElementById('weatherLocBtn');
+    locBtn.textContent='Unavailable — click to retry';
+    locBtn.classList.remove('on');
+    const w=localStorage.getItem('weatherPick');
+    if(w){const b=document.querySelector(`.wbtn[data-w="${w}"]`);if(b)b.classList.add('sel');}
+    // Restore manual temp if previously set
+    const mt=localStorage.getItem('manualTemp');
+    if(mt){
+      const tn=document.getElementById('tempNum');
+      tn.textContent=mt;
+      tn.classList.add('manual-mode');
+      tn.title='Click to return to automatic';
+      document.getElementById('tempFeels').textContent=localStorage.getItem('manualFeels')||'Manual · tap to undo';
+    } else {
+      document.getElementById('tempNum').textContent='—';
+      document.getElementById('tempFeels').textContent='Click temp to enter';
+    }
+  }
+}
+
+function toggleWeatherLoc(){
+  const card=document.getElementById('card-weather');
+  if(card.classList.contains('collapsed'))toggleCard('card-weather');
+  const row=document.getElementById('weatherLocRow');
+  const open=row.style.display==='flex';
+  row.style.display=open?'none':'flex';
+  if(!open)setTimeout(()=>document.getElementById('weatherZipInput').focus(),200);
+}
+
+async function applyCustomWeather(){
+  const input=document.getElementById('weatherZipInput').value.trim();
+  if(!input)return;
+  const locBtn=document.getElementById('weatherLocBtn');
+  locBtn.textContent='Loading…';
+  try{
+    const geo=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(input)}&count=1&language=en&format=json`);
+    const gd=await geo.json();
+    if(!gd.results||!gd.results.length){locBtn.textContent='Not found — try a city name';return;}
+    const loc=gd.results[0];
+    weatherCustomMode=true;
+    weatherCustomLat=loc.latitude;
+    weatherCustomLon=loc.longitude;
+    weatherCustomLabel=loc.name||(input);
+    localStorage.setItem('weatherCustomMode','1');
+    localStorage.setItem('weatherCustomLat',weatherCustomLat);
+    localStorage.setItem('weatherCustomLon',weatherCustomLon);
+    localStorage.setItem('weatherCustomLabel',weatherCustomLabel);
+    document.getElementById('weatherLocRow').style.display='none';
+    document.getElementById('weatherZipInput').value='';
+fetchWeather(weatherCustomLat,weatherCustomLon,weatherCustomLabel);
+  }catch{
+    locBtn.textContent='Error — try again';
+  }
+}
+
+async function resetToSFWeather(){
+  weatherCustomMode=false;
+  weatherCustomLat=37.7749;
+  weatherCustomLon=-122.4194;
+  weatherCustomLabel='SF';
+  localStorage.setItem('weatherCustomMode','0');
+  localStorage.removeItem('weatherCustomLat');
+  localStorage.removeItem('weatherCustomLon');
+  localStorage.removeItem('weatherCustomLabel');
+  document.getElementById('weatherLocRow').style.display='none';
+  document.getElementById('weatherZipInput').value='';
+  await fetchWeather(37.7749,-122.4194,'SF');
+}
+
+// ── TIMER ──
+let timerTotal=300,timerLeft=300,timerRunning=false,timerInterval=null,timerSound='bell';
+const CIRC=597;
+function setTimerPreset(btn){if(timerRunning)return;document.querySelectorAll('.timer-preset').forEach(b=>b.classList.remove('active'));btn.classList.add('active');timerTotal=parseInt(btn.dataset.min)*60;timerLeft=timerTotal;updateTimerDisplay();}
+function setCustomTimer(){if(timerRunning)return;const v=parseInt(document.getElementById('timerCustom').value);if(!v||v<1||v>99)return;document.querySelectorAll('.timer-preset').forEach(b=>b.classList.remove('active'));timerTotal=v*60;timerLeft=timerTotal;updateTimerDisplay();document.getElementById('timerCustom').value='';}
+function setTimerSound(btn){document.querySelectorAll('.timer-sound-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');timerSound=btn.dataset.sound;}
+function updateTimerDisplay(){const m=Math.floor(timerLeft/60),s=timerLeft%60;const ts=`${m}:${String(s).padStart(2,'0')}`;document.getElementById('timerDisplay').textContent=ts;document.getElementById('timerRingFg').style.strokeDashoffset=CIRC-(CIRC*(timerLeft/timerTotal));updatePreviewTimer();syncTimerCollapseDisplay();}
+function syncTimerCollapseDisplay(){const m=Math.floor(timerLeft/60),s=timerLeft%60;const d=document.getElementById('timerCollapseDisplay');if(d)d.textContent=`${m}:${String(s).padStart(2,'0')}`;const pb=document.getElementById('timerCollapsePauseBtn');if(pb)pb.textContent=timerRunning?'⏸':'▶';}
+function timerCollapseEdit(){if(timerRunning)return;const d=document.getElementById('timerCollapseDisplay');const inp=document.getElementById('timerCollapseInput');const m=Math.floor(timerLeft/60),s=timerLeft%60;inp.value=`${m}:${String(s).padStart(2,'0')}`;d.style.display='none';inp.style.display='';inp.focus();inp.select();}
+function timerCollapseKey(e){if(e.key==='Enter'){e.preventDefault();timerCollapseBlur();}if(e.key==='Escape'){const d=document.getElementById('timerCollapseDisplay');const inp=document.getElementById('timerCollapseInput');inp.style.display='none';d.style.display='';}}
+function timerCollapseBlur(){const inp=document.getElementById('timerCollapseInput');const d=document.getElementById('timerCollapseDisplay');const parts=inp.value.split(':');let secs=0;if(parts.length===2){secs=parseInt(parts[0]||0)*60+parseInt(parts[1]||0);}else{secs=parseInt(parts[0]||0)*60;}if(secs>0&&!timerRunning){timerTotal=secs;timerLeft=secs;updateTimerDisplay();document.querySelectorAll('.timer-preset').forEach(b=>b.classList.remove('active'));}inp.style.display='none';d.style.display='';}
+function timerStartPause(){if(timerLeft<=0)return;timerRunning=!timerRunning;document.getElementById('timerStartBtn').textContent=timerRunning?'⏸ Pause':'▶ Start';document.getElementById('timerStartBtn').className='timer-btn '+(timerRunning?'pause':'start');syncTimerCollapseDisplay();if(timerRunning){timerInterval=setInterval(()=>{timerLeft--;updateTimerDisplay();if(timerLeft<=0){clearInterval(timerInterval);timerRunning=false;document.getElementById('timerStartBtn').textContent='▶ Start';document.getElementById('timerStartBtn').className='timer-btn start';timerDone();}},1000);}else clearInterval(timerInterval);}
+function timerReset(){clearInterval(timerInterval);timerRunning=false;timerLeft=timerTotal;updateTimerDisplay();document.getElementById('timerStartBtn').textContent='▶ Start';document.getElementById('timerStartBtn').className='timer-btn start';document.getElementById('timerRingWrap').classList.remove('timer-done');}
+function timerDone(){document.getElementById('timerRingWrap').classList.add('timer-done');setTimeout(()=>document.getElementById('timerRingWrap').classList.remove('timer-done'),2800);if(muted)return;if(timerSound==='bell'){[523,659,784,523,659,784].forEach((f,i)=>playTone(f,.4,'sine',.3,i*.2));}else if(timerSound==='alarm'){for(let i=0;i<6;i++){playTone(880,.15,'square',.2,i*.25);playTone(660,.15,'square',.2,i*.25+.15);}}else{[523,587,659,698,784,880].forEach((f,i)=>playTone(f,.35,'sine',.25,i*.16));}}
+
+// ── STUDENT RANDOMIZER ──
+let students=safeParse('students', null);
+if(!students){students=Array.from({length:25},(_,i)=>({name:`Student ${i+1}`,absent:false}));localStorage.setItem('students',JSON.stringify(students));}
+let randHistory=safeParse('randHistory', []);
+let randSpinning=false;
+function saveStudents(){localStorage.setItem('students',JSON.stringify(students));}
+function updateRandCount(){
+  const present=students.filter(s=>!s.absent).length;
+  const total=students.length;
+  const el=document.getElementById('attendanceCounter');
+  if(el)el.textContent=`${present}/${total} present`;
+  updatePreviewRoster();
+}
+function renderStudents(){
+  const list=document.getElementById('randList');list.innerHTML='';
+  students.forEach((s,i)=>{
+    const div=document.createElement('div');div.className='rand-student'+(s.absent?' rand-absent':'');
+    div.innerHTML=`<span class="rand-num">${i+1}</span>
+      <input class="rand-sname" value="${s.name}" onchange="students[${i}].name=this.value;saveStudents()">
+      <button class="rand-absent-btn${s.absent?'':' present-blue'}" style="${s.absent?'':'background:#1565c0;border-color:#0d47a1;color:#fff;'}" onclick="toggleAbsent(${i})">${s.absent?'Absent':'Present'}</button>
+      <button class="rand-del" onclick="removeStudent(${i})">✕</button>`;
+    list.appendChild(div);
+  });
+  updateRandCount();
+}
+function toggleAbsent(i){students[i].absent=!students[i].absent;saveStudents();renderStudents();}
+function removeStudent(i){students.splice(i,1);saveStudents();renderStudents();}
+function addRandStudent(){students.push({name:`Student ${students.length+1}`,absent:false});saveStudents();renderStudents();setTimeout(()=>{const ins=document.querySelectorAll('.rand-sname');if(ins.length){ins[ins.length-1].focus();ins[ins.length-1].select();}},60);}
+function importFromBdays(){const names=birthdays.map(b=>b.name).filter(n=>!students.find(s=>s.name===n));if(!names.length){alert('No new names to import.');return;}names.forEach(n=>students.push({name:n,absent:false}));saveStudents();renderStudents();alert(`Imported ${names.length} student(s)!`);}
+function clearRandHistory(){randHistory=[];localStorage.setItem('randHistory',JSON.stringify(randHistory));const el=document.getElementById('randHistory');if(el)el.textContent='';}
+function updateRandHistory(){const el=document.getElementById('randHistory');if(!el)return;const r=randHistory.slice(-3).reverse();el.textContent=r.length?`Last: ${r.join(' · ')}`:''}
+function pickStudent(){
+  if(randSpinning)return;
+  const pool=students.filter(s=>!s.absent);if(!pool.length){alert('No present students!');return;}
+  randSpinning=true;document.getElementById('randPickBtn').disabled=true;
+  const nameEl=document.getElementById('randName'),subEl=document.getElementById('randSub');
+  nameEl.classList.add('spinning');nameEl.style.display='block';subEl.style.display='block';subEl.textContent='Picking…';
+  const winner=pool[Math.floor(Math.random()*pool.length)];
+  let spins=0;const total=22+Math.floor(Math.random()*8);
+  function spin(){nameEl.textContent=pool[Math.floor(Math.random()*pool.length)].name;spins++;const delay=spins<total*.6?60:spins<total*.85?110:spins<total*.95?200:350;if(spins<total)setTimeout(spin,delay);else{nameEl.textContent=winner.name;nameEl.classList.remove('spinning');subEl.textContent='🎉 Selected!';randHistory.push(winner.name);if(randHistory.length>10)randHistory.shift();localStorage.setItem('randHistory',JSON.stringify(randHistory));updateRandHistory();randSpinning=false;document.getElementById('randPickBtn').disabled=false;if(!muted){playTone(880,.08,'sine',.2,0);playTone(1047,.3,'sine',.25,.1);}}}
+  spin();
+}
+
+// ── SCHEDULE ──
+const DEFAULT_SCHEDULE=[
+  {time:'8:40 AM',label:'Morning Routine'},
+  {time:'10:00 AM',label:'Recess (K-1)'},
+  {time:'11:15 AM',label:'Lunch (K-1)'},
+  {time:'1:05 PM',label:'PM Recess (K-1)'},
+  {time:'2:55 PM',label:'Dismissal'}
+];
+let schedule=safeParse('schedule', null);
+if(!schedule||!schedule.length||schedule.every(r=>!r.time&&!r.label)){schedule=[...DEFAULT_SCHEDULE];localStorage.setItem('schedule',JSON.stringify(schedule));}
+function renderSchedule(){const list=document.getElementById('schedList');list.innerHTML='';schedule.forEach((row,i)=>{const div=document.createElement('div');div.className='sched-row';div.innerHTML=`<input class="sched-time" value="${row.time||''}" placeholder="8:00 AM" onchange="updateSched(${i},'time',this.value)"><input class="sched-label" value="${row.label||''}" placeholder="Math, Reading…" onchange="updateSched(${i},'label',this.value)"><button class="sched-del" onclick="removeSched(${i})">✕</button>`;list.appendChild(div);});updatePreviewSched();}
+function addSchedRow(){schedule.push({time:'',label:''});localStorage.setItem('schedule',JSON.stringify(schedule));renderSchedule();setTimeout(()=>{const ins=document.querySelectorAll('.sched-time');if(ins.length)ins[ins.length-1].focus();},50);}
+
+function parseSchedTime(str){
+  if(!str)return Infinity;
+  const m=str.match(/(\d+):(\d+)\s*(AM|PM)?/i);
+  if(!m)return Infinity;
+  let h=parseInt(m[1]),mn=parseInt(m[2]);
+  const ap=(m[3]||'').toUpperCase();
+  if(ap==='PM'&&h!==12)h+=12;
+  if(ap==='AM'&&h===12)h=0;
+  return h*60+mn;
+}
+function sortSchedule(){
+  schedule.sort((a,b)=>parseSchedTime(a.time)-parseSchedTime(b.time));
+  localStorage.setItem('schedule',JSON.stringify(schedule));
+  renderSchedule();
+}
+function updateSched(i,k,v){schedule[i][k]=v;if(k==='time')sortSchedule();else{localStorage.setItem('schedule',JSON.stringify(schedule));}}
+function removeSched(i){schedule.splice(i,1);localStorage.setItem('schedule',JSON.stringify(schedule));renderSchedule();}
+
+// ── BIRTHDAYS ──
+let birthdays=safeParse('birthdays', []);
+// Migration: remove old explicit '0' so Famous defaults to ON for everyone
+if(localStorage.getItem('showFamous')==='0')localStorage.removeItem('showFamous');
+let showFamous=localStorage.getItem('showFamous')!=='0'; // ON by default
+function toggleFamous(){showFamous=!showFamous;localStorage.setItem('showFamous',showFamous?'1':'0');document.getElementById('famousToggle').classList.toggle('on',showFamous);renderBdays();}
+function renderBdays(){
+  document.getElementById('famousToggle').classList.toggle('on',showFamous);
+  const now=new Date(),cm=now.getMonth(),cd=now.getDate();
+  document.getElementById('bdayMonthLbl').textContent=MONTHS[cm];
+  const list=document.getElementById('bdayList');list.innerHTML='';
+  const sorted=[...birthdays].sort((a,b)=>{const[am,ad]=a.date.split('-').slice(1).map(Number),[bm,bd]=b.date.split('-').slice(1).map(Number);return am!==bm?am-bm:ad-bd;});
+  let famThisMo=[];
+  if(showFamous){const ms=String(cm+1).padStart(2,'0');famThisMo=FAMOUS.filter(f=>f.d.startsWith(ms)).sort((a,b)=>+a.d.split('-')[1]-+b.d.split('-')[1]);}
+  const all=[...sorted.map(b=>({...b,famous:false})),...famThisMo.map(f=>({name:`${f.cat} ${f.n}`,date:`2000-${f.d}`,famous:true}))];
+  if(!all.length){list.innerHTML='<span style="color:#bbb;font-size:.78rem;display:block;padding:4px">No birthdays this month</span>';return;}
+  all.forEach(bd=>{
+    const[,mo,day]=bd.date.split('-').map(Number);const itm=mo-1===cm;const itd=itm&&day===cd;
+    const row=document.createElement('div');row.className='bday-item'+(bd.famous?' famous':'');
+    const badge=itd?'<span class="bday-badge">🎂 Today!</span>':'';
+    const del=!bd.famous?`<button class="bday-del" onclick="removeBday('${bd.name}','${bd.date}')">✕</button>`:'';
+    row.innerHTML=`<span class="bday-name">${itd&&!bd.famous?'🎂 ':''}${bd.name}</span><span class="bday-date-lbl">${MONTHS[mo-1].slice(0,3)} ${day}</span>${badge}${del}`;
+    list.appendChild(row);
+  });
+  updatePreviewBday();
+}
+function sortBirthdays(){birthdays.sort((a,b)=>{const da=new Date(a.date),db=new Date(b.date);return(da.getMonth()*100+da.getDate())-(db.getMonth()*100+db.getDate());});localStorage.setItem('birthdays',JSON.stringify(birthdays));}
+function addBday(){const name=document.getElementById('bdayName').value.trim(),date=document.getElementById('bdayDate').value;if(!name||!date)return;birthdays.push({name,date});sortBirthdays();document.getElementById('bdayName').value='';document.getElementById('bdayDate').value='';renderBdays();}
+function removeBday(name,date){const i=birthdays.findIndex(b=>b.name===name&&b.date===date);if(i>=0){birthdays.splice(i,1);localStorage.setItem('birthdays',JSON.stringify(birthdays));renderBdays();}}
+
+// ── FULLSCREEN ──
+function toggleFS(){if(!document.fullscreenElement){document.documentElement.requestFullscreen().catch(()=>{});document.getElementById('fsBtn').textContent='✕ FS';}else{document.exitFullscreen();document.getElementById('fsBtn').textContent='⛶';}}
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)document.getElementById('fsBtn').textContent='⛶';});
+
+// ── COLLAPSE ALL / EXPAND ALL ──
+function toggleCollapseAll(){
+  const cards=document.querySelectorAll('.card');
+  const anyExpanded=[...cards].some(c=>!c.classList.contains('collapsed'));
+  const s=safeParse('cardStates', {});
+  cards.forEach(c=>{
+    if(anyExpanded){
+      c.classList.add('collapsed');
+      if(c.id)s[c.id]=true;
+    } else {
+      c.classList.remove('collapsed');
+      if(c.id)s[c.id]=false;
+    }
+    const content=c.querySelector('.collapse-content');
+    if(content)content.style.maxHeight=c.classList.contains('collapsed')?'0':content.scrollHeight+300+'px';
+  });
+  localStorage.setItem('cardStates',JSON.stringify(s));
+  document.getElementById('collapseAllBtn').textContent=anyExpanded?'⊞':'⊟';
+  // Sync compact timer controls after bulk collapse/expand
+  const timerCtrl=document.getElementById('timerCollapseControls');
+  const timerCard=document.getElementById('card-timer');
+  if(timerCtrl&&timerCard){
+    const collapsed=timerCard.classList.contains('collapsed');
+    timerCtrl.style.display=collapsed?'flex':'none';
+    if(collapsed)syncTimerCollapseDisplay();
+  }
+}
+
+// ── SAVE SNAPSHOT ──
+function savePageSnapshot(){
+  // Collect all localStorage data
+  const data={};
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    data[k]=localStorage.getItem(k);
+  }
+
+  // Build a bootstrap script that pre-loads this data before the page runs
+  const bootstrapScript=`<script id="snapshot-bootstrap">
+(function(){
+  const data=${JSON.stringify(data)};
+  // Only restore if localStorage is empty (fresh file, not already customised)
+  const hasData=localStorage.length>0;
+  if(!hasData){
+    Object.entries(data).forEach(([k,v])=>localStorage.setItem(k,v));
+  }
+})();
+<\/script>`;
+
+  // Get the current page HTML and inject the bootstrap script right after <head>
+  let html=document.documentElement.outerHTML;
+
+  // Remove any previous snapshot bootstrap so we don't stack them
+  html=html.replace(/<script id="snapshot-bootstrap">[\s\S]*?<\/script>/,'');
+
+  // Inject after <head>
+  html=html.replace('<head>','<head>\n'+bootstrapScript);
+
+  // Trigger download
+  const blob=new Blob([html],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='classroom-calendar.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+
+// ── CARD PREVIEWS ──
+
+function updatePreviewCal(){
+  const el=document.getElementById('preview-cal');if(!el)return;
+  const today=new Date();
+  const dStr=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  const hol=HOLIDAY_LABELS[dStr];
+  const cev=customEvents[dStr];
+  const evText=typeof cev==='object'?cev?.text||'':cev||'';
+  const dayLabel=`${MONTHS[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
+  if(hol&&!(cev?.cleared))el.textContent=`${dayLabel} · ${hol.i} ${hol.n}`;
+  else if(evText)el.textContent=`${dayLabel} · ${evText}`;
+  else el.textContent=dayLabel;
+}
+function updatePreviewDOS(){
+  const el=document.getElementById('preview-dos');if(!el)return;
+  const count=dosCustomMode?dosCustomVal:parseInt(document.getElementById('counterNum').textContent)||0;
+  const rem=dosCustomMode?'':(() => {
+    const today=new Date();
+    if(today<SCHOOL_START||today>SCHOOL_END)return'';
+    return`· ${schoolDaysRemaining(today)} left`;
+  })();
+  el.textContent=count?`Day ${count} ${rem}`.trim():'';
+}
+function updatePreviewClock(){
+  const el=document.getElementById('preview-clock');if(!el)return;
+  const t=new Date(),h=t.getHours(),m=t.getMinutes();
+  el.textContent=`${h%12||12}:${String(m).padStart(2,'0')} ${h>=12?'PM':'AM'}`;
+}
+function shortenName(name,budget){
+  if(name.length<=budget)return name;
+  const parts=name.trim().split(' ');
+  if(parts.length<2)return name; // single word, let CSS clip
+  const last=parts[parts.length-1];
+  const initial=parts[0][0]+'.';
+  const shortened=`${initial} ${last}`;
+  return shortened.length<name.length?shortened:name;
+}
+function updatePreviewBday(){
+  const el=document.getElementById('preview-bday');if(!el)return;
+  // Build combined list: students + famous (if enabled)
+  const all=[];
+  birthdays.forEach(b=>{
+    const[,mo,day]=b.date.split('-').map(Number);
+    all.push({name:b.name,mo,day});
+  });
+  if(showFamous){
+    FAMOUS.forEach(f=>{
+      const[fm,fd]=f.d.split('-').map(Number);
+      all.push({name:f.n,mo:fm,day:fd});
+    });
+  }
+  if(!all.length){el.textContent='';return;}
+  const now=new Date(),todayM=now.getMonth(),todayD=now.getDate();
+  const todayNum=todayM*100+todayD;
+  // Check today first
+  const todayAll=all.filter(x=>(x.mo-1)===todayM&&x.day===todayD);
+  if(todayAll.length){el.textContent=`${todayAll[0].mo}/${todayAll[0].day} ${todayAll.map(x=>shortenName(x.name,16)).join(', ')}`;return;}
+  // Find next upcoming using month*100+day arithmetic
+  const mapped=all.map(x=>{
+    const num=(x.mo-1)*100+x.day;
+    const daysAhead=num>todayNum?num-todayNum:(1200-todayNum+num);
+    return{...x,daysAhead};
+  }).sort((a,b)=>a.daysAhead-b.daysAhead);
+  const minDays=mapped[0].daysAhead;
+  const nextAll=mapped.filter(x=>x.daysAhead===minDays);
+  el.textContent=`→ ${nextAll[0].mo}/${nextAll[0].day} ${nextAll.map(x=>shortenName(x.name,16)).join(', ')}`;
+}
+function updatePreviewSched(){
+  const el=document.getElementById('preview-sched');if(!el)return;
+  if(!schedule||!schedule.length){el.textContent='';return;}
+  const now=new Date(),nowMins=now.getHours()*60+now.getMinutes();
+  const sorted=[...schedule].filter(r=>r.time).sort((a,b)=>parseSchedTime(a.time)-parseSchedTime(b.time));
+  let current=null,next=null;
+  for(const r of sorted){const t=parseSchedTime(r.time);if(t<=nowMins)current=r;else if(!next)next=r;}
+  const show=next||current;
+  el.textContent=show?(show.label?`→ ${show.time} ${show.label}`:`→ ${show.time}`):'';
+}
+function updatePreviewRoster(){
+  const el=document.getElementById('preview-roster');if(!el)return;
+  const present=students.filter(s=>!s.absent).length;
+  el.textContent=`${present}/${students.length} present`;
+}
+function updatePreviewTimer(){
+  const el=document.getElementById('preview-timer');if(!el)return;
+  const m=Math.floor(timerLeft/60),s=timerLeft%60;
+  el.textContent=`${timerRunning?'▶ ':''}${m}:${String(s).padStart(2,'0')}`;
+}
+
+document.getElementById('muteBtn').textContent=muted?'🔇':'🔔';
+restoreTitles();
+setTheme(customTheme);
+renderCalendar();
+updateDates();
+updateCounter();
+if(weatherCustomMode)document.getElementById('weatherLocBtn').classList.add('on');
+fetchWeather(weatherCustomLat,weatherCustomLon,weatherCustomLabel);
+renderSchedule();
+renderBdays();
+restoreWB();
+renderStudents();
+updateRandHistory();
+renderTables();
+updateTimerDisplay();
+restoreCardStates();
+// Init previews on load
+updatePreviewCal();
+updatePreviewDOS();
+updatePreviewClock();
+updatePreviewBday();
+updatePreviewSched();
+updatePreviewRoster();
+updatePreviewTimer();
+// ── Footer ──
+function dismissFooter(){const f=document.getElementById('siteFooter');if(f)f.style.display='none';localStorage.setItem('footerDismissed','1');}
+if(localStorage.getItem('footerDismissed')==='1'){const f=document.getElementById('siteFooter');if(f)f.style.display='none';}
+</script>
+</body>
+</html>

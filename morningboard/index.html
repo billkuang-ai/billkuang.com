@@ -634,9 +634,9 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
   <div class="modal">
     <h3 id="modalTitle">📅 Edit Day</h3>
     <input type="text" id="modalInput" placeholder="🎒 Field Trip  or  Picture Day" maxlength="30">
-    <div style="font-size:.65rem;color:#bbb;margin:-6px 0 10px;font-style:italic">Start with an emoji to show it as an icon</div>
+    <div data-i18n="modal_emoji_hint" style="font-size:.65rem;color:#bbb;margin:-6px 0 10px;font-style:italic">Start with an emoji to show it as an icon</div>
     <div style="margin-bottom:12px">
-      <div style="font-size:.72rem;font-weight:800;color:#999;margin-bottom:7px;text-transform:uppercase;letter-spacing:.5px">Day Color</div>
+      <div data-i18n="modal_day_color" style="font-size:.72rem;font-weight:800;color:#999;margin-bottom:7px;text-transform:uppercase;letter-spacing:.5px">Day Color</div>
       <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
         <button class="modal-color-btn active" data-color="" style="background:#fff;border:2px solid #ddd;border-radius:50%;width:24px;height:24px;padding:0;flex-shrink:0" title="Default (clear)" onclick="setModalColor(this)"></button>
         <button class="modal-color-btn" data-color="noschool"      style="background:#e53935;border:2px solid rgba(255,255,255,.3);border-radius:50%;width:24px;height:24px;padding:0;flex-shrink:0" title="No School / Break" onclick="setModalColor(this)"></button>
@@ -648,10 +648,10 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
       </div>
     </div>
     <div class="modal-btns">
-      <button class="mbtn" onclick="saveEvent()">Save ✓</button>
-      <button class="mbtn del" id="modalDelBtn" onclick="deleteEvent()">Delete</button>
-      <button class="mbtn" id="modalResetBtn" onclick="resetEvent()" style="background:#78909c">↺ Reset</button>
-      <button class="mbtn cancel" onclick="closeModal()">Cancel</button>
+      <button class="mbtn" onclick="saveEvent()" data-i18n="modal_save">Save ✓</button>
+      <button class="mbtn del" id="modalDelBtn" onclick="deleteEvent()" data-i18n="modal_delete">Delete</button>
+      <button class="mbtn" id="modalResetBtn" onclick="resetEvent()" style="background:#78909c" data-i18n="modal_reset">↺ Reset</button>
+      <button class="mbtn cancel" onclick="closeModal()" data-i18n="modal_cancel">Cancel</button>
     </div>
   </div>
 </div>
@@ -677,6 +677,7 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
       <div class="tdot" data-theme="t-blue"   onclick="setTheme('t-blue')"   title="Blue"></div>
       <div class="tdot" data-theme="t-purple" onclick="setTheme('t-purple')" title="Purple"></div>
     </div><span class="hbtn-break"></span>
+    <button class="hbtn lang-toggle" id="langToggleBtn" onclick="toggleLang()" title="Switch language / 切換語言">🀄️</button>
     <button class="hbtn" id="muteBtn" onclick="toggleMute()" title="Sound on/off">🔔</button>
     <button class="hbtn" onclick="savePageSnapshot()" title="Save a copy">💾</button>
     <button class="hbtn" id="collapseAllBtn" onclick="toggleCollapseAll()" title="Show / hide all">⊟</button>
@@ -693,7 +694,7 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
     <div class="card-header" onclick="toggleCard('card-weather')">
       <div class="w-hdr-grid">
         <div class="w-hdr-col">
-          <span class="w-hdr-title"><span class="w-hdr-title-emoji">🌤️</span><span class="w-hdr-title-text">Today's Weather</span></span>
+          <span class="w-hdr-title"><span class="w-hdr-title-emoji">🌤️</span><span class="w-hdr-title-text" data-i18n="weather_title">Today's Weather</span></span>
           <button class="weather-loc-btn" id="weatherLocBtn" onclick="event.stopPropagation();toggleWeatherLoc()" title="Click to change location">Loading…</button>
         </div>
         <div class="w-hdr-col w-hdr-center">
@@ -711,20 +712,20 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
     </div>
     <div class="collapse-content" style="padding-top:8px">
       <div class="weather-btns-row">
-        <button class="wbtn" data-w="sunny"         onclick="pickW(this)"><span class="wico">☀️</span>Sunny</button>
-        <button class="wbtn" data-w="partly_cloudy" onclick="pickW(this)"><span class="wico">⛅</span><span class="partly-nl">Partly<br>Cloudy</span><span class="partly-inline">Partly Cloudy</span></button>
-        <button class="wbtn" data-w="cloudy"        onclick="pickW(this)"><span class="wico">☁️</span>Cloudy</button>
-        <button class="wbtn" data-w="rainy"         onclick="pickW(this)"><span class="wico">🌧️</span>Rainy</button>
-        <button class="wbtn" data-w="stormy"        onclick="pickW(this)"><span class="wico">⛈️</span>Stormy</button>
-        <button class="wbtn" data-w="snowy"         onclick="pickW(this)"><span class="wico">❄️</span>Snowy</button>
-        <button class="wbtn" data-w="windy"         onclick="pickW(this)"><span class="wico">💨</span>Windy</button>
-        <button class="wbtn" data-w="foggy"         onclick="pickW(this)"><span class="wico">🌫️</span>Foggy</button>
+        <button class="wbtn" data-w="sunny"         onclick="pickW(this)"><span class="wico">☀️</span><span data-i18n="weather_sunny">Sunny</span></button>
+        <button class="wbtn" data-w="partly_cloudy" onclick="pickW(this)"><span class="wico">⛅</span><span class="partly-nl" data-i18n="weather_partly_cloudy_nl">Partly<br>Cloudy</span><span class="partly-inline" data-i18n="weather_partly_cloudy">Partly Cloudy</span></button>
+        <button class="wbtn" data-w="cloudy"        onclick="pickW(this)"><span class="wico">☁️</span><span data-i18n="weather_cloudy">Cloudy</span></button>
+        <button class="wbtn" data-w="rainy"         onclick="pickW(this)"><span class="wico">🌧️</span><span data-i18n="weather_rainy">Rainy</span></button>
+        <button class="wbtn" data-w="stormy"        onclick="pickW(this)"><span class="wico">⛈️</span><span data-i18n="weather_stormy">Stormy</span></button>
+        <button class="wbtn" data-w="snowy"         onclick="pickW(this)"><span class="wico">❄️</span><span data-i18n="weather_snowy">Snowy</span></button>
+        <button class="wbtn" data-w="windy"         onclick="pickW(this)"><span class="wico">💨</span><span data-i18n="weather_windy">Windy</span></button>
+        <button class="wbtn" data-w="foggy"         onclick="pickW(this)"><span class="wico">🌫️</span><span data-i18n="weather_foggy">Foggy</span></button>
       </div>
       <div class="weather-loc-row" id="weatherLocRow">
         <input class="weather-zip-input" id="weatherZipInput" type="text" placeholder="ZIP code or city (e.g. 94102, Oakland)" maxlength="40"
                onkeydown="if(event.key==='Enter')applyCustomWeather()">
-        <button class="weather-zip-go" onclick="applyCustomWeather()">Go</button>
-        <button class="weather-zip-sf" onclick="resetToSFWeather()">← Back to SF</button>
+        <button class="weather-zip-go" onclick="applyCustomWeather()" data-i18n="weather_go">Go</button>
+        <button class="weather-zip-sf" onclick="resetToSFWeather()" data-i18n="weather_back_sf">← Back to SF</button>
       </div>
     </div>
   </div>
@@ -732,7 +733,7 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
   <!-- Calendar -->
   <div class="card" id="card-cal">
     <div class="card-header" onclick="toggleCard('card-cal')">
-      <span class="card-title">📅 Calendar</span>
+      <span class="card-title">📅 <span data-i18n="cal_title">Calendar</span></span>
       <div style="display:flex;align-items:center;gap:6px">
         <span class="card-preview" id="preview-cal"></span>
         <span class="card-chevron">▾</span>
@@ -741,17 +742,17 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
     <div class="collapse-content" style="padding-top:0">
       <div class="our-days-row" style="margin-bottom:12px">
         <div class="day-col yest">
-          <div class="day-lbl">Yesterday was</div>
+          <div class="day-lbl" data-i18n="cal_yesterday">Yesterday was</div>
           <div class="day-name" id="dYestName"></div>
           <div class="day-date" id="dYestDate"></div>
         </div>
         <div class="day-col tod">
-          <div class="day-lbl">Today is</div>
+          <div class="day-lbl" data-i18n="cal_today">Today is</div>
           <div class="day-name" id="dTodayName"></div>
           <div class="day-date" id="dTodayDate"></div>
         </div>
         <div class="day-col tom">
-          <div class="day-lbl">Tomorrow will be</div>
+          <div class="day-lbl" data-i18n="cal_tomorrow">Tomorrow will be</div>
           <div class="day-name" id="dTomName"></div>
           <div class="day-date" id="dTomDate"></div>
         </div>
@@ -762,14 +763,14 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
         <button class="nav-btn" onclick="changeMonth(1)">▶</button>
       </div>
       <div class="cal-grid" id="calGrid"></div>
-      <div class="cal-hint">Click any date to add a custom event</div>
+      <div class="cal-hint" data-i18n="cal_hint">Click any date to add a custom event</div>
     </div>
   </div>
 
   <!-- Days of School -->
   <div class="card" id="card-dos">
     <div class="card-header" onclick="toggleCard('card-dos')">
-      <span class="card-title">🏫 Days of School</span>
+      <span class="card-title">🏫 <span data-i18n="dos_title">Days of School</span></span>
       <div style="display:flex;align-items:center;gap:6px">
         <span class="card-preview" id="preview-dos"></span>
         <span class="card-chevron">▾</span>
@@ -779,7 +780,7 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
       <div class="dos-wrap">
         <div class="dos-left">
           <div class="counter-num" id="counterNum">—</div>
-          <div class="counter-label">days of learning!</div>
+          <div class="counter-label" data-i18n="dos_days_learning">days of learning!</div>
           <button class="dos-mode-btn" id="dosModeBtn" onclick="toggleDosMode()" title="Toggle custom day count" style="margin-top:6px;align-self:center">SFUSD 2025–26</button>
           <div class="milestone-msg" id="milestoneMsg"></div>
         </div>
@@ -789,8 +790,8 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
         </div>
         <div class="dos-right">
           <div class="rep-tabs">
-            <button class="rtab active" onclick="switchRep('tally',this)">Tally Marks</button>
-            <button class="rtab" onclick="switchRep('blocks',this)">Base-10 Blocks</button>
+            <button class="rtab active" onclick="switchRep('tally',this)" data-i18n="dos_tally">Tally Marks</button>
+            <button class="rtab" onclick="switchRep('blocks',this)" data-i18n="dos_blocks">Base-10 Blocks</button>
           </div>
           <div id="tallyView"></div>
           <div id="blocksView" style="display:none"></div>
@@ -802,7 +803,7 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
   <!-- Table Points -->
   <div class="card" id="card-tables">
     <div class="card-header card-header-editable" onclick="toggleCard('card-tables')">
-      <span class="card-title">🏆 Table Points</span>
+      <span class="card-title">🏆 <span data-i18n="tbl_title">Table Points</span></span>
       <span class="card-rules card-editable-preview" id="tableRules" contenteditable="true" spellcheck="false"
             onclick="event.stopPropagation()"
             onblur="localStorage.setItem('tableRules',this.textContent)"
@@ -812,8 +813,8 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
     <div class="collapse-content">
       <div class="tables-grid" id="tablesGrid"></div>
       <div class="tables-footer">
-        <button class="tbl-footer-btn" onclick="addTable()">＋ Add Table</button>
-        <button class="tbl-footer-btn danger" onclick="resetAllTables()">↺ Reset All</button>
+        <button class="tbl-footer-btn" onclick="addTable()" data-i18n="tbl_add">＋ Add Table</button>
+        <button class="tbl-footer-btn danger" onclick="resetAllTables()" data-i18n="tbl_reset">↺ Reset All</button>
       </div>
     </div>
   </div>
@@ -821,7 +822,7 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
   <!-- Whiteboard -->
   <div class="card" id="card-wb">
     <div class="card-header card-header-editable" onclick="toggleCard('card-wb')">
-      <span class="card-title">🖊️ Whiteboard</span>
+      <span class="card-title">🖊️ <span data-i18n="wb_title">Whiteboard</span></span>
       <span id="wbQuote" class="card-editable-preview" contenteditable="true" spellcheck="false"
             onclick="event.stopPropagation()"
             onblur="localStorage.setItem('wbQuote',this.textContent)"
@@ -846,12 +847,12 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
         <div class="wb-color" data-color="#ff8a65" style="background:#ff8a65" onclick="wbColor(this)"></div>
         <div class="wb-color" data-color="#80cbc4" style="background:#80cbc4" onclick="wbColor(this)"></div>
         <span style="flex:1"></span>
-        <button class="wb-btn" onclick="clearWB()" style="color:#e53935">✕ Clear</button>
+        <button class="wb-btn" onclick="clearWB()" style="color:#e53935" data-i18n="wb_clear">✕ Clear</button>
       </div>
       <div class="wb-board" id="wbBoard" contenteditable="true" spellcheck="true"
            data-placeholder="Write anything — agenda, math problems, announcements…"
            oninput="saveWB()"></div>
-      <div class="wb-hint">Auto-saved</div>
+      <div class="wb-hint" data-i18n="wb_autosaved">Auto-saved</div>
     </div>
   </div>
 
@@ -862,9 +863,9 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
   <!-- Analog Clock -->
   <div class="card" id="card-clock">
     <div class="card-header" onclick="toggleCard('card-clock')" style="position:relative">
-      <span class="card-title">🕐 Clock</span>
+      <span class="card-title">🕐 <span data-i18n="clock_title">Clock</span></span>
       <div style="position:absolute;left:50%;transform:translateX(-50%)">
-        <button class="bday-famous-toggle" id="clockDigiToggle" onclick="event.stopPropagation();toggleDigiClock()">🔢 Digital</button>
+        <button class="bday-famous-toggle" id="clockDigiToggle" onclick="event.stopPropagation();toggleDigiClock()">🔢 <span data-i18n="clock_digital">Digital</span></button>
       </div>
       <div style="display:flex;align-items:center;gap:6px;margin-left:auto">
         <span class="card-preview" id="preview-clock"></span>
@@ -896,7 +897,7 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
   <!-- Birthdays -->
   <div class="card" id="card-bday">
     <div class="card-header card-header-previewrow" onclick="toggleCard('card-bday')">
-      <span class="card-title">🎂 Birthdays</span>
+      <span class="card-title">🎂 <span data-i18n="bday_title">Birthdays</span></span>
       <span class="card-chevron" style="margin-left:auto">▾</span>
       <div class="card-preview-row">
         <span class="card-preview" id="preview-bday"></span>
@@ -905,7 +906,7 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
     <div class="collapse-content">
       <div class="bday-toprow">
         <div class="bday-month-lbl" id="bdayMonthLbl"></div>
-        <button class="bday-famous-toggle" id="famousToggle" onclick="toggleFamous()">🌟 Famous</button>
+        <button class="bday-famous-toggle" id="famousToggle" onclick="toggleFamous()">🌟 <span data-i18n="bday_famous">Famous</span></button>
       </div>
       <div class="bday-list" id="bdayList"></div>
       <div class="bday-add-row">
@@ -918,7 +919,7 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
   <!-- Schedule -->
   <div class="card" id="card-sched">
     <div class="card-header card-header-previewrow" onclick="toggleCard('card-sched')">
-      <span class="card-title">📋 Today's Schedule</span>
+      <span class="card-title">📋 <span data-i18n="sched_title">Today's Schedule</span></span>
       <span class="card-chevron" style="margin-left:auto">▾</span>
       <div class="card-preview-row">
         <span class="card-preview" id="preview-sched"></span>
@@ -926,15 +927,15 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
     </div>
     <div class="collapse-content">
       <div class="sched-list" id="schedList"></div>
-      <button class="sched-add" onclick="addSchedRow()">＋ Add Time Slot</button>
-      <div class="sched-hint">Saved automatically</div>
+      <button class="sched-add" onclick="addSchedRow()" data-i18n="sched_add">＋ Add Time Slot</button>
+      <div class="sched-hint" data-i18n="sched_hint">Saved automatically</div>
     </div>
   </div>
 
   <!-- Class Roster -->
   <div class="card" id="card-rand">
     <div class="card-header" onclick="toggleCard('card-rand')">
-      <span class="card-title">📋 Class Roster</span>
+      <span class="card-title">📋 <span data-i18n="roster_title">Class Roster</span></span>
       <div style="display:flex;align-items:center;gap:6px">
         <span class="card-preview" id="preview-roster"></span>
         <span class="card-chevron">▾</span>
@@ -942,11 +943,11 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
     </div>
     <div class="collapse-content">
       <div class="rand-controls" style="margin-bottom:8px">
-        <button class="rand-ctrl-btn" onclick="addRandStudent()">＋ Add</button>
+        <button class="rand-ctrl-btn" onclick="addRandStudent()" data-i18n="roster_add">＋ Add</button>
         <div id="attendanceCounter" style="background:#1565c0;color:#fff;border-radius:9px;padding:6px 12px;font-family:'Fredoka One',cursive;font-size:.85rem;white-space:nowrap;cursor:default"></div>
       </div>
       <div class="rand-list-wrap"><div class="rand-list" id="randList"></div></div>
-      <button class="rand-pick-btn" id="randPickBtn" onclick="pickStudent()">🎲 Pick a Student</button>
+      <button class="rand-pick-btn" id="randPickBtn" onclick="pickStudent()">🎲 <span data-i18n="roster_pick">Pick a Student</span></button>
       <div class="rand-result-wrap">
         <div class="rand-result-name" id="randName"></div>
         <div class="rand-result-sub" id="randSub"></div>
@@ -957,7 +958,7 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
   <!-- Timer -->
   <div class="card" id="card-timer">
     <div class="card-header" onclick="toggleCard('card-timer')">
-      <span class="card-title">⏱️ Timer</span>
+      <span class="card-title">⏱️ <span data-i18n="timer_title">Timer</span></span>
       <div style="display:flex;align-items:center;gap:6px;margin-left:auto">
         <div id="timerCollapseControls" style="display:none;align-items:center;gap:4px">
           <span id="timerCollapseDisplay"
@@ -997,13 +998,13 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
         <button class="timer-preset" onclick="setCustomTimer()">Set</button>
       </div>
       <div class="timer-btns">
-        <button class="timer-btn start" id="timerStartBtn" onclick="timerStartPause()">▶ Start</button>
-        <button class="timer-btn reset" onclick="timerReset()">↺ Reset</button>
+        <button class="timer-btn start" id="timerStartBtn" onclick="timerStartPause()">▶ <span data-i18n="timer_start">Start</span></button>
+        <button class="timer-btn reset" onclick="timerReset()">↺ <span data-i18n="timer_reset">Reset</span></button>
       </div>
       <div class="timer-sound-row">
-        <button class="timer-sound-btn active" data-sound="bell"    onclick="setTimerSound(this)">🔔 Bell</button>
-        <button class="timer-sound-btn"        data-sound="alarm"   onclick="setTimerSound(this)">⏰ Alarm</button>
-        <button class="timer-sound-btn"        data-sound="fanfare" onclick="setTimerSound(this)">🎵 Fanfare</button>
+        <button class="timer-sound-btn active" data-sound="bell"    onclick="setTimerSound(this)">🔔 <span data-i18n="timer_bell">Bell</span></button>
+        <button class="timer-sound-btn"        data-sound="alarm"   onclick="setTimerSound(this)">⏰ <span data-i18n="timer_alarm">Alarm</span></button>
+        <button class="timer-sound-btn"        data-sound="fanfare" onclick="setTimerSound(this)">🎵 <span data-i18n="timer_fanfare">Fanfare</span></button>
       </div>
     </div>
   </div>
@@ -1014,10 +1015,305 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
 </div><!-- /wrap -->
 
 <footer class="site-footer" id="siteFooter">
-  <span class="site-footer-text">Free to use &amp; edit · Made for teachers, by a teacher<span class="footer-break"><br></span> <a href="https://github.com/billkuang-ai/billkuang.com" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Bill Kuang</a> · © 2026</span>
+  <span class="site-footer-text" data-i18n="footer_text">Free to use &amp; edit · Made for teachers, by a teacher<span class="footer-break"><br></span> <a href="https://github.com/billkuang-ai/billkuang.com" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Bill Kuang</a> · © 2026</span>
   <button class="site-footer-x" onclick="dismissFooter()" title="Dismiss">✕</button>
 </footer>
 <script>
+const I18N = {
+  en: {
+    lang_btn: '中文',
+    // Modal
+    modal_emoji_hint: 'Start with an emoji to show it as an icon',
+    modal_day_color: 'Day Color',
+    modal_save: 'Save ✓',
+    modal_delete: 'Delete',
+    modal_reset: '↺ Reset',
+    modal_cancel: 'Cancel',
+    // Weather
+    weather_title: "Today's Weather",
+    weather_sunny: 'Sunny',
+    weather_partly_cloudy_nl: 'Partly<br>Cloudy',
+    weather_partly_cloudy: 'Partly Cloudy',
+    weather_cloudy: 'Cloudy',
+    weather_rainy: 'Rainy',
+    weather_stormy: 'Stormy',
+    weather_snowy: 'Snowy',
+    weather_windy: 'Windy',
+    weather_foggy: 'Foggy',
+    weather_go: 'Go',
+    weather_back_sf: '← Back to SF',
+    weather_zip_placeholder: 'ZIP code or city (e.g. 94102, Oakland)',
+    // Calendar
+    cal_title: 'Calendar',
+    cal_yesterday: 'Yesterday was',
+    cal_today: 'Today is',
+    cal_tomorrow: 'Tomorrow will be',
+    cal_hint: 'Click any date to add a custom event',
+    // Days of School
+    dos_title: 'Days of School',
+    dos_days_learning: 'days of learning!',
+    dos_tally: 'Tally Marks',
+    dos_blocks: 'Base-10 Blocks',
+    dos_sfusd_btn: 'SFUSD 2025–26',
+    dos_custom_btn: '✏️ Custom Mode',
+    dos_school_days_left: 'school days left',
+    dos_preview_day: 'Day',
+    dos_preview_left: 'left',
+    roster_present_label: 'present',
+    dos_school_starts: 'School starts Aug 18',
+    dos_year_complete: 'Year complete! 🎓',
+    dos_great_summer: '🎓 Have a great summer!',
+    dos_today_exclaim: 'today!',
+    dos_days_until: 'days until',
+    dos_no_days_yet: 'No school days yet',
+    dos_hundreds: 'Hundreds',
+    dos_tens: 'Tens',
+    dos_ones: 'Ones',
+    // Table Points
+    tbl_title: 'Table Points',
+    tbl_add: '＋ Add Table',
+    tbl_reset: '↺ Reset All',
+    tbl_pts: 'pts',
+    // Whiteboard
+    wb_title: 'Whiteboard',
+    wb_clear: '✕ Clear',
+    wb_autosaved: 'Auto-saved',
+    wb_placeholder: 'Write anything — agenda, math problems, announcements…',
+    // Clock
+    clock_title: 'Clock',
+    clock_digital: 'Digital',
+    // Birthdays
+    bday_title: 'Birthdays',
+    bday_famous: 'Famous',
+    bday_name_placeholder: 'Student name',
+    bday_today: '🎂 Today!',
+    bday_no_this_month: 'No birthdays this month',
+    // Schedule
+    sched_title: "Today's Schedule",
+    sched_add: '＋ Add Time Slot',
+    sched_hint: 'Saved automatically',
+    sched_time_placeholder: '8:00 AM',
+    sched_label_placeholder: 'Math, Reading…',
+    // Class Roster
+    roster_title: 'Class Roster',
+    roster_add: '＋ Add',
+    roster_pick: 'Pick a Student',
+    roster_absent: 'Absent',
+    roster_present: 'Present',
+    roster_picking: 'Picking…',
+    roster_selected: '🎉 Selected!',
+    roster_no_present: 'No present students!',
+    // Timer
+    timer_title: 'Timer',
+    timer_start: 'Start',
+    timer_pause: 'Pause',
+    timer_reset: 'Reset',
+    timer_bell: 'Bell',
+    timer_alarm: 'Alarm',
+    timer_fanfare: 'Fanfare',
+    timer_custom_placeholder: 'Custom min',
+    timer_set: 'Set',
+    timer_collapse_placeholder: 'm:ss',
+    // Pre-populated defaults
+    header_title: 'Our Morning Board',
+    header_sub: "Inspired by Mr. Fung's technological curiosity and motivational calendars. Click to edit.",
+    tbl_rules_default: 'Be Safe, Be Respectful, Be Responsible',
+    wb_quote_default: '"History Has Its Eyes on You"',
+    sched_morning: 'Morning Routine',
+    sched_recess_k1: 'Recess (K-1)',
+    sched_lunch_k1: 'Lunch (K-1)',
+    sched_pm_recess: 'PM Recess (K-1)',
+    sched_dismissal: 'Dismissal',
+    roster_student_prefix: 'Student',
+    tbl_table_prefix: 'Table',
+    // Weather dynamic strings
+    weather_live: 'Live',
+    weather_feels: 'Feels',
+    weather_fetching: 'Fetching…',
+    weather_click_temp: 'Click temp to enter',
+    weather_manual_undo: 'Manual · tap to undo',
+    weather_loading: 'Loading…',
+    season_short_winter: 'Dec · Jan · Feb',
+    season_short_spring: 'Mar · Apr · May',
+    season_short_summer: 'Jun · Jul · Aug',
+    season_short_fall:   'Sep · Oct · Nov',
+    // Footer
+    footer_text: 'Free to use & edit · Made for teachers, by a teacher',
+    // Seasons
+    season_winter: 'Winter',
+    season_spring: 'Spring',
+    season_summer: 'Summer',
+    season_fall: 'Fall',
+    // Day/Month names
+    months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+    months_short: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    days: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+    days_short: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+    // Milestones
+    milestone_10: '🎉 Ten whole days!',
+    milestone_25: '⭐ 25 days — on a roll!',
+    milestone_50: '🏆 Halfway to 100!',
+    milestone_100: '🎊 100 DAYS OF SCHOOL! 🎊',
+    milestone_150: '🚀 150 days! Almost there!',
+    milestone_175: '⚡ So close!',
+    milestone_180: '🎓 Amazing year!',
+    // Breaks
+    break_fall: 'Fall Recess',
+    break_winter: 'Winter Break',
+    break_spring: 'Spring Break',
+    break_summer: 'Summer Break',
+  },
+  zh: {
+    lang_btn: 'English',
+    // Modal
+    modal_emoji_hint: '以表情符號開頭，將顯示為圖示',
+    modal_day_color: '日期顏色',
+    modal_save: '儲存 ✓',
+    modal_delete: '刪除',
+    modal_reset: '↺ 重設',
+    modal_cancel: '取消',
+    // Weather
+    weather_title: '今日天氣',
+    weather_sunny: '晴天',
+    weather_partly_cloudy_nl: '多雲<br>時晴',
+    weather_partly_cloudy: '多雲時晴',
+    weather_cloudy: '陰天',
+    weather_rainy: '下雨',
+    weather_stormy: '雷雨',
+    weather_snowy: '下雪',
+    weather_windy: '大風',
+    weather_foggy: '有霧',
+    weather_go: '確認',
+    weather_back_sf: '← 返回舊金山',
+    weather_zip_placeholder: '郵遞區號或城市（如 94102、Oakland）',
+    // Calendar
+    cal_title: '月曆',
+    cal_yesterday: '昨天是',
+    cal_today: '今天是',
+    cal_tomorrow: '明天是',
+    cal_hint: '點擊任何日期以新增事件',
+    // Days of School
+    dos_title: '上學天數',
+    dos_days_learning: '天的學習！',
+    dos_tally: '計數符號',
+    dos_blocks: '十進制積木',
+    dos_sfusd_btn: 'SFUSD 2025–26',
+    dos_custom_btn: '✏️ 自訂模式',
+    dos_school_days_left: '個剩餘上學日',
+    dos_preview_day: '第',
+    dos_preview_left: '天剩餘',
+    roster_present_label: '位出席',
+    dos_school_starts: '學校於8月18日開始',
+    dos_year_complete: '學年結束！🎓',
+    dos_great_summer: '🎓 祝暑假愉快！',
+    dos_today_exclaim: '就是今天！',
+    dos_days_until: '天後',
+    dos_no_days_yet: '尚無上學記錄',
+    dos_hundreds: '百位',
+    dos_tens: '十位',
+    dos_ones: '個位',
+    // Table Points
+    tbl_title: '小組積分',
+    tbl_add: '＋ 新增小組',
+    tbl_reset: '↺ 全部重設',
+    tbl_pts: '分',
+    // Whiteboard
+    wb_title: '白板',
+    wb_clear: '✕ 清除',
+    wb_autosaved: '已自動儲存',
+    wb_placeholder: '可以寫任何內容——議程、數學題、公告……',
+    // Clock
+    clock_title: '時鐘',
+    clock_digital: '數字',
+    // Birthdays
+    bday_title: '生日',
+    bday_famous: '名人',
+    bday_name_placeholder: '學生姓名',
+    bday_today: '🎂 今天！',
+    bday_no_this_month: '本月沒有生日',
+    // Schedule
+    sched_title: '今日課程表',
+    sched_add: '＋ 新增時段',
+    sched_hint: '已自動儲存',
+    sched_time_placeholder: '上午 8:00',
+    sched_label_placeholder: '數學、閱讀……',
+    // Class Roster
+    roster_title: '班級名單',
+    roster_add: '＋ 新增',
+    roster_pick: '隨機抽學生',
+    roster_absent: '缺席',
+    roster_present: '出席',
+    roster_picking: '抽選中……',
+    roster_selected: '🎉 已抽中！',
+    roster_no_present: '沒有出席的學生！',
+    // Timer
+    timer_title: '計時器',
+    timer_start: '開始',
+    timer_pause: '暫停',
+    timer_reset: '重設',
+    timer_bell: '鈴聲',
+    timer_alarm: '鬧鐘',
+    timer_fanfare: '音樂',
+    timer_custom_placeholder: '自訂分鐘',
+    timer_set: '設定',
+    timer_collapse_placeholder: '分:秒',
+    // Pre-populated defaults
+    header_title: '我們的晨間看板',
+    header_sub: '靈感來自馮老師對科技的好奇心與激勵日曆。點擊即可編輯。',
+    tbl_rules_default: '保持安全、相互尊重、負責任',
+    wb_quote_default: '「歷史的眼睛注視著你」',
+    sched_morning: '早晨例行活動',
+    sched_recess_k1: '休息時間（幼K-1年級）',
+    sched_lunch_k1: '午餐時間（幼K-1年級）',
+    sched_pm_recess: '下午休息（幼K-1年級）',
+    sched_dismissal: '放學',
+    roster_student_prefix: '學生',
+    tbl_table_prefix: '第',
+    // Weather dynamic strings
+    weather_live: '即時',
+    weather_feels: '體感',
+    weather_fetching: '載入中…',
+    weather_click_temp: '點擊輸入溫度',
+    weather_manual_undo: '手動輸入 · 點擊還原',
+    weather_loading: '載入中…',
+    season_short_winter: '12月 · 1月 · 2月',
+    season_short_spring: '3月 · 4月 · 5月',
+    season_short_summer: '6月 · 7月 · 8月',
+    season_short_fall:   '9月 · 10月 · 11月',
+    // Footer
+    footer_text: '免費使用與編輯 · 由教師為教師製作',
+    // Seasons
+    season_winter: '冬季',
+    season_spring: '春季',
+    season_summer: '夏季',
+    season_fall: '秋季',
+    // Day/Month names
+    months: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+    months_short: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+    days: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+    days_short: ['日','一','二','三','四','五','六'],
+    // Milestones
+    milestone_10: '🎉 整整十天！',
+    milestone_25: '⭐ 25天——繼續加油！',
+    milestone_50: '🏆 距100天只剩一半！',
+    milestone_100: '🎊 上學100天！🎊',
+    milestone_150: '🚀 150天！快到了！',
+    milestone_175: '⚡ 快完成了！',
+    milestone_180: '🎓 太棒的一年！',
+    // Breaks
+    break_fall: '秋假',
+    break_winter: '寒假',
+    break_spring: '春假',
+    break_summer: '暑假',
+  }
+};
+
+let currentLang = localStorage.getItem('boardLang') || 'en';
+
+function t(key) {
+  return I18N[currentLang][key] || I18N['en'][key] || key;
+}
+
 function safeParse(key, fallback) { try { const val = localStorage.getItem(key); return val ? JSON.parse(val) : fallback; } catch (e) { return fallback; } }
 // ── SFUSD DATA ──
 const NO_SCHOOL=new Set(['2025-08-12','2025-08-13','2025-08-14','2025-08-15','2025-09-01','2025-10-13','2025-11-11','2025-11-24','2025-11-25','2025-11-26','2025-11-27','2025-11-28','2025-12-22','2025-12-23','2025-12-24','2025-12-25','2025-12-26','2025-12-29','2025-12-30','2025-12-31','2026-01-01','2026-01-02','2026-01-19','2026-02-16','2026-02-17','2026-03-27','2026-03-28','2026-03-29','2026-03-30','2026-03-31','2026-04-01','2026-04-02','2026-04-03','2026-05-25']);
@@ -1441,7 +1737,10 @@ function renderTables(){
 }
 function adjustPts(i,d){tables[i].pts=Math.max(0,tables[i].pts+d);saveTables();renderTables();if(d>0&&!muted){playTone(660,.08,'sine',.15,0);playTone(880,.2,'sine',.18,.09);}}
 function removeTable(i){if(!confirm(`Remove "${tables[i].name}"?`))return;tables.splice(i,1);saveTables();renderTables();}
-function addTable(){tables.push({name:`Table ${tables.length+1}`,pts:0});saveTables();renderTables();}
+function addTable(){
+  const prefix = currentLang === 'zh' ? `第${tables.length+1}組` : `Table ${tables.length+1}`;
+  tables.push({name:prefix,pts:0});saveTables();renderTables();
+}
 function resetAllTables(){if(!confirm('Reset all table points to zero?'))return;tables.forEach(t=>t.pts=0);saveTables();renderTables();}
 
 // ── WEATHER ──
@@ -1463,7 +1762,7 @@ function toggleManualTemp(){
     el.textContent='…';
     el.title='Click to enter manually';
     el.classList.remove('manual-mode');
-    document.getElementById('tempFeels').textContent='Fetching…';
+    document.getElementById('tempFeels').textContent=t('weather_fetching');
     fetchWeather(weatherCustomLat,weatherCustomLon,weatherCustomLabel);
   } else {
     enableManualTemp();
@@ -1484,7 +1783,7 @@ function enableManualTemp(){
     if(v&&!/°/.test(v))v=v+'°F';
     el.textContent=v||'—';
     localStorage.setItem('manualTemp',el.textContent);
-    document.getElementById('tempFeels').textContent='Manual · tap to undo';
+    document.getElementById('tempFeels').textContent=t('weather_manual_undo');
     localStorage.setItem('manualFeels','Manual');
     el.classList.add('manual-mode');
     el.title='Click to return to automatic';
@@ -1495,13 +1794,13 @@ function enableManualTemp(){
 function applyWeatherData(data, label){
   const wc=data.current;
   document.getElementById('tempNum').textContent=`${Math.round(wc.temperature_2m)}°F`;
-  document.getElementById('tempFeels').textContent=`Feels ${Math.round(wc.apparent_temperature)}°F · ${Math.round(wc.wind_speed_10m)}mph`;
+  document.getElementById('tempFeels').textContent=`${t('weather_feels')} ${Math.round(wc.apparent_temperature)}°F · ${Math.round(wc.wind_speed_10m)}mph`;
   localStorage.removeItem('manualTemp');
   localStorage.removeItem('manualFeels');
   const wbtn=document.querySelector(`.wbtn[data-w="${wmoToKey(wc.weather_code,wc.wind_speed_10m)}"]`);
   if(wbtn){document.querySelectorAll('.wbtn').forEach(b=>b.classList.remove('sel'));wbtn.classList.add('sel');}
   const locBtn=document.getElementById('weatherLocBtn');
-  locBtn.textContent=`Live · ${label}`;
+  locBtn.textContent=`${t('weather_live')} · ${label}`;
   locBtn.classList.add('on');
 }
 
@@ -1524,10 +1823,10 @@ async function fetchWeather(lat,lon,label){
       tn.textContent=mt;
       tn.classList.add('manual-mode');
       tn.title='Click to return to automatic';
-      document.getElementById('tempFeels').textContent=localStorage.getItem('manualFeels')||'Manual · tap to undo';
+      document.getElementById('tempFeels').textContent=localStorage.getItem('manualFeels')?t('weather_manual_undo'):t('weather_manual_undo');
     } else {
       document.getElementById('tempNum').textContent='—';
-      document.getElementById('tempFeels').textContent='Click temp to enter';
+      document.getElementById('tempFeels').textContent=t('weather_click_temp');
     }
   }
 }
@@ -1545,7 +1844,7 @@ async function applyCustomWeather(){
   const input=document.getElementById('weatherZipInput').value.trim();
   if(!input)return;
   const locBtn=document.getElementById('weatherLocBtn');
-  locBtn.textContent='Loading…';
+  locBtn.textContent=t('weather_loading');
   try{
     const geo=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(input)}&count=1&language=en&format=json`);
     const gd=await geo.json();
@@ -1606,7 +1905,7 @@ function updateRandCount(){
   const present=students.filter(s=>!s.absent).length;
   const total=students.length;
   const el=document.getElementById('attendanceCounter');
-  if(el)el.textContent=`${present}/${total} present`;
+  if(el)el.textContent=`${present}/${total} ${t('roster_present_label')}`;
   updatePreviewRoster();
 }
 function renderStudents(){
@@ -1623,7 +1922,7 @@ function renderStudents(){
 }
 function toggleAbsent(i){students[i].absent=!students[i].absent;saveStudents();renderStudents();}
 function removeStudent(i){students.splice(i,1);saveStudents();renderStudents();}
-function addRandStudent(){students.push({name:`Student ${students.length+1}`,absent:false});saveStudents();renderStudents();setTimeout(()=>{const ins=document.querySelectorAll('.rand-sname');if(ins.length){ins[ins.length-1].focus();ins[ins.length-1].select();}},60);}
+function addRandStudent(){students.push({name:`${t('roster_student_prefix')} ${students.length+1}`,absent:false});saveStudents();renderStudents();setTimeout(()=>{const ins=document.querySelectorAll('.rand-sname');if(ins.length){ins[ins.length-1].focus();ins[ins.length-1].select();}},60);}
 function importFromBdays(){const names=birthdays.map(b=>b.name).filter(n=>!students.find(s=>s.name===n));if(!names.length){alert('No new names to import.');return;}names.forEach(n=>students.push({name:n,absent:false}));saveStudents();renderStudents();alert(`Imported ${names.length} student(s)!`);}
 function clearRandHistory(){randHistory=[];localStorage.setItem('randHistory',JSON.stringify(randHistory));const el=document.getElementById('randHistory');if(el)el.textContent='';}
 function updateRandHistory(){const el=document.getElementById('randHistory');if(!el)return;const r=randHistory.slice(-3).reverse();el.textContent=r.length?`Last: ${r.join(' · ')}`:''}
@@ -1793,9 +2092,9 @@ function updatePreviewDOS(){
   const rem=dosCustomMode?'':(() => {
     const today=new Date();
     if(today<SCHOOL_START||today>SCHOOL_END)return'';
-    return`· ${schoolDaysRemaining(today)} left`;
+    return`· ${schoolDaysRemaining(today)} ${t('dos_preview_left')}`;
   })();
-  el.textContent=count?`Day ${count} ${rem}`.trim():'';
+  el.textContent=count?`${t('dos_preview_day')} ${count} ${rem}`.trim():'';
 }
 function updatePreviewClock(){
   const el=document.getElementById('preview-clock');if(!el)return;
@@ -1854,7 +2153,7 @@ function updatePreviewSched(){
 function updatePreviewRoster(){
   const el=document.getElementById('preview-roster');if(!el)return;
   const present=students.filter(s=>!s.absent).length;
-  el.textContent=`${present}/${students.length} present`;
+  el.textContent=`${present}/${students.length} ${t('roster_present_label')}`;
 }
 function updatePreviewTimer(){
   const el=document.getElementById('preview-timer');if(!el)return;
@@ -1878,6 +2177,347 @@ updateRandHistory();
 renderTables();
 updateTimerDisplay();
 restoreCardStates();
+// ── LANGUAGE TOGGLE (English / Traditional Chinese) ──
+// i18n moved to top of script
+
+function applyI18n() {
+  const lang = currentLang;
+  // Static data-i18n elements (innerHTML for ones that may have HTML like <br>)
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    const val = t(key);
+    if (key === 'weather_partly_cloudy_nl') {
+      el.innerHTML = val;
+    } else if (key === 'footer_text') {
+      el.innerHTML = lang === 'zh'
+        ? '免費使用與編輯 · 由教師為教師製作<span class="footer-break"><br></span> <a href="https://github.com/billkuang-ai/billkuang.com" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Bill Kuang</a> · © 2026'
+        : 'Free to use &amp; edit · Made for teachers, by a teacher<span class="footer-break"><br></span> <a href="https://github.com/billkuang-ai/billkuang.com" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Bill Kuang</a> · © 2026';
+    } else {
+      el.textContent = val;
+    }
+  });
+
+  // Toggle button — always shows the emoji, no text swap needed
+  // (emoji is universal; tooltip explains the action)
+
+  // Placeholders
+  const wzip = document.getElementById('weatherZipInput');
+  if (wzip) wzip.placeholder = t('weather_zip_placeholder');
+  const bdayNameIn = document.getElementById('bdayName');
+  if (bdayNameIn) bdayNameIn.placeholder = t('bday_name_placeholder');
+  const timerCustomIn = document.getElementById('timerCustom');
+  if (timerCustomIn) timerCustomIn.placeholder = t('timer_custom_placeholder');
+  const timerCollapseIn = document.getElementById('timerCollapseInput');
+  if (timerCollapseIn) timerCollapseIn.placeholder = t('timer_collapse_placeholder');
+  const wbBoard = document.getElementById('wbBoard');
+  if (wbBoard) wbBoard.dataset.placeholder = t('wb_placeholder');
+
+  // Pre-populated defaults — only swap if content still matches a known default
+  const otherLang = lang === 'zh' ? 'en' : 'zh';
+  function swapDefault(elId, enKey, zhKey) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    const current = el.textContent.trim();
+    const enVal = I18N.en[enKey || zhKey];
+    const zhVal = I18N.zh[zhKey || enKey];
+    // Swap if it matches the opposite language's default
+    if (lang === 'zh' && current === enVal) el.textContent = zhVal;
+    if (lang === 'en' && current === zhVal) el.textContent = enVal;
+  }
+  swapDefault('headerTitle', 'header_title', 'header_title');
+  swapDefault('headerSub',   'header_sub',   'header_sub');
+  swapDefault('tableRules',  'tbl_rules_default', 'tbl_rules_default');
+  swapDefault('wbQuote',     'wb_quote_default',  'wb_quote_default');
+
+  // Schedule labels — swap row by row if still at a known default
+  const schedDefaults = {
+    en: ['Morning Routine','Recess (K-1)','Lunch (K-1)','PM Recess (K-1)','Dismissal'],
+    zh: ['早晨例行活動','休息時間（幼K-1年級）','午餐時間（幼K-1年級）','下午休息（幼K-1年級）','放學']
+  };
+  const fromLang = lang === 'zh' ? 'en' : 'zh';
+  const toLang   = lang;
+  schedule.forEach((row, i) => {
+    const idx = schedDefaults[fromLang].indexOf(row.label);
+    if (idx !== -1) {
+      row.label = schedDefaults[toLang][idx];
+    }
+  });
+  localStorage.setItem('schedule', JSON.stringify(schedule));
+  renderSchedule();
+
+  // Table names — swap "Table N" / "第N組" if still at default
+  const enTblPrefix = I18N.en.tbl_table_prefix;
+  const zhTblPrefix = I18N.zh.tbl_table_prefix;
+  tables.forEach((tbl, i) => {
+    const num = i + 1;
+    if (lang === 'zh' && tbl.name === `${enTblPrefix} ${num}`) tbl.name = `${zhTblPrefix}${num}組`;
+    if (lang === 'en' && tbl.name === `${zhTblPrefix}${num}組`) tbl.name = `${enTblPrefix} ${num}`;
+  });
+  saveTables();
+  renderTables();
+
+  // Student names — swap "Student N" / "學生 N" prefix if still at default
+  const enPrefix = I18N.en.roster_student_prefix;
+  const zhPrefix = I18N.zh.roster_student_prefix;
+  students.forEach((s, i) => {
+    const num = i + 1;
+    if (lang === 'zh' && s.name === `${enPrefix} ${num}`) s.name = `${zhPrefix} ${num}`;
+    if (lang === 'en' && s.name === `${zhPrefix} ${num}`) s.name = `${enPrefix} ${num}`;
+  });
+  saveStudents();
+  renderStudents();
+
+  // Re-render live weather strings (Feels, Live, season short months)
+  const feelsEl = document.getElementById('tempFeels');
+  if (feelsEl) {
+    const cur = feelsEl.textContent;
+    if (cur.startsWith('Feels ') || cur.startsWith('體感 ')) {
+      // Re-parse stored temp/wind and reformat
+      const m = cur.match(/[\d.]+/g);
+      if (m && m.length >= 2) feelsEl.textContent = `${t('weather_feels')} ${m[0]}°F · ${m[1]}mph`;
+    } else if (cur === 'Fetching…' || cur === '載入中…') {
+      feelsEl.textContent = t('weather_fetching');
+    } else if (cur === 'Click temp to enter' || cur === '點擊輸入溫度') {
+      feelsEl.textContent = t('weather_click_temp');
+    } else if (cur === 'Manual · tap to undo' || cur === '手動輸入 · 點擊還原') {
+      feelsEl.textContent = t('weather_manual_undo');
+    }
+  }
+  const locBtn = document.getElementById('weatherLocBtn');
+  if (locBtn) {
+    const cur = locBtn.textContent;
+    const liveEn = 'Live · ', liveZh = '即時 · ';
+    if (cur.startsWith(liveEn)) locBtn.textContent = `${t('weather_live')} · ${cur.slice(liveEn.length)}`;
+    else if (cur.startsWith(liveZh)) locBtn.textContent = `${t('weather_live')} · ${cur.slice(liveZh.length)}`;
+    else if (cur === 'Loading…' || cur === '載入中…') locBtn.textContent = t('weather_loading');
+  }
+  if (timerStartBtn) {
+    const isPaused = timerStartBtn.classList.contains('pause');
+    const spanEl = timerStartBtn.querySelector('span[data-i18n]');
+    if (spanEl) spanEl.textContent = isPaused ? t('timer_pause') : t('timer_start');
+  }
+
+  // Days of school dynamic mode button
+  const dosModeBtn = document.getElementById('dosModeBtn');
+  if (dosModeBtn) {
+    dosModeBtn.textContent = dosCustomMode ? t('dos_custom_btn') : t('dos_sfusd_btn');
+  }
+
+  // Refresh dynamic content that uses language-dependent strings
+  updateDates();
+  updateCounter();
+  renderCalendar();
+  renderBdays();
+  renderStudents();
+  applyTheme(); // refreshes season name
+}
+
+function toggleLang() {
+  currentLang = currentLang === 'en' ? 'zh' : 'en';
+  localStorage.setItem('boardLang', currentLang);
+  // Patch data arrays used by render functions
+  patchLangData();
+  applyI18n();
+}
+
+function patchLangData() {
+  // Patch the MONTHS, DAYS, DAYSSHORT arrays in-place so all dynamic renders use them
+  const m = I18N[currentLang].months;
+  const ms = I18N[currentLang].months_short;
+  const d = I18N[currentLang].days;
+  const ds = I18N[currentLang].days_short;
+  MONTHS.splice(0, 12, ...m);
+  DAYSSHORT.splice(0, 7, ...ds);
+  DAYS.splice(0, 7, ...d);
+
+  // Patch season names and short month strings
+  const sNames = {
+    winter: I18N[currentLang].season_winter,
+    spring: I18N[currentLang].season_spring,
+    summer: I18N[currentLang].season_summer,
+    fall:   I18N[currentLang].season_fall
+  };
+  const sShort = {
+    winter: I18N[currentLang].season_short_winter,
+    spring: I18N[currentLang].season_short_spring,
+    summer: I18N[currentLang].season_short_summer,
+    fall:   I18N[currentLang].season_short_fall
+  };
+  SEASONS.forEach(s => { s.name = sNames[s.key]; s.short = sShort[s.key]; });
+
+  // Patch break names
+  const brMap = {
+    'Fall Recess': I18N[currentLang].break_fall,
+    '秋假': currentLang === 'en' ? 'Fall Recess' : '秋假',
+    'Winter Break': I18N[currentLang].break_winter,
+    '寒假': currentLang === 'en' ? 'Winter Break' : '寒假',
+    'Spring Break': I18N[currentLang].break_spring,
+    '春假': currentLang === 'en' ? 'Spring Break' : '春假',
+    'Summer Break': I18N[currentLang].break_summer,
+    '暑假': currentLang === 'en' ? 'Summer Break' : '暑假',
+  };
+  BREAKS.forEach(b => {
+    b.name = brMap[b.name] || b.name;
+  });
+
+  // Patch milestone messages
+  const msMap = {
+    10: t('milestone_10'), 25: t('milestone_25'), 50: t('milestone_50'),
+    100: t('milestone_100'), 150: t('milestone_150'), 175: t('milestone_175'), 180: t('milestone_180')
+  };
+  Object.assign(MILESTONE_MSG, msMap);
+}
+
+// Patch renderStudents to use translated Absent/Present
+const _origRenderStudents = renderStudents;
+renderStudents = function() {
+  const list = document.getElementById('randList'); list.innerHTML = '';
+  students.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'rand-student' + (s.absent ? ' rand-absent' : '');
+    const absentLabel = s.absent ? t('roster_absent') : t('roster_present');
+    div.innerHTML = `<span class="rand-num">${i+1}</span>
+      <input class="rand-sname" value="${s.name}" onchange="students[${i}].name=this.value;saveStudents()">
+      <button class="rand-absent-btn${s.absent ? '' : ' present-blue'}" style="${s.absent ? '' : 'background:#1565c0;border-color:#0d47a1;color:#fff;'}" onclick="toggleAbsent(${i})">${absentLabel}</button>
+      <button class="rand-del" onclick="removeStudent(${i})">✕</button>`;
+    list.appendChild(div);
+  });
+  updateRandCount();
+};
+
+// Patch pickStudent to use translated picking/selected text
+const _origPickStudent = pickStudent;
+pickStudent = function() {
+  if (randSpinning) return;
+  const pool = students.filter(s => !s.absent);
+  if (!pool.length) { alert(t('roster_no_present')); return; }
+  randSpinning = true; document.getElementById('randPickBtn').disabled = true;
+  const nameEl = document.getElementById('randName'), subEl = document.getElementById('randSub');
+  nameEl.classList.add('spinning'); nameEl.style.display = 'block'; subEl.style.display = 'block';
+  subEl.textContent = t('roster_picking');
+  const winner = pool[Math.floor(Math.random() * pool.length)];
+  let spins = 0; const total = 22 + Math.floor(Math.random() * 8);
+  function spin() {
+    nameEl.textContent = pool[Math.floor(Math.random() * pool.length)].name; spins++;
+    const delay = spins < total*.6 ? 60 : spins < total*.85 ? 110 : spins < total*.95 ? 200 : 350;
+    if (spins < total) setTimeout(spin, delay);
+    else {
+      nameEl.textContent = winner.name; nameEl.classList.remove('spinning');
+      subEl.textContent = t('roster_selected');
+      randHistory.push(winner.name);
+      if (randHistory.length > 10) randHistory.shift();
+      localStorage.setItem('randHistory', JSON.stringify(randHistory));
+      updateRandHistory(); randSpinning = false;
+      document.getElementById('randPickBtn').disabled = false;
+      if (!muted) { playTone(880,.08,'sine',.2,0); playTone(1047,.3,'sine',.25,.1); }
+    }
+  }
+  spin();
+};
+
+// Patch updateCounter to use translated labels
+const _origUpdateCounter = updateCounter;
+updateCounter = function() {
+  if (dosCustomMode) return;
+  const today = new Date();
+  let count = today >= SCHOOL_START && today <= SCHOOL_END ? countSchoolDays(today) : today > SCHOOL_END ? 180 : 0;
+  document.getElementById('counterNum').textContent = count;
+  document.getElementById('milestoneMsg').textContent = MILESTONE_MSG[count] || '';
+  const rem = schoolDaysRemaining(today);
+  const remEl = document.getElementById('dosRemaining');
+  if (today >= SCHOOL_START && today <= SCHOOL_END)
+    remEl.innerHTML = `<span class='dos-stat-num'>${rem}</span><span class='dos-stat-label'>${t('dos_school_days_left')}</span>`;
+  else if (today < SCHOOL_START)
+    remEl.innerHTML = `<span class='dos-stat-label'>${t('dos_school_starts')}</span>`;
+  else
+    remEl.innerHTML = `<span class='dos-stat-label'>${t('dos_year_complete')}</span>`;
+  const br = daysUntilBreak(today), bc = document.getElementById('breakCountdown');
+  if (br) bc.innerHTML = br.days === 0
+    ? `<span class='dos-stat-label'>${br.emoji} ${br.name} ${t('dos_today_exclaim')}</span>`
+    : `<span class='dos-stat-num'>${br.days}</span><span class='dos-stat-label'>${t('dos_days_until')} ${br.name} ${br.emoji}</span>`;
+  else bc.innerHTML = `<span class='dos-stat-label'>${t('dos_great_summer')}</span>`;
+  if (count !== lastCount) { renderTally(count); renderBlocks(count); if (MILESTONES.includes(count) && count > 0) { launchConfetti(); playChime(); } lastCount = count; }
+  updatePreviewDOS();
+};
+
+// Patch renderTally/renderBlocks "No school days yet" label
+const _origRenderTally = renderTally;
+renderTally = function(n) {
+  const wrap = document.getElementById('tallyView'); wrap.innerHTML = '';
+  if (!n) { wrap.innerHTML = `<span style="color:#bbb;font-size:.78rem">${t('dos_no_days_yet')}</span>`; return; }
+  const outer = document.createElement('div'); outer.className = 'tally-wrap';
+  function addBreak(){const br=document.createElement('div');br.style.cssText='width:100%;height:0;flex-basis:100%';outer.appendChild(br);}
+  const totalGrps = Math.floor(n/5);
+  for (let g = 0; g < totalGrps; g++) {
+    if (g > 0 && g % 10 === 0) addBreak();
+    const grp = document.createElement('div'); grp.className = 'tally-group complete';
+    for (let i = 0; i < 4; i++) { const b = document.createElement('div'); b.className = 't-bar'; grp.appendChild(b); }
+    outer.appendChild(grp);
+  }
+  const r = n % 5; if (r) {
+    if (totalGrps > 0 && totalGrps % 10 === 0) addBreak();
+    const grp = document.createElement('div'); grp.className = 'tally-group';
+    for (let i = 0; i < r; i++) { const b = document.createElement('div'); b.className = 't-bar'; grp.appendChild(b); }
+    outer.appendChild(grp);
+  }
+  wrap.appendChild(outer);
+};
+
+const _origRenderBlocks = renderBlocks;
+renderBlocks = function(n) {
+  const wrap = document.getElementById('blocksView'); wrap.innerHTML = '';
+  if (!n) { wrap.innerHTML = `<span style="color:#bbb;font-size:.78rem">${t('dos_no_days_yet')}</span>`; return; }
+  const h = Math.floor(n/100), ten = Math.floor((n%100)/10), o = n%10;
+  const outer = document.createElement('div'); outer.className = 'blocks-wrap';
+  if (h) { const col = document.createElement('div'); col.className = 'block-col'; col.innerHTML = `<div class="block-label">${t('dos_hundreds')}</div>`; for (let i=0;i<h;i++){const b=document.createElement('div');b.className='b-hundred';col.appendChild(b);} outer.appendChild(col); }
+  if (ten) { const col = document.createElement('div'); col.className = 'block-col'; col.innerHTML = `<div class="block-label">${t('dos_tens')}</div>`; const bg=document.createElement('div');bg.style='display:flex;gap:3px';for(let i=0;i<ten;i++){const b=document.createElement('div');b.className='b-ten';bg.appendChild(b);}col.appendChild(bg);outer.appendChild(col); }
+  if (o||(n>0&&!h&&!ten)){ const col=document.createElement('div');col.className='block-col';col.innerHTML=`<div class="block-label">${t('dos_ones')}</div>`;const bg=document.createElement('div');bg.className='block-grid';for(let i=0;i<o;i++){const b=document.createElement('div');b.className='b-unit';bg.appendChild(b);}col.appendChild(bg);outer.appendChild(col);}
+  wrap.appendChild(outer);
+};
+
+// Patch renderBdays "No birthdays this month" and "Today!" badge
+const _origRenderBdays = renderBdays;
+renderBdays = function() {
+  document.getElementById('famousToggle').classList.toggle('on', showFamous);
+  const now = new Date(), cm = now.getMonth(), cd = now.getDate();
+  document.getElementById('bdayMonthLbl').textContent = MONTHS[cm];
+  const list = document.getElementById('bdayList'); list.innerHTML = '';
+  const sorted = [...birthdays].sort((a,b)=>{const[am,ad]=a.date.split('-').slice(1).map(Number),[bm,bd]=b.date.split('-').slice(1).map(Number);return am!==bm?am-bm:ad-bd;});
+  let famThisMo = [];
+  if (showFamous) { const ms = String(cm+1).padStart(2,'0'); famThisMo = FAMOUS.filter(f=>f.d.startsWith(ms)).sort((a,b)=>+a.d.split('-')[1]-+b.d.split('-')[1]); }
+  const all = [...sorted.map(b=>({...b,famous:false})),...famThisMo.map(f=>({name:`${f.cat} ${f.n}`,date:`2000-${f.d}`,famous:true}))];
+  if (!all.length) { list.innerHTML = `<span style="color:#bbb;font-size:.78rem;display:block;padding:4px">${t('bday_no_this_month')}</span>`; return; }
+  all.forEach(bd => {
+    const [,mo,day] = bd.date.split('-').map(Number); const itm = mo-1===cm; const itd = itm && day===cd;
+    const row = document.createElement('div'); row.className = 'bday-item' + (bd.famous ? ' famous' : '');
+    const badge = itd ? `<span class="bday-badge">${t('bday_today')}</span>` : '';
+    const del = !bd.famous ? `<button class="bday-del" onclick="removeBday('${bd.name}','${bd.date}')">✕</button>` : '';
+    row.innerHTML = `<span class="bday-name">${itd&&!bd.famous?'🎂 ':''}${bd.name}</span><span class="bday-date-lbl">${MONTHS[mo-1].slice(0,currentLang==='zh'?3:3)} ${day}</span>${badge}${del}`;
+    list.appendChild(row);
+  });
+  updatePreviewBday();
+};
+
+// Patch timerStartPause to update translated button label
+const _origTimerStartPause = timerStartPause;
+timerStartPause = function() {
+  _origTimerStartPause();
+  const btn = document.getElementById('timerStartBtn');
+  if (btn) {
+    const spanEl = btn.querySelector('span[data-i18n]');
+    if (spanEl) spanEl.textContent = btn.classList.contains('pause') ? t('timer_pause') : t('timer_start');
+  }
+};
+
+// Init: apply saved language on load
+(function initLang() {
+  if (currentLang !== 'en') {
+    patchLangData();
+    applyI18n();
+  }
+})();
+
+// ── END LANGUAGE TOGGLE ──
 // Init previews on load
 updatePreviewCal();
 updatePreviewDOS();

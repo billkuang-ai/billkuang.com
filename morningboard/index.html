@@ -657,6 +657,35 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
     min-width:0;
   }
 }
+/* ── Widget Settings Mode ── */
+.settings-bar{display:none;padding:5px 10px 2px;gap:5px;justify-content:flex-end;align-items:center}
+body.settings-mode .settings-bar{display:flex}
+.ws-btn{border:none;border-radius:8px;padding:5px 9px;font-size:.78rem;font-family:'Nunito',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;transition:background .15s;line-height:1;white-space:nowrap}
+.ws-btn.ws-up,.ws-btn.ws-down{background:rgba(0,0,0,.07);color:#555}
+.ws-btn.ws-up:hover,.ws-btn.ws-down:hover{background:rgba(0,0,0,.16)}
+.ws-btn.ws-hide{background:#ffeaea;color:#c62828}
+.ws-btn.ws-hide:hover{background:#ffcdd2}
+.ws-btn.ws-restore{background:#e8f5e9;color:#2e7d32;display:none}
+.ws-btn.ws-restore:hover{background:#c8e6c9}
+.ws-btn:disabled{opacity:.28;cursor:not-allowed}
+.card.ws-hidden{display:none}
+body.settings-mode .card.ws-hidden{display:block;opacity:.38;pointer-events:none}
+body.settings-mode .card.ws-hidden .settings-bar{pointer-events:all;opacity:1}
+body.settings-mode .card.ws-hidden .ws-up,
+body.settings-mode .card.ws-hidden .ws-down,
+body.settings-mode .card.ws-hidden .ws-hide{display:none}
+body.settings-mode .card.ws-hidden .ws-restore{display:inline-flex}
+body.settings-mode .card:not(.ws-hidden) .ws-restore{display:none}
+#settingsBtn.ws-active{background:rgba(255,255,255,.5)!important;outline:2px solid rgba(255,255,255,.75)}
+.ws-header-row{display:none;width:100%;justify-content:center;align-items:center;gap:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.22);flex-wrap:wrap}
+body.settings-mode .ws-header-row{display:flex}
+.ws-hbtn{border:none;border-radius:10px;padding:7px 14px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.78rem;cursor:pointer;transition:background .18s;white-space:nowrap}
+.ws-hbtn.ws-restore-all{background:rgba(255,255,255,.28);color:#fff}
+.ws-hbtn.ws-restore-all:hover{background:rgba(255,255,255,.44)}
+.ws-hbtn.ws-danger{background:rgba(220,50,47,.82);color:#fff}
+.ws-hbtn.ws-danger:hover{background:#e53935}
+.ws-hbtn.ws-done{background:rgba(255,255,255,.28);color:#fff}
+.ws-hbtn.ws-done:hover{background:rgba(255,255,255,.44)}
 </style>
 </head>
 <body class="t-seasonal">
@@ -713,8 +742,14 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
     <button class="hbtn lang-toggle" id="langToggleBtn" onclick="toggleLang()" title="Switch language / 切換語言">🀄️</button>
     <button class="hbtn" id="muteBtn" onclick="toggleMute()" title="Sound on/off">🔔</button>
     <button class="hbtn" onclick="savePageSnapshot()" title="Save a copy">💾</button>
+    <button class="hbtn" id="settingsBtn" onclick="toggleSettingsMode()" title="Settings">⚙️</button>
     <button class="hbtn" id="collapseAllBtn" onclick="toggleCollapseAll()" title="Show / hide all">⊟</button>
     <button class="hbtn" onclick="toggleFS()" id="fsBtn" title="Enter fullscreen">⛶</button>
+  </div>
+  <div class="ws-header-row">
+    <button class="ws-hbtn ws-restore-all" onclick="wsRestoreAll()">🔁 Restore All Widgets</button>
+    <button class="ws-hbtn ws-danger" onclick="wsDeleteAll()">🛑 Delete All Settings</button>
+    <button class="ws-hbtn ws-done" onclick="toggleSettingsMode()">✅ Done</button>
   </div>
 </div>
 
@@ -2877,6 +2912,111 @@ function savePetName() {
   renderPet();
   setInterval(() => renderPet(), 5 * 60 * 1000); // refresh every 5 min
 })();
+
+// ── WIDGET SETTINGS ──
+const WS_KEY = 'widgetSettings';
+const WS_LEFT_DEFAULT  = ['card-weather','card-cal','card-dos','card-tables','card-wb'];
+const WS_RIGHT_DEFAULT = ['card-clock','card-bday','card-sched','card-rand','card-timer','card-pet'];
+
+let wsData = safeParse(WS_KEY, {
+  order: {left:[...WS_LEFT_DEFAULT], right:[...WS_RIGHT_DEFAULT]},
+  hidden: []
+});
+// Ensure any new cards added since last save are appended
+WS_LEFT_DEFAULT.forEach(id  => { if (!wsData.order.left.includes(id))  wsData.order.left.push(id); });
+WS_RIGHT_DEFAULT.forEach(id => { if (!wsData.order.right.includes(id)) wsData.order.right.push(id); });
+
+function wsSave() { localStorage.setItem(WS_KEY, JSON.stringify(wsData)); }
+
+function wsColOf(id) {
+  if (wsData.order.left.includes(id))  return 'left';
+  if (wsData.order.right.includes(id)) return 'right';
+  return null;
+}
+
+function wsApply() {
+  const leftCol  = document.querySelector('.left-col');
+  const rightCol = document.querySelector('.right-col');
+  wsData.order.left.forEach(id  => { const el=document.getElementById(id); if(el) leftCol.appendChild(el); });
+  wsData.order.right.forEach(id => { const el=document.getElementById(id); if(el) rightCol.appendChild(el); });
+  document.querySelectorAll('.card').forEach(card => {
+    card.classList.toggle('ws-hidden', wsData.hidden.includes(card.id));
+    const bar = card.querySelector('.settings-bar');
+    if (!bar) return;
+    const col = wsColOf(card.id);
+    const arr = col ? wsData.order[col] : [];
+    const idx = arr.indexOf(card.id);
+    const upBtn   = bar.querySelector('.ws-up');
+    const downBtn = bar.querySelector('.ws-down');
+    if (upBtn)   upBtn.disabled   = idx <= 0;
+    if (downBtn) downBtn.disabled = idx >= arr.length - 1;
+  });
+}
+
+function wsInjectBars() {
+  document.querySelectorAll('.card').forEach(card => {
+    if (card.querySelector('.settings-bar')) return;
+    const id = card.id; if (!id) return;
+    const bar = document.createElement('div');
+    bar.className = 'settings-bar';
+    bar.innerHTML =
+      `<button class="ws-btn ws-up"      onclick="wsMoveUp('${id}')"   title="Move up">⬆️</button>` +
+      `<button class="ws-btn ws-down"    onclick="wsMoveDown('${id}')" title="Move down">⬇️</button>` +
+      `<button class="ws-btn ws-hide"    onclick="wsHide('${id}')">❌ Hide</button>` +
+      `<button class="ws-btn ws-restore" onclick="wsShow('${id}')">👁️ Show</button>`;
+    card.prepend(bar);
+  });
+}
+
+function toggleSettingsMode() {
+  const active = document.body.classList.toggle('settings-mode');
+  const btn = document.getElementById('settingsBtn');
+  if (btn) btn.classList.toggle('ws-active', active);
+  wsApply();
+}
+
+function wsHide(id) {
+  if (!wsData.hidden.includes(id)) wsData.hidden.push(id);
+  wsSave(); wsApply();
+}
+
+function wsShow(id) {
+  wsData.hidden = wsData.hidden.filter(h => h !== id);
+  wsSave(); wsApply();
+}
+
+function wsRestoreAll() {
+  wsData.hidden = [];
+  wsSave(); wsApply();
+}
+
+function wsMoveUp(id) {
+  const col = wsColOf(id); if (!col) return;
+  const arr = wsData.order[col], idx = arr.indexOf(id);
+  if (idx <= 0) return;
+  [arr[idx-1], arr[idx]] = [arr[idx], arr[idx-1]];
+  wsSave(); wsApply();
+}
+
+function wsMoveDown(id) {
+  const col = wsColOf(id); if (!col) return;
+  const arr = wsData.order[col], idx = arr.indexOf(id);
+  if (idx >= arr.length - 1) return;
+  [arr[idx+1], arr[idx]] = [arr[idx], arr[idx+1]];
+  wsSave(); wsApply();
+}
+
+function wsDeleteAll() {
+  if (!confirm('⚠️ Delete ALL saved settings?\n\nThis will permanently clear everything: widget order, calendar events, table points, schedule, class roster, pet state, and all other saved data.\n\nThis cannot be undone.')) return;
+  localStorage.clear();
+  location.reload();
+}
+
+(function initWidgetSettings() {
+  wsInjectBars();
+  wsApply();
+})();
+
 
 // ── Footer ──
 function dismissFooter(){const f=document.getElementById('siteFooter');if(f)f.style.display='none';localStorage.setItem('footerDismissed','1');}

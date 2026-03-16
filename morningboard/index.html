@@ -599,6 +599,39 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
 }
 .w-hdr-temp.manual-mode{border-bottom:2px dashed var(--deep);opacity:.85}
 
+/* ── Class Pet ── */
+.pet-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:2px 0}
+.pet-screen{background:var(--lite);border-radius:14px;padding:22px 16px 12px;display:flex;align-items:center;justify-content:center;position:relative;width:100%;min-height:96px}
+.pet-svg-wrap{display:inline-block;cursor:default;user-select:none}
+.pet-svg-wrap.pet-idle{animation:petBob 2.2s ease-in-out infinite}
+.pet-svg-wrap.pet-grumpy{animation:petShake 1.8s ease-in-out infinite}
+.pet-svg-wrap.pet-eating{animation:petEat .35s ease-in-out 5}
+.pet-svg-wrap.pet-playing{animation:petJump .3s ease-in-out 6}
+.pet-svg-wrap.pet-sleeping{animation:petSleep 3s ease-in-out infinite}
+.pet-zzz{position:absolute;top:8px;right:18px;font-size:1rem;font-weight:900;color:var(--deep);opacity:0;pointer-events:none;transition:opacity .5s}
+.pet-zzz.show{opacity:.65;animation:petZzz 3s ease-in-out infinite}
+.pet-speech{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:var(--card);border:2.5px solid var(--acc);border-radius:12px;padding:4px 12px;font-size:.75rem;font-weight:800;font-family:'Nunito',sans-serif;color:var(--deep);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .3s;z-index:10}
+.pet-speech.show{opacity:1}
+.pet-speech::after{content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--acc)}
+@keyframes petBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes petShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-3px)}40%{transform:translateX(3px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
+@keyframes petEat{0%,100%{transform:rotate(0) scale(1)}33%{transform:rotate(-11deg) scale(1.07)}66%{transform:rotate(11deg) scale(1.07)}}
+@keyframes petJump{0%,100%{transform:translateY(0) scale(1,1)}40%{transform:translateY(-18px) scale(1.05,.96)}80%{transform:translateY(-4px) scale(.98,1.03)}}
+@keyframes petSleep{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1,.97)}}
+@keyframes petZzz{0%{transform:translate(0,0) scale(.8);opacity:0}40%{opacity:.65}100%{transform:translate(7px,-15px) scale(1.3);opacity:0}}
+.pet-stats{width:100%;display:flex;flex-direction:column;gap:6px}
+.pet-stat-row{display:flex;align-items:center;gap:8px}
+.pet-stat-lbl{font-size:.73rem;font-weight:800;font-family:'Nunito',sans-serif;color:var(--deep);width:76px;flex-shrink:0}
+.pet-bar{flex:1;height:12px;background:rgba(0,0,0,.09);border-radius:6px;overflow:hidden}
+.pet-bar-fill{height:100%;border-radius:6px;transition:width .6s,background .6s}
+.pet-btns{display:flex;gap:8px;width:100%}
+.pet-btn{flex:1;border:2px solid var(--acc);border-radius:12px;padding:10px 4px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.8rem;cursor:pointer;transition:transform .12s,background .18s,color .18s;touch-action:manipulation;background:var(--lite);color:var(--deep)}
+.pet-btn:hover:not(:disabled){background:var(--acc);color:#fff}
+.pet-btn:active:not(:disabled){transform:scale(.91)}
+.pet-btn:disabled{opacity:.35;cursor:not-allowed}
+.pet-name-edit{outline:none;cursor:pointer;border-radius:6px;padding:0 3px;min-width:20px}
+.pet-name-edit:focus{background:rgba(255,255,255,.25)}
+
 /* ── Mobile Portrait: DOS 2-column layout ── */
 @media(max-width:600px) and (orientation:portrait){
   .dos-wrap{
@@ -1009,6 +1042,82 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
     </div>
   </div>
 
+
+
+  <!-- Class Pet -->
+  <div class="card" id="card-pet">
+    <div class="card-header" onclick="toggleCard('card-pet')">
+      <span class="card-title">🐾 <span id="petName" class="pet-name-edit" contenteditable="true" spellcheck="false"
+        onclick="event.stopPropagation()" onblur="savePetName()"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">Class Pet: Rosie</span></span>
+      <div style="display:flex;align-items:center;gap:6px">
+        <button class="bday-famous-toggle" id="petWeekendBtn" onclick="event.stopPropagation();petToggleWeekend(event)">Go 🏠</button>
+        <span class="card-chevron">▾</span>
+      </div>
+    </div>
+    <div class="collapse-content">
+      <div class="pet-wrap">
+        <div class="pet-screen">
+          <span class="pet-zzz" id="petZzz">zzZ</span>
+          <div class="pet-speech" id="petSpeech"></div>
+          <div class="pet-svg-wrap pet-idle" id="petSvgWrap">
+            <svg width="80" height="90" viewBox="0 0 80 90" style="overflow:visible" xmlns="http://www.w3.org/2000/svg">
+              <!-- Triangular chihuahua ears -->
+              <path d="M 17,48 C 2,36 -1,8 12,4 C 21,1 32,16 29,36 Z" fill="var(--acc)"/>
+              <path d="M 63,48 C 78,36 81,8 68,4 C 59,1 48,16 51,36 Z" fill="var(--acc)"/>
+              <!-- Ear inner lighter fill -->
+              <path d="M 18,45 C 6,35 4,12 13,8 C 20,6 29,18 26,33 Z" fill="var(--lite)" opacity=".42"/>
+              <path d="M 62,45 C 74,35 76,12 67,8 C 60,6 51,18 54,33 Z" fill="var(--lite)" opacity=".42"/>
+              <!-- Apple-head dome -->
+              <ellipse cx="40" cy="56" rx="23" ry="25" fill="var(--acc)"/>
+              <!-- Muzzle bump (subtle) -->
+              <ellipse cx="40" cy="67" rx="11" ry="7.5" fill="var(--acc)"/>
+              <ellipse cx="40" cy="67" rx="11" ry="7.5" fill="white" opacity=".14"/>
+              <!-- Heart-shaped nose -->
+              <path d="M 37,60 C 37,57.5 40,56.5 40,56.5 C 40,56.5 43,57.5 43,60 C 43,62 40,63.5 40,63.5 C 40,63.5 37,62 37,60 Z" fill="var(--deep)" opacity=".82"/>
+              <circle cx="38.5" cy="59" r="1" fill="white" opacity=".45"/>
+              <!-- Whisker dots -->
+              <circle cx="33" cy="66" r="1.3" fill="var(--deep)" opacity=".4"/>
+              <circle cx="36" cy="68.5" r="1.3" fill="var(--deep)" opacity=".4"/>
+              <circle cx="47" cy="66" r="1.3" fill="var(--deep)" opacity=".4"/>
+              <circle cx="44" cy="68.5" r="1.3" fill="var(--deep)" opacity=".4"/>
+              <!-- Face group (eyes + eyebrows + mouth) swapped by JS -->
+              <g id="petFaceGroup">
+                <circle cx="27" cy="48" r="8" fill="white"/>
+                <circle cx="53" cy="48" r="8" fill="white"/>
+                <circle cx="28" cy="49" r="4" fill="var(--deep)"/>
+                <circle cx="54" cy="49" r="4" fill="var(--deep)"/>
+                <circle cx="30" cy="47" r="2" fill="white"/>
+                <circle cx="56" cy="47" r="2" fill="white"/>
+                <path d="M21 39 Q27 36 33 38" stroke="var(--deep)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".65"/>
+                <path d="M47 38 Q53 36 59 39" stroke="var(--deep)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".65"/>
+                <path d="M34 71 Q37 76 40 72 Q43 76 46 71" stroke="var(--deep)" stroke-width="2" fill="none" stroke-linecap="round"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div class="pet-stats">
+          <div class="pet-stat-row">
+            <span class="pet-stat-lbl">🍎 Hunger</span>
+            <div class="pet-bar"><div class="pet-bar-fill" id="petHungerBar"></div></div>
+          </div>
+          <div class="pet-stat-row">
+            <span class="pet-stat-lbl">⭐ Happy</span>
+            <div class="pet-bar"><div class="pet-bar-fill" id="petHappyBar"></div></div>
+          </div>
+          <div class="pet-stat-row">
+            <span class="pet-stat-lbl">⚡ Energy</span>
+            <div class="pet-bar"><div class="pet-bar-fill" id="petEnergyBar"></div></div>
+          </div>
+        </div>
+        <div class="pet-btns">
+          <button class="pet-btn" id="petFeedBtn" onclick="petFeed()">🍎 Feed</button>
+          <button class="pet-btn" id="petPlayBtn" onclick="petPlay()">⭐ Play</button>
+          <button class="pet-btn" id="petRestBtn" onclick="petRest()">💤 Rest</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div><!-- /right-col -->
 </div><!-- /main-grid -->
@@ -2526,6 +2635,249 @@ updatePreviewBday();
 updatePreviewSched();
 updatePreviewRoster();
 updatePreviewTimer();
+// ── CLASS PET ──
+const PET_KEY = 'classPet';
+const PET_COOLDOWN = 10 * 1000; // 20 min cooldown per action
+const PET_DECAY_PER_HOUR = 9;        // points lost per real-world hour
+
+let pet = safeParse(PET_KEY, {
+  name: 'Class Pet: Rosie',
+  hunger: 85, happiness: 85, energy: 85,
+  lastTick: Date.now(),
+  weekend: false,
+  lastFed: 0, lastPlayed: 0, lastRested: 0
+});
+
+function savePet() { localStorage.setItem(PET_KEY, JSON.stringify(pet)); }
+
+function petDecay() {
+  if (pet.weekend) return;
+  const now = Date.now();
+  const hrs = (now - pet.lastTick) / 3600000;
+  const decay = Math.min(hrs * PET_DECAY_PER_HOUR, 35);
+  if (decay > 0.05) {
+    pet.hunger    = Math.max(0, pet.hunger    - decay);
+    pet.happiness = Math.max(0, pet.happiness - decay * 0.85);
+    pet.energy    = Math.max(0, pet.energy    - decay * 0.7);
+    pet.lastTick  = now;
+    savePet();
+  }
+}
+
+function petMood() {
+  if (pet.weekend) return 'weekend';
+  const min = Math.min(pet.hunger, pet.happiness, pet.energy);
+  if (min < 18) return 'grumpy';
+  if (pet.hunger < 32) return 'hungry';
+  if (min > 58) return 'happy';
+  return 'content';
+}
+
+const PET_FACES = {
+  happy: `
+    <circle cx="27" cy="48" r="8" fill="white"/>
+    <circle cx="53" cy="48" r="8" fill="white"/>
+    <path d="M19 48 Q27 40 35 48" fill="var(--acc)"/>
+    <path d="M45 48 Q53 40 61 48" fill="var(--acc)"/>
+    <circle cx="28" cy="50" r="3.5" fill="var(--deep)"/>
+    <circle cx="54" cy="50" r="3.5" fill="var(--deep)"/>
+    <circle cx="30" cy="49" r="1.8" fill="white"/>
+    <circle cx="56" cy="49" r="1.8" fill="white"/>
+    <path d="M19 38 Q27 33 35 37" stroke="var(--deep)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".55"/>
+    <path d="M45 37 Q53 33 61 38" stroke="var(--deep)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".55"/>
+    <circle cx="17" cy="58" r="5" fill="white" opacity=".22"/>
+    <circle cx="63" cy="58" r="5" fill="white" opacity=".22"/>
+    <path d="M30 72 Q35 79 40 74 Q45 79 50 72" stroke="var(--deep)" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+  content: `
+    <circle cx="27" cy="48" r="8" fill="white"/>
+    <circle cx="53" cy="48" r="8" fill="white"/>
+    <circle cx="28" cy="49" r="4" fill="var(--deep)"/>
+    <circle cx="54" cy="49" r="4" fill="var(--deep)"/>
+    <circle cx="30" cy="47" r="2" fill="white"/>
+    <circle cx="56" cy="47" r="2" fill="white"/>
+    <path d="M21 39 Q27 36 33 38" stroke="var(--deep)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".65"/>
+    <path d="M47 38 Q53 36 59 39" stroke="var(--deep)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".65"/>
+    <path d="M34 71 Q37 76 40 72 Q43 76 46 71" stroke="var(--deep)" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+  hungry: `
+    <circle cx="27" cy="49" r="8" fill="white"/>
+    <circle cx="53" cy="49" r="8" fill="white"/>
+    <circle cx="27" cy="50" r="4" fill="var(--deep)"/>
+    <circle cx="53" cy="50" r="4" fill="var(--deep)"/>
+    <circle cx="29" cy="48" r="2" fill="white"/>
+    <circle cx="55" cy="48" r="2" fill="white"/>
+    <path d="M22 40 Q27 38 32 41" stroke="var(--deep)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".55"/>
+    <path d="M48 41 Q53 38 58 40" stroke="var(--deep)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".55"/>
+    <path d="M33 71 Q36 75 40 72 Q44 75 47 71" stroke="var(--deep)" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <text x="57" y="37" font-size="10" fill="white" opacity=".85">💧</text>`,
+  grumpy: `
+    <circle cx="27" cy="48" r="8" fill="white"/>
+    <circle cx="53" cy="48" r="8" fill="white"/>
+    <line x1="19" y1="39" x2="35" y2="43" stroke="var(--deep)" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="61" y1="39" x2="45" y2="43" stroke="var(--deep)" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="28" cy="49" r="4" fill="var(--deep)"/>
+    <circle cx="54" cy="49" r="4" fill="var(--deep)"/>
+    <path d="M32 73 Q40 67 48 73" stroke="var(--deep)" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+  eating: `
+    <circle cx="27" cy="48" r="8" fill="white"/>
+    <circle cx="53" cy="48" r="8" fill="white"/>
+    <path d="M19 48 Q27 40 35 48" fill="var(--acc)"/>
+    <path d="M45 48 Q53 40 61 48" fill="var(--acc)"/>
+    <circle cx="28" cy="50" r="3.5" fill="var(--deep)"/>
+    <circle cx="54" cy="50" r="3.5" fill="var(--deep)"/>
+    <path d="M21 39 Q27 36 33 38" stroke="var(--deep)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".55"/>
+    <path d="M47 38 Q53 36 59 39" stroke="var(--deep)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".55"/>
+    <circle cx="40" cy="74" r="7" fill="white" opacity=".88"/>`,
+  playing: `
+    <circle cx="27" cy="48" r="8" fill="white"/>
+    <circle cx="53" cy="48" r="8" fill="white"/>
+    <path d="M19 48 Q27 40 35 48" fill="var(--acc)"/>
+    <path d="M45 48 Q53 40 61 48" fill="var(--acc)"/>
+    <circle cx="28" cy="50" r="3.5" fill="var(--deep)"/>
+    <circle cx="54" cy="50" r="3.5" fill="var(--deep)"/>
+    <circle cx="30" cy="49" r="1.8" fill="white"/>
+    <circle cx="56" cy="49" r="1.8" fill="white"/>
+    <path d="M19 38 Q27 33 35 37" stroke="var(--deep)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".55"/>
+    <path d="M45 37 Q53 33 61 38" stroke="var(--deep)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".55"/>
+    <circle cx="16" cy="58" r="6" fill="white" opacity=".25"/>
+    <circle cx="64" cy="58" r="6" fill="white" opacity=".25"/>
+    <path d="M28 72 Q34 81 40 75 Q46 81 52 72" stroke="var(--deep)" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+  weekend: `
+    <circle cx="27" cy="48" r="8" fill="white"/>
+    <circle cx="53" cy="48" r="8" fill="white"/>
+    <line x1="19" y1="48" x2="35" y2="48" stroke="var(--acc)" stroke-width="6" stroke-linecap="round"/>
+    <line x1="45" y1="48" x2="61" y2="48" stroke="var(--acc)" stroke-width="6" stroke-linecap="round"/>
+    <path d="M21 39 Q27 36 33 38" stroke="var(--deep)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".4"/>
+    <path d="M47 38 Q53 36 59 39" stroke="var(--deep)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".4"/>
+    <path d="M35 71 Q40 71 45 71" stroke="var(--deep)" stroke-width="2" fill="none" stroke-linecap="round"/>`
+};
+
+const PET_SPEECHES = {
+  happy:   ['I love school! 🌟', 'Best class ever!', 'This is fun! ✨', 'You all rock! 🎉'],
+  content: ['Good morning! 👋', 'Ready to learn!', 'Hello everyone!', 'Let\'s have a great day!'],
+  hungry:  ['Feed me please! 🍎', 'I\'m so hungry...', 'My tummy hurts!', 'Anyone have a snack?'],
+  grumpy:  ['Hmph...', 'I\'m grumpy today.', 'Not happy right now.', 'Feed me! I\'m starving!'],
+  eating:  ['Yum yum! 😋', 'So tasty!', 'Nom nom nom!', 'More please! 🍎'],
+  playing: ['Wheee!! 🎉', 'This is so fun!', 'I love playing!', 'Best class ever!! 🌟'],
+  resting: ['Zzz... 😴', 'So sleepy...', 'Just resting my eyes...'],
+  weekend: ['Sweet dreams... 🌙', 'See you Monday! 👋', 'Enjoying home 🏠', 'Miss you all! ❤️'],
+  back:    ['I\'m back!! 🎒', 'I missed everyone!', 'School is the best! 🌟']
+};
+
+function petRandSpeech(key) {
+  const arr = PET_SPEECHES[key] || PET_SPEECHES.content;
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+let _petAnimTimer = null;
+let _petSpeechTimer = null;
+
+function petBarColor(v) { return v > 50 ? 'var(--acc)' : v > 25 ? '#f9a825' : '#e53935'; }
+
+function renderPet(overrideMood) {
+  petDecay();
+  const mood = overrideMood || petMood();
+
+  // Face
+  const fg = document.getElementById('petFaceGroup');
+  if (fg) fg.innerHTML = PET_FACES[mood] || PET_FACES.content;
+
+  // Animation class
+  const wrap = document.getElementById('petSvgWrap');
+  if (wrap) {
+    const anim = (mood === 'eating')   ? 'pet-eating'  :
+                 (mood === 'playing')  ? 'pet-playing' :
+                 (mood === 'grumpy')   ? 'pet-grumpy'  :
+                 (mood === 'weekend')  ? 'pet-sleeping' : 'pet-idle';
+    wrap.className = 'pet-svg-wrap ' + anim;
+  }
+
+  // Zzz
+  const zzz = document.getElementById('petZzz');
+  if (zzz) zzz.classList.toggle('show', mood === 'weekend');
+
+  // Stat bars
+  const setBar = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) { el.style.width = val + '%'; el.style.background = petBarColor(val); }
+  };
+  setBar('petHungerBar', pet.hunger);
+  setBar('petHappyBar',  pet.happiness);
+  setBar('petEnergyBar', pet.energy);
+
+  // Button cooldowns
+  const now = Date.now();
+  const dis = (id, extra) => { const b = document.getElementById(id); if (b) b.disabled = pet.weekend || extra; };
+  dis('petFeedBtn', now - pet.lastFed   < PET_COOLDOWN);
+  dis('petPlayBtn', now - pet.lastPlayed < PET_COOLDOWN);
+  dis('petRestBtn', now - pet.lastRested < PET_COOLDOWN);
+
+  // Weekend button style
+  const wb = document.getElementById('petWeekendBtn');
+  if (wb) {
+    wb.textContent = pet.weekend ? 'Go 🏫' : 'Go 🏠';
+    wb.classList.toggle('on', pet.weekend);
+  }
+}
+
+function petShowSpeech(text) {
+  const el = document.getElementById('petSpeech');
+  if (!el) return;
+  el.textContent = text;
+  el.classList.add('show');
+  clearTimeout(_petSpeechTimer);
+  _petSpeechTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+function petFeed() {
+  const now = Date.now();
+  if (pet.weekend || now - pet.lastFed < PET_COOLDOWN) return;
+  pet.hunger = Math.min(100, pet.hunger + 35);
+  pet.lastFed = now; pet.lastTick = now;
+  savePet(); renderPet('eating'); petShowSpeech(petRandSpeech('eating'));
+  clearTimeout(_petAnimTimer);
+  _petAnimTimer = setTimeout(() => renderPet(), 1600);
+}
+
+function petPlay() {
+  const now = Date.now();
+  if (pet.weekend || now - pet.lastPlayed < PET_COOLDOWN) return;
+  pet.happiness = Math.min(100, pet.happiness + 35);
+  pet.lastPlayed = now; pet.lastTick = now;
+  savePet(); renderPet('playing'); petShowSpeech(petRandSpeech('playing'));
+  clearTimeout(_petAnimTimer);
+  _petAnimTimer = setTimeout(() => renderPet(), 2000);
+}
+
+function petRest() {
+  const now = Date.now();
+  if (pet.weekend || now - pet.lastRested < PET_COOLDOWN) return;
+  pet.energy = Math.min(100, pet.energy + 35);
+  pet.lastRested = now; pet.lastTick = now;
+  savePet(); renderPet('weekend'); petShowSpeech(petRandSpeech('resting'));
+  clearTimeout(_petAnimTimer);
+  _petAnimTimer = setTimeout(() => renderPet(), 2200);
+}
+
+function petToggleWeekend(e) {
+  if (e) e.stopPropagation();
+  pet.weekend = !pet.weekend;
+  if (!pet.weekend) pet.lastTick = Date.now();
+  savePet(); renderPet();
+  petShowSpeech(pet.weekend ? petRandSpeech('weekend') : petRandSpeech('back'));
+}
+
+function savePetName() {
+  const el = document.getElementById('petName');
+  if (el) { pet.name = el.textContent.trim() || 'Class Pet: Rosie'; savePet(); }
+}
+
+(function initPet() {
+  const nameEl = document.getElementById('petName');
+  if (nameEl) nameEl.textContent = pet.name;
+  renderPet();
+  setInterval(() => renderPet(), 5 * 60 * 1000); // refresh every 5 min
+})();
+
 // ── Footer ──
 function dismissFooter(){const f=document.getElementById('siteFooter');if(f)f.style.display='none';localStorage.setItem('footerDismissed','1');}
 if(localStorage.getItem('footerDismissed')==='1'){const f=document.getElementById('siteFooter');if(f)f.style.display='none';}

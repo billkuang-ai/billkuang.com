@@ -751,9 +751,12 @@ body.settings-mode .ws-header-row{display:flex}
     <button class="hbtn" onclick="toggleFS()" id="fsBtn" title="Enter fullscreen">⛶</button>
   </div>
   <div class="ws-header-row">
-    <button class="ws-hbtn ws-restore-all" onclick="wsRestoreAll()">🔁 Restore All Widgets</button>
-    <button class="ws-hbtn ws-danger" onclick="wsDeleteAll()">🛑 Delete All Settings</button>
-    <button class="ws-hbtn ws-done" onclick="toggleSettingsMode()">✅ Done</button>
+    <button class="ws-hbtn ws-restore-all" onclick="wsRestoreAll()" data-i18n="ws_restore_all">🔁 Restore All Widgets</button>
+    <button class="ws-hbtn ws-restore-all" onclick="wsExport()" data-i18n="ws_export">📤 Export Settings</button>
+    <button class="ws-hbtn ws-restore-all" onclick="document.getElementById('wsImportFile').click()" data-i18n="ws_import">📥 Import Settings</button>
+    <input type="file" id="wsImportFile" accept=".json" style="display:none" onchange="wsImport(event)">
+    <button class="ws-hbtn ws-danger" onclick="wsDeleteAll()" data-i18n="ws_delete_all">🛑 Delete All Settings</button>
+    <button class="ws-hbtn ws-done" onclick="toggleSettingsMode()" data-i18n="ws_done">✅ Done</button>
   </div>
 </div>
 
@@ -1137,25 +1140,25 @@ body.settings-mode .ws-header-row{display:flex}
         </div>
         <div class="pet-stats">
           <div class="pet-stat-row">
-            <span class="pet-stat-lbl">Hunger</span>
+            <span class="pet-stat-lbl" data-i18n="pet_stat_hunger">Hunger</span>
             <div class="pet-bar"><div class="pet-bar-fill" id="petHungerBar"></div></div>
             <span class="pet-stat-emoji" id="petHungerEmoji">🍗</span>
           </div>
           <div class="pet-stat-row">
-            <span class="pet-stat-lbl">Mood</span>
+            <span class="pet-stat-lbl" data-i18n="pet_stat_mood">Mood</span>
             <div class="pet-bar"><div class="pet-bar-fill" id="petHappyBar"></div></div>
             <span class="pet-stat-emoji" id="petMoodEmoji">😊</span>
           </div>
           <div class="pet-stat-row">
-            <span class="pet-stat-lbl">Energy</span>
+            <span class="pet-stat-lbl" data-i18n="pet_stat_energy">Energy</span>
             <div class="pet-bar"><div class="pet-bar-fill" id="petEnergyBar"></div></div>
             <span class="pet-stat-emoji" id="petEnergyEmoji">🔋</span>
           </div>
         </div>
         <div class="pet-btns">
-          <button class="pet-btn" id="petFeedBtn" onclick="petFeed()">🍗 Feed</button>
-          <button class="pet-btn" id="petPlayBtn" onclick="petPlay()">🎾 Play</button>
-          <button class="pet-btn" id="petRestBtn" onclick="petRest()">🛏️ Rest</button>
+          <button class="pet-btn" id="petFeedBtn" onclick="petFeed()">🍗 <span data-i18n="pet_feed">Feed</span></button>
+          <button class="pet-btn" id="petPlayBtn" onclick="petPlay()">🎾 <span data-i18n="pet_play">Play</span></button>
+          <button class="pet-btn" id="petRestBtn" onclick="petRest()">🛏️ <span data-i18n="pet_rest">Rest</span></button>
         </div>
       </div>
     </div>
@@ -1313,6 +1316,21 @@ const I18N = {
     break_winter: 'Winter Break',
     break_spring: 'Spring Break',
     break_summer: 'Summer Break',
+    // Widget settings
+    ws_restore_all: '🔁 Restore All Widgets',
+    ws_export: '📤 Export Settings',
+    ws_import: '📥 Import Settings',
+    ws_delete_all: '🛑 Delete All Settings',
+    ws_done: '✅ Done',
+    // Class Pet
+    pet_stat_hunger: 'Hunger',
+    pet_stat_mood: 'Mood',
+    pet_stat_energy: 'Energy',
+    pet_feed: 'Feed',
+    pet_play: 'Play',
+    pet_rest: 'Rest',
+    pet_go_home: 'Go 🏠',
+    pet_go_school: 'Go 🏫',
   },
   zh: {
     lang_btn: 'English',
@@ -1456,6 +1474,21 @@ const I18N = {
     break_winter: '寒假',
     break_spring: '春假',
     break_summer: '暑假',
+    // Widget settings
+    ws_restore_all: '🔁 恢復所有小工具',
+    ws_export: '📤 匯出設定',
+    ws_import: '📥 匯入設定',
+    ws_delete_all: '🛑 刪除所有設定',
+    ws_done: '✅ 完成',
+    // Class Pet
+    pet_stat_hunger: '飢餓',
+    pet_stat_mood: '心情',
+    pet_stat_energy: '精力',
+    pet_feed: '餵食',
+    pet_play: '玩耍',
+    pet_rest: '休息',
+    pet_go_home: '回家 🏠',
+    pet_go_school: '上學 🏫',
   }
 };
 
@@ -2511,6 +2544,10 @@ function patchLangData() {
     b.name = brMap[b.name] || b.name;
   });
 
+  // Swap pet speeches to match language
+  const _petSpeeches = currentLang === 'zh' ? PET_SPEECHES_ZH : PET_SPEECHES_EN;
+  Object.keys(_petSpeeches).forEach(k => { PET_SPEECHES[k] = _petSpeeches[k]; });
+
   // Patch milestone messages
   const msMap = {
     10: t('milestone_10'), 25: t('milestone_25'), 50: t('milestone_50'),
@@ -2862,6 +2899,55 @@ const PET_SPEECHES = {
   back:    ["I\'m back!! 🎒", 'I missed everyone!', 'Ready to learn! 🌟']
 };
 
+// Snapshot English speeches so we can swap back
+const PET_SPEECHES_EN = JSON.parse(JSON.stringify(PET_SPEECHES));
+
+// Chinese educational speech bubbles
+const PET_SPEECHES_ZH = {
+  eating: [
+    '彩色食物讓你更強壯！🌈',
+    '喝水讓大腦更靈活！💧',
+    '蔬果幫助你成長！🥦',
+    '吃早餐充滿一天活力！☀️',
+    '蛋白質讓肌肉更強壯！💪',
+    '大腦需要食物才能學習！📚',
+    '不渴也要記得喝水哦！💧',
+    '慢慢吃，肚子會更舒服！😊',
+    '全穀類給你持久的能量！⚡',
+    '感覺飽了就要停下來！👂'
+  ],
+  playing: [
+    '動動身體讓心情變好！🌟',
+    '所有的感受都是正常的！💛',
+    '難過時試著深呼吸三次！🌬️',
+    '心臟最愛你跑步和玩耍！❤️',
+    '說出你的感受能幫助自己！💬',
+    '對別人好，自己也會快樂！🤝',
+    '生氣時先深呼吸再行動！😤',
+    '跳舞也是一種運動哦！💃',
+    '交朋友需要慢慢練習！🌱',
+    '運動能把壓力趕走！😤➡️😊'
+  ],
+  resting: [
+    '睡覺幫你記住學過的東西！🧠',
+    '小朋友需要約10小時睡眠！🌙',
+    '勤洗手，遠離病菌！🧼',
+    '休息讓你更容易專注！✨',
+    '刷牙要記得刷兩分鐘！🦷',
+    '睡覺的時候身體會長高！🌙',
+    '放慢腳步休息是沒問題的！🐢',
+    '犯錯能讓大腦更聰明！🌱',
+    '善待自己和善待別人一樣重要！💚',
+    '睡前閱讀幫助放鬆心情！📚'
+  ],
+  happy:   ['善意是會傳染的！😊', '你能做到困難的事！💪', '相信自己！🌟', '犯錯讓我們成長！🌱'],
+  content: ['早安！準備好學習了嗎？👋', '每天都是成長的機會！🌱', '你很重要！💚', '今天一定很棒！✨'],
+  hungry:  ['我的肚子在說話！👂', '飢餓表示身體需要補充能量！⛽', '吃點東西幫大腦專注！🧠', '大腦要思考需要食物！🍗'],
+  grumpy:  ['我需要食物和休息⋯ 😮‍💨', '我有時也會心情不好！😤', '試著深呼吸看看！🌬️', '有這樣的感受是正常的。💛'],
+  weekend: ['晚安！🌙', '週一見！👋', '在家好好休息 🏠', '想念大家！❤️'],
+  back:    ['我回來了！🎒', '好想念大家！', '準備好學習了！🌟']
+};
+
 function petRandSpeech(key) {
   const arr = PET_SPEECHES[key] || PET_SPEECHES.content;
   return arr[Math.floor(Math.random() * arr.length)];
@@ -2919,7 +3005,7 @@ function renderPet(overrideMood) {
   // Weekend button style
   const wb = document.getElementById('petWeekendBtn');
   if (wb) {
-    wb.textContent = pet.weekend ? 'Go 🏫' : 'Go 🏠';
+    wb.textContent = pet.weekend ? t('pet_go_school') : t('pet_go_home');
     wb.classList.toggle('on', pet.weekend);
   }
 }
@@ -3106,6 +3192,43 @@ function wsHide(id) {
 function wsShow(id) {
   wsData.hidden = wsData.hidden.filter(h => h !== id);
   wsSave(); wsApply();
+}
+
+function wsExport() {
+  const data = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    data[key] = localStorage.getItem(key);
+  }
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const d = new Date();
+  const stamp = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  a.download = `morningboard-settings-${stamp}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function wsImport(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (typeof data !== 'object' || Array.isArray(data)) throw new Error('bad format');
+      Object.entries(data).forEach(([key, val]) => {
+        if (typeof val === 'string') localStorage.setItem(key, val);
+      });
+      location.reload();
+    } catch(err) {
+      alert('Could not import — invalid settings file.');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = ''; // allow re-importing same file
 }
 
 function wsRestoreAll() {

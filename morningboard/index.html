@@ -2413,6 +2413,22 @@ function applyI18n() {
   swapDefault('tableRules',  'tbl_rules_default', 'tbl_rules_default');
   swapDefault('wbQuote',     'wb_quote_default',  'wb_quote_default');
 
+  // Pet card title: swap "Class Pet: " prefix, leave custom name untouched
+  const petNameEl = document.getElementById('petName');
+  if (petNameEl) {
+    const cur = petNameEl.textContent.trim();
+    const enPfx = 'Class Pet: ', zhPfx = '班級寵物：';
+    if (lang === 'zh' && cur.startsWith(enPfx)) {
+      const name = cur.slice(enPfx.length);
+      petNameEl.textContent = zhPfx + name;
+      pet.name = zhPfx + name; savePet();
+    } else if (lang === 'en' && cur.startsWith(zhPfx)) {
+      const name = cur.slice(zhPfx.length);
+      petNameEl.textContent = enPfx + name;
+      pet.name = enPfx + name; savePet();
+    }
+  }
+
   // Schedule labels — swap row by row if still at a known default
   const schedDefaults = {
     en: ['Morning Routine','Recess (K-1)','Lunch (K-1)','PM Recess (K-1)','Dismissal'],
@@ -2504,6 +2520,123 @@ function toggleLang() {
   applyI18n();
 }
 
+const PET_SPEECHES = {
+  // 🍗 Feed → Nutrition & Hydration
+  eating: [
+    'Colorful foods = superpowers! 🌈',
+    'Water keeps your brain sharp! 💧',
+    'Fruits and veggies help you grow! 🥦',
+    'Breakfast powers up your morning! ☀️',
+    'Protein builds strong muscles! 💪',
+    'Your brain needs food to learn! 📚',
+    'Drink water — not just when thirsty! 💧',
+    'Eating slowly helps your tummy! 😊',
+    'Whole grains give lasting energy! ⚡',
+    'Listen when your tummy says stop! 👂'
+  ],
+  // 🎾 Play → Exercise, Emotions, Mindfulness, Kindness
+  playing: [
+    'Moving your body boosts your mood! 🌟',
+    'All feelings are okay to have! 💛',
+    'Take 3 deep breaths when upset! 🌬️',
+    'Your heart loves when you run! ❤️',
+    'Talking about feelings really helps! 💬',
+    'Being kind to others feels good! 🤝',
+    "It\'s okay to feel mad — just breathe! 😤",
+    'Dancing counts as exercise! 💃',
+    'Making friends takes practice! 🌱',
+    'Exercise melts stress away! 😤➡️😊'
+  ],
+  // 🛏️ Rest → Sleep, Self-care, Hygiene, Growth Mindset
+  resting: [
+    'Sleep helps you remember things! 🧠',
+    'Kids need about 10 hours of sleep! 🌙',
+    'Wash your hands to stop germs! 🧼',
+    'Breaks help you focus better! ✨',
+    'Brush your teeth for 2 minutes! 🦷',
+    'You grow taller while you sleep! 🌙',
+    "It\'s okay to slow down and rest! 🐢",
+    'Mistakes help your brain grow! 🌱',
+    'Being kind to yourself matters! 💚',
+    'Reading before bed helps you wind down! 📚'
+  ],
+  // Ambient moods
+  happy:   [
+    'Kindness is contagious! 😊',
+    'You can do hard things! 💪',
+    'Believe in yourself! 🌟',
+    'Mistakes help us grow! 🌱'
+  ],
+  content: [
+    'Good morning! Ready to learn? 👋',
+    'Every day is a chance to grow! 🌱',
+    'You matter! 💚',
+    "Let\'s have a great day! ✨"
+  ],
+  hungry:  [
+    'My tummy is talking! 👂',
+    'Hunger means your body needs fuel! ⛽',
+    'A snack helps your brain focus! 🧠',
+    'Brains need food to think! 🍗'
+  ],
+  grumpy:  [
+    'I need some food and rest... 😮‍💨',
+    'Even I get grumpy sometimes! 😤',
+    'Try taking a deep breath! 🌬️',
+    "It\'s okay to feel this way. 💛"
+  ],
+  weekend: ["Sweet dreams! 🌙", "See you Monday! 👋", 'Rest up at home 🏠', 'Miss you all! ❤️'],
+  back:    ["I\'m back!! 🎒", 'I missed everyone!', 'Ready to learn! 🌟']
+};
+
+// Snapshot English speeches so we can swap back
+const PET_SPEECHES_EN = JSON.parse(JSON.stringify(PET_SPEECHES));
+
+// Chinese educational speech bubbles
+const PET_SPEECHES_ZH = {
+  eating: [
+    '彩色食物讓你更強壯！🌈',
+    '喝水讓大腦更靈活！💧',
+    '蔬果幫助你成長！🥦',
+    '吃早餐充滿一天活力！☀️',
+    '蛋白質讓肌肉更強壯！💪',
+    '大腦需要食物才能學習！📚',
+    '不渴也要記得喝水哦！💧',
+    '慢慢吃，肚子會更舒服！😊',
+    '全穀類給你持久的能量！⚡',
+    '感覺飽了就要停下來！👂'
+  ],
+  playing: [
+    '動動身體讓心情變好！🌟',
+    '所有的感受都是正常的！💛',
+    '難過時試著深呼吸三次！🌬️',
+    '心臟最愛你跑步和玩耍！❤️',
+    '說出你的感受能幫助自己！💬',
+    '對別人好，自己也會快樂！🤝',
+    '生氣時先深呼吸再行動！😤',
+    '跳舞也是一種運動哦！💃',
+    '交朋友需要慢慢練習！🌱',
+    '運動能把壓力趕走！😤➡️😊'
+  ],
+  resting: [
+    '睡覺幫你記住學過的東西！🧠',
+    '小朋友需要約10小時睡眠！🌙',
+    '勤洗手，遠離病菌！🧼',
+    '休息讓你更容易專注！✨',
+    '刷牙要記得刷兩分鐘！🦷',
+    '睡覺的時候身體會長高！🌙',
+    '放慢腳步休息是沒問題的！🐢',
+    '犯錯能讓大腦更聰明！🌱',
+    '善待自己和善待別人一樣重要！💚',
+    '睡前閱讀幫助放鬆心情！📚'
+  ],
+  happy:   ['善意是會傳染的！😊', '你能做到困難的事！💪', '相信自己！🌟', '犯錯讓我們成長！🌱'],
+  content: ['早安！準備好學習了嗎？👋', '每天都是成長的機會！🌱', '你很重要！💚', '今天一定很棒！✨'],
+  hungry:  ['我的肚子在說話！👂', '飢餓表示身體需要補充能量！⛽', '吃點東西幫大腦專注！🧠', '大腦要思考需要食物！🍗'],
+  grumpy:  ['我需要食物和休息⋯ 😮‍💨', '我有時也會心情不好！😤', '試著深呼吸看看！🌬️', '有這樣的感受是正常的。💛'],
+  weekend: ['晚安！🌙', '週一見！👋', '在家好好休息 🏠', '想念大家！❤️'],
+  back:    ['我回來了！🎒', '好想念大家！', '準備好學習了！🌟']
+};
 function patchLangData() {
   // Patch the MONTHS, DAYS, DAYSSHORT arrays in-place so all dynamic renders use them
   const m = I18N[currentLang].months;
@@ -2830,123 +2963,6 @@ const PET_FACES = {
     <path d="M35 71 Q40 71 45 71" stroke="var(--deep)" stroke-width="2" fill="none" stroke-linecap="round"/>`
 };
 
-const PET_SPEECHES = {
-  // 🍗 Feed → Nutrition & Hydration
-  eating: [
-    'Colorful foods = superpowers! 🌈',
-    'Water keeps your brain sharp! 💧',
-    'Fruits and veggies help you grow! 🥦',
-    'Breakfast powers up your morning! ☀️',
-    'Protein builds strong muscles! 💪',
-    'Your brain needs food to learn! 📚',
-    'Drink water — not just when thirsty! 💧',
-    'Eating slowly helps your tummy! 😊',
-    'Whole grains give lasting energy! ⚡',
-    'Listen when your tummy says stop! 👂'
-  ],
-  // 🎾 Play → Exercise, Emotions, Mindfulness, Kindness
-  playing: [
-    'Moving your body boosts your mood! 🌟',
-    'All feelings are okay to have! 💛',
-    'Take 3 deep breaths when upset! 🌬️',
-    'Your heart loves when you run! ❤️',
-    'Talking about feelings really helps! 💬',
-    'Being kind to others feels good! 🤝',
-    "It\'s okay to feel mad — just breathe! 😤",
-    'Dancing counts as exercise! 💃',
-    'Making friends takes practice! 🌱',
-    'Exercise melts stress away! 😤➡️😊'
-  ],
-  // 🛏️ Rest → Sleep, Self-care, Hygiene, Growth Mindset
-  resting: [
-    'Sleep helps you remember things! 🧠',
-    'Kids need about 10 hours of sleep! 🌙',
-    'Wash your hands to stop germs! 🧼',
-    'Breaks help you focus better! ✨',
-    'Brush your teeth for 2 minutes! 🦷',
-    'You grow taller while you sleep! 🌙',
-    "It\'s okay to slow down and rest! 🐢",
-    'Mistakes help your brain grow! 🌱',
-    'Being kind to yourself matters! 💚',
-    'Reading before bed helps you wind down! 📚'
-  ],
-  // Ambient moods
-  happy:   [
-    'Kindness is contagious! 😊',
-    'You can do hard things! 💪',
-    'Believe in yourself! 🌟',
-    'Mistakes help us grow! 🌱'
-  ],
-  content: [
-    'Good morning! Ready to learn? 👋',
-    'Every day is a chance to grow! 🌱',
-    'You matter! 💚',
-    "Let\'s have a great day! ✨"
-  ],
-  hungry:  [
-    'My tummy is talking! 👂',
-    'Hunger means your body needs fuel! ⛽',
-    'A snack helps your brain focus! 🧠',
-    'Brains need food to think! 🍗'
-  ],
-  grumpy:  [
-    'I need some food and rest... 😮‍💨',
-    'Even I get grumpy sometimes! 😤',
-    'Try taking a deep breath! 🌬️',
-    "It\'s okay to feel this way. 💛"
-  ],
-  weekend: ["Sweet dreams! 🌙", "See you Monday! 👋", 'Rest up at home 🏠', 'Miss you all! ❤️'],
-  back:    ["I\'m back!! 🎒", 'I missed everyone!', 'Ready to learn! 🌟']
-};
-
-// Snapshot English speeches so we can swap back
-const PET_SPEECHES_EN = JSON.parse(JSON.stringify(PET_SPEECHES));
-
-// Chinese educational speech bubbles
-const PET_SPEECHES_ZH = {
-  eating: [
-    '彩色食物讓你更強壯！🌈',
-    '喝水讓大腦更靈活！💧',
-    '蔬果幫助你成長！🥦',
-    '吃早餐充滿一天活力！☀️',
-    '蛋白質讓肌肉更強壯！💪',
-    '大腦需要食物才能學習！📚',
-    '不渴也要記得喝水哦！💧',
-    '慢慢吃，肚子會更舒服！😊',
-    '全穀類給你持久的能量！⚡',
-    '感覺飽了就要停下來！👂'
-  ],
-  playing: [
-    '動動身體讓心情變好！🌟',
-    '所有的感受都是正常的！💛',
-    '難過時試著深呼吸三次！🌬️',
-    '心臟最愛你跑步和玩耍！❤️',
-    '說出你的感受能幫助自己！💬',
-    '對別人好，自己也會快樂！🤝',
-    '生氣時先深呼吸再行動！😤',
-    '跳舞也是一種運動哦！💃',
-    '交朋友需要慢慢練習！🌱',
-    '運動能把壓力趕走！😤➡️😊'
-  ],
-  resting: [
-    '睡覺幫你記住學過的東西！🧠',
-    '小朋友需要約10小時睡眠！🌙',
-    '勤洗手，遠離病菌！🧼',
-    '休息讓你更容易專注！✨',
-    '刷牙要記得刷兩分鐘！🦷',
-    '睡覺的時候身體會長高！🌙',
-    '放慢腳步休息是沒問題的！🐢',
-    '犯錯能讓大腦更聰明！🌱',
-    '善待自己和善待別人一樣重要！💚',
-    '睡前閱讀幫助放鬆心情！📚'
-  ],
-  happy:   ['善意是會傳染的！😊', '你能做到困難的事！💪', '相信自己！🌟', '犯錯讓我們成長！🌱'],
-  content: ['早安！準備好學習了嗎？👋', '每天都是成長的機會！🌱', '你很重要！💚', '今天一定很棒！✨'],
-  hungry:  ['我的肚子在說話！👂', '飢餓表示身體需要補充能量！⛽', '吃點東西幫大腦專注！🧠', '大腦要思考需要食物！🍗'],
-  grumpy:  ['我需要食物和休息⋯ 😮‍💨', '我有時也會心情不好！😤', '試著深呼吸看看！🌬️', '有這樣的感受是正常的。💛'],
-  weekend: ['晚安！🌙', '週一見！👋', '在家好好休息 🏠', '想念大家！❤️'],
-  back:    ['我回來了！🎒', '好想念大家！', '準備好學習了！🌟']
-};
 
 function petRandSpeech(key) {
   const arr = PET_SPEECHES[key] || PET_SPEECHES.content;

@@ -3032,7 +3032,13 @@ function petShowSpeech(text) {
   el.textContent = text;
   el.classList.add('show');
   clearTimeout(_petSpeechTimer);
-  _petSpeechTimer = setTimeout(() => el.classList.remove('show'), 2800);
+  _petSpeechTimer = setTimeout(() => el.classList.remove('show'), 10000);
+}
+
+function petDismissSpeech() {
+  const el = document.getElementById('petSpeech');
+  if (el) el.classList.remove('show');
+  clearTimeout(_petSpeechTimer);
 }
 
 function petParticle(emoji, btnEl, opts={}) {
@@ -3136,6 +3142,9 @@ function savePetName() {
   if (nameEl) nameEl.textContent = pet.name;
   renderPet();
   setInterval(() => renderPet(), 5 * 60 * 1000); // refresh every 5 min
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('#card-pet')) petDismissSpeech();
+  });
 })();
 
 // ── WIDGET SETTINGS ──

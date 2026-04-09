@@ -231,6 +231,7 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
 .wb-color:hover,.wb-color.active{transform:scale(1.3);border-color:#444}
 .wb-board{width:100%;min-height:200px;flex:1;border-radius:14px;padding:14px 16px;background:#2d5a27;color:#f0ffe0;font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;line-height:1.6;outline:none;border:3px solid #1a3a16;box-shadow:inset 0 2px 8px rgba(0,0,0,.3);cursor:text}
 .wb-board:empty::before{content:attr(data-placeholder);color:rgba(240,255,224,.35);pointer-events:none}
+.wb-board ul,.wb-board ol{padding-left:28px;margin:4px 0}
 .wb-hint{font-size:.62rem;color:#bbb;text-align:right;margin-top:4px;font-style:italic}
 #preview-bday{white-space:normal;overflow:visible;text-overflow:unset;max-width:220px;line-height:1.3}
 .card.collapsed #preview-bday{max-width:none;width:100%}
@@ -312,27 +313,27 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
 .bday-add-btn{background:var(--acc);color:#fff;border:none;border-radius:9px;padding:6px 12px;font-family:'Fredoka One',cursive;font-size:.9rem;cursor:pointer}
 
 /* ── Timer ── */
-.timer-ring-wrap{position:relative;width:220px;height:220px;margin:0 auto 8px}
+.timer-ring-row{position:relative;width:220px;margin:0 auto 8px}
+.timer-adj-btn{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);background:#fff;color:var(--acc);font-size:1.5rem;font-weight:800;cursor:pointer;font-family:'Fredoka One',cursive;display:flex;align-items:center;justify-content:center;transition:all .15s;line-height:1;z-index:1}
+.timer-adj-btn:hover{background:var(--acc);color:#fff}
+.timer-ring-row .timer-adj-btn:first-child{left:-3px}
+.timer-ring-row .timer-adj-btn:last-child{right:-3px}
+.timer-ring-wrap{position:relative;width:220px;height:220px}
 .timer-ring-wrap svg{transform:rotate(-90deg)}
 .timer-ring-bg{fill:none;stroke:#e0e0e0;stroke-width:10}
 .timer-ring-fg{fill:none;stroke:var(--acc);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset .9s linear}
 .timer-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-.timer-time{font-family:'Fredoka One',cursive;font-size:3.2rem;color:var(--acc);line-height:1;letter-spacing:1px}
-.timer-presets{display:flex;flex-wrap:nowrap;gap:5px;margin-bottom:8px;justify-content:center}
-.timer-preset{background:#f0f0f0;border:2px solid transparent;border-radius:8px;padding:5px 8px;font-size:.72rem;font-weight:800;cursor:pointer;color:#555;font-family:'Nunito',sans-serif;transition:all .15s}
-.timer-preset:hover{background:#e0e0e0}
-.timer-preset.active{background:var(--acc);color:#fff;border-color:var(--deep)}
-.timer-custom-row{display:flex;gap:6px;margin-bottom:8px;align-items:center}
-.timer-custom{flex:1;border:2px solid #e0e0e0;border-radius:8px;padding:5px 8px;font-family:'Nunito',sans-serif;font-size:.82rem;font-weight:800;outline:none;color:#333;background:#fff}
-.timer-custom:focus{border-color:var(--acc)}
+.timer-time{font-family:'Fredoka One',cursive;font-size:3.2rem;color:var(--acc);line-height:1;letter-spacing:1px;cursor:pointer}
+.timer-time:hover{opacity:.75}
+.timer-display-input{width:110px;font-family:'Fredoka One',cursive;font-size:2.4rem;color:var(--acc);background:transparent;border:none;border-bottom:2px solid var(--acc);outline:none;text-align:center;padding:2px}
 .timer-btns{display:flex;gap:6px;margin-bottom:10px}
 .timer-btn{flex:1;border:none;border-radius:10px;padding:8px;font-family:'Fredoka One',cursive;font-size:.95rem;cursor:pointer;transition:transform .15s}
 .timer-btn:hover{transform:scale(1.05)}
 .timer-btn.start{background:var(--acc);color:#fff}
 .timer-btn.pause{background:#ff9800;color:#fff}
 .timer-btn.reset{background:#e0e0e0;color:#555}
-.timer-sound-row{display:flex;gap:5px;justify-content:center}
-.timer-sound-btn{background:#f0f0f0;border:2px solid transparent;border-radius:8px;padding:4px 9px;font-size:.7rem;font-weight:800;cursor:pointer;color:#555;font-family:'Nunito',sans-serif;transition:all .15s}
+.timer-sound-row{display:flex;gap:6px;margin-bottom:10px}
+.timer-sound-btn{flex:1;background:#f0f0f0;border:2px solid transparent;border-radius:10px;padding:8px;font-size:.75rem;font-weight:800;cursor:pointer;color:#555;font-family:'Nunito',sans-serif;transition:transform .15s}
 .timer-sound-btn:hover{background:#e0e0e0}
 .timer-sound-btn.active{background:var(--acc);color:#fff;border-color:var(--deep)}
 @keyframes timerFlash{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 12px rgba(239,83,80,.35),0 0 0 24px rgba(239,83,80,.15)}}
@@ -385,7 +386,7 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
   body{background:#fff!important;padding:0}
   .header-controls,#confettiCanvas,.modal-overlay,.rep-tabs,.bday-add-row,
   .wb-toolbar,.nav-btn,.sched-add,.cal-hint,.wb-hint,.sched-hint,
-  .weather-btns-row,.weather-status,.auto-note,.card-chevron,.timer-btns,.timer-presets,
+  .weather-btns-row,.weather-status,.auto-note,.card-chevron,.timer-btns,
   .rand-controls,.rand-pick-btn,.tables-footer,.table-remove{display:none!important}
   .card.collapsed .collapse-content{max-height:none!important;opacity:1!important;padding-bottom:16px!important}
   .main-grid{grid-template-columns:1fr!important}
@@ -411,7 +412,6 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
   .weather-btns-row{flex-wrap:wrap}
   .wbtn{flex:1 1 calc(25% - 5px);min-width:72px;white-space:normal;text-align:center;font-size:.75rem;padding:6px 3px}
   .wico{font-size:1.6rem}
-  .timer-presets{flex-wrap:wrap}
   .tally-wrap{gap:3px}
   .tally-group{padding:3px 4px;gap:2px;height:34px;border-radius:6px}
   .tally-group.complete::after{height:2px}
@@ -1054,23 +1054,20 @@ body.settings-mode .ws-header-row{display:flex}
       </div>
     </div>
     <div class="collapse-content">
-      <div class="timer-ring-wrap" id="timerRingWrap">
-        <svg width="220" height="220" viewBox="0 0 220 220">
-          <circle class="timer-ring-bg" cx="110" cy="110" r="95"/>
-          <circle class="timer-ring-fg" id="timerRingFg" cx="110" cy="110" r="95" stroke-dasharray="597" stroke-dashoffset="0"/>
-        </svg>
-        <div class="timer-center"><div class="timer-time" id="timerDisplay">5:00</div></div>
-      </div>
-      <div class="timer-presets">
-        <button class="timer-preset" data-min="2"  onclick="setTimerPreset(this)">2m</button>
-        <button class="timer-preset active" data-min="5"  onclick="setTimerPreset(this)">5m</button>
-        <button class="timer-preset" data-min="10" onclick="setTimerPreset(this)">10m</button>
-        <button class="timer-preset" data-min="15" onclick="setTimerPreset(this)">15m</button>
-        <button class="timer-preset" data-min="20" onclick="setTimerPreset(this)">20m</button>
-      </div>
-      <div class="timer-custom-row">
-        <input class="timer-custom" id="timerCustom" type="number" min="1" max="99" placeholder="Custom min">
-        <button class="timer-preset" onclick="setCustomTimer()">Set</button>
+      <div class="timer-ring-row">
+        <button class="timer-adj-btn" onclick="timerAdjust(-1)" title="-1 minute">−</button>
+        <div class="timer-ring-wrap" id="timerRingWrap">
+          <svg width="220" height="220" viewBox="0 0 220 220">
+            <circle class="timer-ring-bg" cx="110" cy="110" r="95"/>
+            <circle class="timer-ring-fg" id="timerRingFg" cx="110" cy="110" r="95" stroke-dasharray="597" stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer-center">
+            <div class="timer-time" id="timerDisplay" onclick="timerDisplayEdit()" title="Click to edit">5:00</div>
+            <input id="timerDisplayInput" class="timer-display-input" type="text" placeholder="m:ss"
+              onkeydown="timerDisplayKey(event)" onblur="timerDisplayBlur()" style="display:none">
+          </div>
+        </div>
+        <button class="timer-adj-btn" onclick="timerAdjust(1)" title="+1 minute">+</button>
       </div>
       <div class="timer-btns">
         <button class="timer-btn start" id="timerStartBtn" onclick="timerStartPause()">▶ <span data-i18n="timer_start">Start</span></button>
@@ -1500,9 +1497,9 @@ function t(key) {
 
 function safeParse(key, fallback) { try { const val = localStorage.getItem(key); return val ? JSON.parse(val) : fallback; } catch (e) { return fallback; } }
 // ── SFUSD DATA ──
-const NO_SCHOOL=new Set(['2025-08-12','2025-08-13','2025-08-14','2025-08-15','2025-09-01','2025-10-13','2025-11-11','2025-11-24','2025-11-25','2025-11-26','2025-11-27','2025-11-28','2025-12-22','2025-12-23','2025-12-24','2025-12-25','2025-12-26','2025-12-29','2025-12-30','2025-12-31','2026-01-01','2026-01-02','2026-01-19','2026-02-16','2026-02-17','2026-03-27','2026-03-28','2026-03-29','2026-03-30','2026-03-31','2026-04-01','2026-04-02','2026-04-03','2026-05-25']);
+const NO_SCHOOL=new Set(['2025-08-12','2025-08-13','2025-08-14','2025-08-15','2025-09-01','2025-10-13','2025-11-11','2025-11-24','2025-11-25','2025-11-26','2025-11-27','2025-11-28','2025-12-22','2025-12-23','2025-12-24','2025-12-25','2025-12-26','2025-12-29','2025-12-30','2025-12-31','2026-01-01','2026-01-02','2026-01-19','2026-02-09','2026-02-10','2026-02-11','2026-02-12','2026-02-13','2026-02-16','2026-02-17','2026-03-27','2026-03-28','2026-03-29','2026-03-30','2026-03-31','2026-04-01','2026-04-02','2026-04-03','2026-05-25']);
 const BREAKS=[{name:'Fall Recess',emoji:'🍂',start:'2025-11-24'},{name:'Winter Break',emoji:'⛄',start:'2025-12-22'},{name:'Spring Break',emoji:'🌸',start:'2026-03-27'},{name:'Summer Break',emoji:'☀️',start:'2026-06-04'}];
-const SCHOOL_START=new Date(2025,7,18),SCHOOL_END=new Date(2026,5,3);
+const SCHOOL_START=new Date(2025,7,18),SCHOOL_END=new Date(2026,5,10);
 const HOLIDAY_LABELS={'2025-09-01':{n:'Labor Day',i:'🔨'},'2025-10-13':{n:"Indigenous People's Day",i:'🪶'},'2025-11-11':{n:'Veterans Day',i:'🎖️'},'2025-11-26':{n:'Thanksgiving',i:'🦃'},'2025-11-27':{n:'Fall Recess',i:'🍂'},'2025-11-28':{n:'Fall Recess',i:'🍂'},'2025-12-25':{n:'Christmas',i:'🎄'},'2026-01-01':{n:"New Year's Day",i:'🎆'},'2026-01-19':{n:'MLK Day',i:'✊'},'2026-02-14':{n:"Valentine's Day",i:'❤️'},'2026-02-16':{n:"Presidents' Day",i:'🦅'},'2026-02-17':{n:'Lunar New Year',i:'🧧'},'2026-03-17':{n:"St. Patrick's Day",i:'🍀'},'2026-05-05':{n:'Cinco de Mayo',i:'🎉'},'2026-05-25':{n:'Memorial Day',i:'🇺🇸'}};
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -2067,14 +2064,16 @@ async function resetToSFWeather(){
 // ── TIMER ──
 let timerTotal=300,timerLeft=300,timerRunning=false,timerInterval=null,timerSound='bell';
 const CIRC=597;
-function setTimerPreset(btn){if(timerRunning)return;document.querySelectorAll('.timer-preset').forEach(b=>b.classList.remove('active'));btn.classList.add('active');timerTotal=parseInt(btn.dataset.min)*60;timerLeft=timerTotal;updateTimerDisplay();}
-function setCustomTimer(){if(timerRunning)return;const v=parseInt(document.getElementById('timerCustom').value);if(!v||v<1||v>99)return;document.querySelectorAll('.timer-preset').forEach(b=>b.classList.remove('active'));timerTotal=v*60;timerLeft=timerTotal;updateTimerDisplay();document.getElementById('timerCustom').value='';}
+function timerAdjust(dir){const delta=60*dir;if(!timerRunning){timerTotal=Math.max(60,timerTotal+delta);timerLeft=timerTotal;}else{timerLeft=Math.max(1,timerLeft+delta);}updateTimerDisplay();}
+function timerDisplayEdit(){if(timerRunning)return;const d=document.getElementById('timerDisplay');const inp=document.getElementById('timerDisplayInput');const m=Math.floor(timerLeft/60),s=timerLeft%60;inp.value=s>0?`${m}:${String(s).padStart(2,'0')}`:String(m);d.style.display='none';inp.style.display='';inp.focus();inp.select();}
+function timerDisplayKey(e){if(e.key==='Enter'){e.preventDefault();timerDisplayBlur();}if(e.key==='Escape'){document.getElementById('timerDisplayInput').style.display='none';document.getElementById('timerDisplay').style.display='';}}
+function timerDisplayBlur(){const inp=document.getElementById('timerDisplayInput');const d=document.getElementById('timerDisplay');const parts=inp.value.split(':');let secs=0;if(parts.length===2){secs=parseInt(parts[0]||0)*60+parseInt(parts[1]||0);}else{secs=parseInt(parts[0]||0)*60;}if(secs>0&&!timerRunning){timerTotal=secs;timerLeft=secs;updateTimerDisplay();}inp.style.display='none';d.style.display='';}
 function setTimerSound(btn){document.querySelectorAll('.timer-sound-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');timerSound=btn.dataset.sound;}
 function updateTimerDisplay(){const m=Math.floor(timerLeft/60),s=timerLeft%60;const ts=`${m}:${String(s).padStart(2,'0')}`;document.getElementById('timerDisplay').textContent=ts;document.getElementById('timerRingFg').style.strokeDashoffset=CIRC-(CIRC*(timerLeft/timerTotal));updatePreviewTimer();syncTimerCollapseDisplay();}
 function syncTimerCollapseDisplay(){const m=Math.floor(timerLeft/60),s=timerLeft%60;const d=document.getElementById('timerCollapseDisplay');if(d)d.textContent=`${m}:${String(s).padStart(2,'0')}`;const pb=document.getElementById('timerCollapsePauseBtn');if(pb)pb.textContent=timerRunning?'⏸':'▶';}
 function timerCollapseEdit(){if(timerRunning)return;const d=document.getElementById('timerCollapseDisplay');const inp=document.getElementById('timerCollapseInput');const m=Math.floor(timerLeft/60),s=timerLeft%60;inp.value=`${m}:${String(s).padStart(2,'0')}`;d.style.display='none';inp.style.display='';inp.focus();inp.select();}
 function timerCollapseKey(e){if(e.key==='Enter'){e.preventDefault();timerCollapseBlur();}if(e.key==='Escape'){const d=document.getElementById('timerCollapseDisplay');const inp=document.getElementById('timerCollapseInput');inp.style.display='none';d.style.display='';}}
-function timerCollapseBlur(){const inp=document.getElementById('timerCollapseInput');const d=document.getElementById('timerCollapseDisplay');const parts=inp.value.split(':');let secs=0;if(parts.length===2){secs=parseInt(parts[0]||0)*60+parseInt(parts[1]||0);}else{secs=parseInt(parts[0]||0)*60;}if(secs>0&&!timerRunning){timerTotal=secs;timerLeft=secs;updateTimerDisplay();document.querySelectorAll('.timer-preset').forEach(b=>b.classList.remove('active'));}inp.style.display='none';d.style.display='';}
+function timerCollapseBlur(){const inp=document.getElementById('timerCollapseInput');const d=document.getElementById('timerCollapseDisplay');const parts=inp.value.split(':');let secs=0;if(parts.length===2){secs=parseInt(parts[0]||0)*60+parseInt(parts[1]||0);}else{secs=parseInt(parts[0]||0)*60;}if(secs>0&&!timerRunning){timerTotal=secs;timerLeft=secs;updateTimerDisplay();}inp.style.display='none';d.style.display='';}
 function timerStartPause(){if(timerLeft<=0)return;timerRunning=!timerRunning;document.getElementById('timerStartBtn').textContent=timerRunning?'⏸ Pause':'▶ Start';document.getElementById('timerStartBtn').className='timer-btn '+(timerRunning?'pause':'start');syncTimerCollapseDisplay();if(timerRunning){timerInterval=setInterval(()=>{timerLeft--;updateTimerDisplay();if(timerLeft<=0){clearInterval(timerInterval);timerRunning=false;document.getElementById('timerStartBtn').textContent='▶ Start';document.getElementById('timerStartBtn').className='timer-btn start';timerDone();}},1000);}else clearInterval(timerInterval);}
 function timerReset(){clearInterval(timerInterval);timerRunning=false;timerLeft=timerTotal;updateTimerDisplay();document.getElementById('timerStartBtn').textContent='▶ Start';document.getElementById('timerStartBtn').className='timer-btn start';document.getElementById('timerRingWrap').classList.remove('timer-done');}
 function timerDone(){document.getElementById('timerRingWrap').classList.add('timer-done');setTimeout(()=>document.getElementById('timerRingWrap').classList.remove('timer-done'),2800);if(muted)return;if(timerSound==='bell'){[523,659,784,523,659,784].forEach((f,i)=>playTone(f,.4,'sine',.3,i*.2));}else if(timerSound==='alarm'){for(let i=0;i<6;i++){playTone(880,.15,'square',.2,i*.25);playTone(660,.15,'square',.2,i*.25+.15);}}else{[523,587,659,698,784,880].forEach((f,i)=>playTone(f,.35,'sine',.25,i*.16));}}
@@ -2389,8 +2388,6 @@ function applyI18n() {
   if (wzip) wzip.placeholder = t('weather_zip_placeholder');
   const bdayNameIn = document.getElementById('bdayName');
   if (bdayNameIn) bdayNameIn.placeholder = t('bday_name_placeholder');
-  const timerCustomIn = document.getElementById('timerCustom');
-  if (timerCustomIn) timerCustomIn.placeholder = t('timer_custom_placeholder');
   const timerCollapseIn = document.getElementById('timerCollapseInput');
   if (timerCollapseIn) timerCollapseIn.placeholder = t('timer_collapse_placeholder');
   const wbBoard = document.getElementById('wbBoard');

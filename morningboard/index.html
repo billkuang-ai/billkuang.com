@@ -314,8 +314,8 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
 
 /* ── Timer ── */
 .timer-ring-row{position:relative;width:220px;margin:0 auto 8px}
-.timer-adj-btn{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);background:#fff;color:var(--acc);font-size:1.5rem;font-weight:800;cursor:pointer;font-family:'Fredoka One',cursive;display:flex;align-items:center;justify-content:center;transition:all .15s;line-height:1;z-index:1}
-.timer-adj-btn:hover{background:var(--acc);color:#fff}
+.timer-adj-btn{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);background:rgba(255,255,255,.55);color:var(--acc);font-size:1.5rem;font-weight:800;cursor:pointer;font-family:'Fredoka One',cursive;display:flex;align-items:center;justify-content:center;transition:all .15s;line-height:1;z-index:1;backdrop-filter:blur(2px)}
+.timer-adj-btn:hover{background:rgba(255,255,255,.9);}
 .timer-ring-row .timer-adj-btn:first-child{left:-3px}
 .timer-ring-row .timer-adj-btn:last-child{right:-3px}
 .timer-ring-wrap{position:relative;width:220px;height:220px}
@@ -912,10 +912,10 @@ body.settings-mode .ws-header-row{display:flex}
         <button class="wb-btn" onclick="wbExec('insertUnorderedList')">• List</button>
         <button class="wb-btn" onclick="wbExec('insertOrderedList')">1. List</button>
         <span style="width:1px;background:#ddd;height:18px;display:inline-block;margin:0 2px"></span>
-        <button class="wb-size active" data-size="16" onclick="setWBSize(this)">M</button>
-        <button class="wb-size" data-size="20" onclick="setWBSize(this)">L</button>
-        <button class="wb-size" data-size="26" onclick="setWBSize(this)">XL</button>
-        <button class="wb-size" data-size="34" onclick="setWBSize(this)">XXL</button>
+        <button class="wb-size active" data-size="16" onclick="setWBSize(this)">16</button>
+        <button class="wb-size" data-size="20" onclick="setWBSize(this)">20</button>
+        <button class="wb-size" data-size="26" onclick="setWBSize(this)">26</button>
+        <button class="wb-size" data-size="34" onclick="setWBSize(this)">34</button>
         <span style="width:1px;background:#ddd;height:18px;display:inline-block;margin:0 2px"></span>
         <div class="wb-color active" data-color="#f0ffe0" style="background:#f0ffe0" onclick="wbColor(this)"></div>
         <div class="wb-color" data-color="#ffeb3b" style="background:#ffeb3b" onclick="wbColor(this)"></div>
@@ -1009,11 +1009,11 @@ body.settings-mode .ws-header-row{display:flex}
 
   <!-- Class Roster -->
   <div class="card" id="card-rand">
-    <div class="card-header" onclick="toggleCard('card-rand')">
+    <div class="card-header card-header-previewrow" onclick="toggleCard('card-rand')">
       <span class="card-title">📋 <span data-i18n="roster_title">Class Roster</span></span>
-      <div style="display:flex;align-items:center;gap:6px">
+      <span class="card-chevron" style="margin-left:auto">▾</span>
+      <div class="card-preview-row">
         <span class="card-preview" id="preview-roster"></span>
-        <span class="card-chevron">▾</span>
       </div>
     </div>
     <div class="collapse-content">

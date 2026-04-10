@@ -1214,6 +1214,7 @@ const I18N = {
     dos_school_starts: 'School starts Aug 18',
     dos_year_complete: 'Year complete! 🎓',
     dos_great_summer: '🎓 Have a great summer!',
+    dos_fall_starts: `🍎 Fall semester begins ${FALL_NEXT_START||'TBD'}`,
     dos_today_exclaim: 'today!',
     dos_days_until: 'days until',
     dos_no_days_yet: 'No school days yet',
@@ -1372,6 +1373,7 @@ const I18N = {
     dos_school_starts: '學校於8月18日開始',
     dos_year_complete: '學年結束！🎓',
     dos_great_summer: '🎓 祝暑假愉快！',
+    dos_fall_starts: `🍎 下學期開始：${FALL_NEXT_START||'待定'}`,
     dos_today_exclaim: '就是今天！',
     dos_days_until: '天後',
     dos_no_days_yet: '尚無上學記錄',
@@ -1499,6 +1501,7 @@ function safeParse(key, fallback) { try { const val = localStorage.getItem(key);
 // ── SFUSD DATA ──
 const NO_SCHOOL=new Set(['2025-08-12','2025-08-13','2025-08-14','2025-08-15','2025-09-01','2025-10-13','2025-11-11','2025-11-24','2025-11-25','2025-11-26','2025-11-27','2025-11-28','2025-12-22','2025-12-23','2025-12-24','2025-12-25','2025-12-26','2025-12-29','2025-12-30','2025-12-31','2026-01-01','2026-01-02','2026-01-19','2026-02-09','2026-02-10','2026-02-11','2026-02-12','2026-02-13','2026-02-16','2026-02-17','2026-03-27','2026-03-28','2026-03-29','2026-03-30','2026-03-31','2026-04-01','2026-04-02','2026-04-03','2026-05-25']);
 const BREAKS=[{name:'Fall Recess',emoji:'🍂',start:'2025-11-24'},{name:'Winter Break',emoji:'⛄',start:'2025-12-22'},{name:'Spring Break',emoji:'🌸',start:'2026-03-27'},{name:'Summer Break',emoji:'☀️',start:'2026-06-04'}];
+const FALL_NEXT_START='Aug 17, 2026';
 const SCHOOL_START=new Date(2025,7,18),SCHOOL_END=new Date(2026,5,10);
 const HOLIDAY_LABELS={'2025-09-01':{n:'Labor Day',i:'🔨'},'2025-10-13':{n:"Indigenous People's Day",i:'🪶'},'2025-11-11':{n:'Veterans Day',i:'🎖️'},'2025-11-26':{n:'Thanksgiving',i:'🦃'},'2025-11-27':{n:'Fall Recess',i:'🍂'},'2025-11-28':{n:'Fall Recess',i:'🍂'},'2025-12-25':{n:'Christmas',i:'🎄'},'2026-01-01':{n:"New Year's Day",i:'🎆'},'2026-01-19':{n:'MLK Day',i:'✊'},'2026-02-14':{n:"Valentine's Day",i:'❤️'},'2026-02-16':{n:"Presidents' Day",i:'🦅'},'2026-02-17':{n:'Lunar New Year',i:'🧧'},'2026-03-17':{n:"St. Patrick's Day",i:'🍀'},'2026-05-05':{n:'Cinco de Mayo',i:'🎉'},'2026-05-25':{n:'Memorial Day',i:'🇺🇸'}};
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -1836,9 +1839,10 @@ function updateCounter(){
   if(today>=SCHOOL_START&&today<=SCHOOL_END)remEl.innerHTML=`<span class='dos-stat-num'>${rem}</span><span class='dos-stat-label'>school days left</span>`;
   else if(today<SCHOOL_START)remEl.innerHTML=`<span class='dos-stat-label'>School starts Aug 18</span>`;
   else remEl.innerHTML=`<span class='dos-stat-label'>Year complete! 🎓</span>`;
-  const br=daysUntilBreak(today),bc=document.getElementById('breakCountdown');
+  const _br=daysUntilBreak(today),bc=document.getElementById('breakCountdown');
+  const br=_br&&_br.name!=='Summer Break'?_br:null;
   if(br)bc.innerHTML=br.days===0?`<span class='dos-stat-label'>${br.emoji} ${br.name} today!</span>`:`<span class='dos-stat-num'>${br.days}</span><span class='dos-stat-label'>days until ${br.name} ${br.emoji}</span>`;
-  else bc.innerHTML=`<span class='dos-stat-label'>🎓 Have a great summer!</span>`;
+  else bc.innerHTML=`<span class='dos-stat-label'>🍎 Fall semester begins ${FALL_NEXT_START||'TBD'}</span>`;
   if(count!==lastCount){renderTally(count);renderBlocks(count);if(MILESTONES.includes(count)&&count>0){launchConfetti();playChime();}lastCount=count;}
   updatePreviewDOS();
 }
@@ -2074,8 +2078,9 @@ function syncTimerCollapseDisplay(){const m=Math.floor(timerLeft/60),s=timerLeft
 function timerCollapseEdit(){if(timerRunning)return;const d=document.getElementById('timerCollapseDisplay');const inp=document.getElementById('timerCollapseInput');const m=Math.floor(timerLeft/60),s=timerLeft%60;inp.value=`${m}:${String(s).padStart(2,'0')}`;d.style.display='none';inp.style.display='';inp.focus();inp.select();}
 function timerCollapseKey(e){if(e.key==='Enter'){e.preventDefault();timerCollapseBlur();}if(e.key==='Escape'){const d=document.getElementById('timerCollapseDisplay');const inp=document.getElementById('timerCollapseInput');inp.style.display='none';d.style.display='';}}
 function timerCollapseBlur(){const inp=document.getElementById('timerCollapseInput');const d=document.getElementById('timerCollapseDisplay');const parts=inp.value.split(':');let secs=0;if(parts.length===2){secs=parseInt(parts[0]||0)*60+parseInt(parts[1]||0);}else{secs=parseInt(parts[0]||0)*60;}if(secs>0&&!timerRunning){timerTotal=secs;timerLeft=secs;updateTimerDisplay();}inp.style.display='none';d.style.display='';}
-function timerStartPause(){if(timerLeft<=0)return;timerRunning=!timerRunning;document.getElementById('timerStartBtn').textContent=timerRunning?'⏸ Pause':'▶ Start';document.getElementById('timerStartBtn').className='timer-btn '+(timerRunning?'pause':'start');syncTimerCollapseDisplay();if(timerRunning){timerInterval=setInterval(()=>{timerLeft--;updateTimerDisplay();if(timerLeft<=0){clearInterval(timerInterval);timerRunning=false;document.getElementById('timerStartBtn').textContent='▶ Start';document.getElementById('timerStartBtn').className='timer-btn start';timerDone();}},1000);}else clearInterval(timerInterval);}
-function timerReset(){clearInterval(timerInterval);timerRunning=false;timerLeft=timerTotal;updateTimerDisplay();document.getElementById('timerStartBtn').textContent='▶ Start';document.getElementById('timerStartBtn').className='timer-btn start';document.getElementById('timerRingWrap').classList.remove('timer-done');}
+function setTimerBtnLabel(running){const b=document.getElementById('timerStartBtn');if(b)b.innerHTML=running?`⏸ <span data-i18n="timer_pause">${t('timer_pause')}</span>`:`▶ <span data-i18n="timer_start">${t('timer_start')}</span>`;}
+function timerStartPause(){if(timerLeft<=0)return;timerRunning=!timerRunning;setTimerBtnLabel(timerRunning);document.getElementById('timerStartBtn').className='timer-btn '+(timerRunning?'pause':'start');syncTimerCollapseDisplay();if(timerRunning){timerInterval=setInterval(()=>{timerLeft--;updateTimerDisplay();if(timerLeft<=0){clearInterval(timerInterval);timerRunning=false;setTimerBtnLabel(false);document.getElementById('timerStartBtn').className='timer-btn start';timerDone();}},1000);}else clearInterval(timerInterval);}
+function timerReset(){clearInterval(timerInterval);timerRunning=false;timerLeft=timerTotal;updateTimerDisplay();setTimerBtnLabel(false);document.getElementById('timerStartBtn').className='timer-btn start';document.getElementById('timerRingWrap').classList.remove('timer-done');}
 function timerDone(){document.getElementById('timerRingWrap').classList.add('timer-done');setTimeout(()=>document.getElementById('timerRingWrap').classList.remove('timer-done'),2800);if(muted)return;if(timerSound==='bell'){[523,659,784,523,659,784].forEach((f,i)=>playTone(f,.4,'sine',.3,i*.2));}else if(timerSound==='alarm'){for(let i=0;i<6;i++){playTone(880,.15,'square',.2,i*.25);playTone(660,.15,'square',.2,i*.25+.15);}}else{[523,587,659,698,784,880].forEach((f,i)=>playTone(f,.35,'sine',.25,i*.16));}}
 
 // ── STUDENT RANDOMIZER ──
@@ -2749,11 +2754,12 @@ updateCounter = function() {
     remEl.innerHTML = `<span class='dos-stat-label'>${t('dos_school_starts')}</span>`;
   else
     remEl.innerHTML = `<span class='dos-stat-label'>${t('dos_year_complete')}</span>`;
-  const br = daysUntilBreak(today), bc = document.getElementById('breakCountdown');
+  const _br2 = daysUntilBreak(today), bc = document.getElementById('breakCountdown');
+  const br = _br2 && !['Summer Break','暑假'].includes(_br2.name) ? _br2 : null;
   if (br) bc.innerHTML = br.days === 0
     ? `<span class='dos-stat-label'>${br.emoji} ${br.name} ${t('dos_today_exclaim')}</span>`
     : `<span class='dos-stat-num'>${br.days}</span><span class='dos-stat-label'>${t('dos_days_until')} ${br.name} ${br.emoji}</span>`;
-  else bc.innerHTML = `<span class='dos-stat-label'>${t('dos_great_summer')}</span>`;
+  else bc.innerHTML = `<span class='dos-stat-label'>🍎 ${t('dos_fall_starts')}</span>`;
   if (count !== lastCount) { renderTally(count); renderBlocks(count); if (MILESTONES.includes(count) && count > 0) { launchConfetti(); playChime(); } lastCount = count; }
   updatePreviewDOS();
 };

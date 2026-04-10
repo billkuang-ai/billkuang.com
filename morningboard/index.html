@@ -1214,7 +1214,7 @@ const I18N = {
     dos_school_starts: 'School starts Aug 18',
     dos_year_complete: 'Year complete! 🎓',
     dos_great_summer: '🎓 Have a great summer!',
-    dos_fall_starts: '🍎 Fall semester begins Aug 17, 2026',
+    dos_fall_starts: 'fall semester begins',
     dos_today_exclaim: 'today!',
     dos_days_until: 'days until',
     dos_no_days_yet: 'No school days yet',
@@ -1373,7 +1373,7 @@ const I18N = {
     dos_school_starts: '學校於8月18日開始',
     dos_year_complete: '學年結束！🎓',
     dos_great_summer: '🎓 祝暑假愉快！',
-    dos_fall_starts: '🍎 下學期開始：Aug 17, 2026',
+    dos_fall_starts: '下學期開始',
     dos_today_exclaim: '就是今天！',
     dos_days_until: '天後',
     dos_no_days_yet: '尚無上學記錄',
@@ -1842,7 +1842,7 @@ function updateCounter(){
   const _br=daysUntilBreak(today),bc=document.getElementById('breakCountdown');
   const br=_br&&_br.name!=='Summer Break'?_br:null;
   if(br)bc.innerHTML=br.days===0?`<span class='dos-stat-label'>${br.emoji} ${br.name} today!</span>`:`<span class='dos-stat-num'>${br.days}</span><span class='dos-stat-label'>days until ${br.name} ${br.emoji}</span>`;
-  else bc.innerHTML=`<span class='dos-stat-label'>🍎 Fall semester begins ${FALL_NEXT_START||'TBD'}</span>`;
+  else bc.innerHTML=`<span class='dos-stat-num'>${FALL_NEXT_START||'TBD'}</span><span class='dos-stat-label'>🍎 fall semester begins</span>`;
   if(count!==lastCount){renderTally(count);renderBlocks(count);if(MILESTONES.includes(count)&&count>0){launchConfetti();playChime();}lastCount=count;}
   updatePreviewDOS();
 }
@@ -2759,7 +2759,7 @@ updateCounter = function() {
   if (br) bc.innerHTML = br.days === 0
     ? `<span class='dos-stat-label'>${br.emoji} ${br.name} ${t('dos_today_exclaim')}</span>`
     : `<span class='dos-stat-num'>${br.days}</span><span class='dos-stat-label'>${t('dos_days_until')} ${br.name} ${br.emoji}</span>`;
-  else bc.innerHTML = `<span class='dos-stat-label'>🍎 ${t('dos_fall_starts')}</span>`;
+  else bc.innerHTML = `<span class='dos-stat-num'>${FALL_NEXT_START||'TBD'}</span><span class='dos-stat-label'>🍎 ${t('dos_fall_starts')}</span>`;
   if (count !== lastCount) { renderTally(count); renderBlocks(count); if (MILESTONES.includes(count) && count > 0) { launchConfetti(); playChime(); } lastCount = count; }
   updatePreviewDOS();
 };

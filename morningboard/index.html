@@ -161,6 +161,8 @@ body.t-purple  {background:linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8);--acc
 .mbtn.del{background:#ef5350}
 .mbtn.cancel{background:#bdbdbd}
 .modal-color-btn{border-radius:50%;cursor:pointer;transition:transform .1s}
+.roster-edit-ol{padding:8px 8px 8px 36px;margin:0 0 14px;min-height:180px;max-height:55vh;overflow-y:auto;border:2px solid #e0e0e0;border-radius:10px;font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:700;outline:none;line-height:1.9;cursor:text}
+.roster-edit-ol:focus{border-color:var(--acc)}
 .modal-color-btn:hover{transform:scale(1.25)}
 .modal-color-btn.active{transform:scale(1.3);outline:3px solid var(--deep);outline-offset:2px}
 .dc.custom-green{background:#e8f5e9;border-color:#a5d6a7}
@@ -696,6 +698,18 @@ body.settings-mode .ws-header-row{display:flex}
 <canvas id="confettiCanvas"></canvas>
 
 <!-- Modal -->
+<div class="modal-overlay" id="rosterEditOverlay" onclick="if(event.target===this)closeRosterEdit()">
+  <div class="modal" style="max-width:400px;width:92%">
+    <h3>📋 Edit Class Roster</h3>
+    <div style="font-size:.7rem;color:#aaa;margin:-8px 0 10px;text-align:center">Paste or type · one student per line · Enter for next</div>
+    <ol id="rosterEditList" class="roster-edit-ol" contenteditable="true" spellcheck="false"
+      onpaste="handleRosterPaste(event)" onkeydown="handleRosterKey(event)"></ol>
+    <div class="modal-btns">
+      <button class="mbtn" onclick="saveRosterEdit()">Save ✓</button>
+      <button class="mbtn cancel" onclick="closeRosterEdit()">Cancel</button>
+    </div>
+  </div>
+</div>
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <h3 id="modalTitle">📅 Edit Day</h3>
@@ -1013,7 +1027,7 @@ body.settings-mode .ws-header-row{display:flex}
       <span class="card-title">📋 <span data-i18n="roster_title">Class Roster</span></span>
       <span class="card-chevron" style="margin-left:auto">▾</span>
       <div class="card-preview-row">
-        <span class="card-preview" id="preview-roster"></span>
+        <span class="card-preview" id="preview-roster" onclick="event.stopPropagation();openRosterEdit()" style="cursor:pointer"></span>
       </div>
     </div>
     <div class="collapse-content">
@@ -2093,6 +2107,11 @@ if(!students){students=Array.from({length:25},(_,i)=>({name:`Student ${i+1}`,abs
 let randHistory=safeParse('randHistory', []);
 let randSpinning=false;
 function saveStudents(){localStorage.setItem('students',JSON.stringify(students));}
+function openRosterEdit(){const ol=document.getElementById('rosterEditList');ol.innerHTML='';students.forEach(s=>{const li=document.createElement('li');li.textContent=s.name;ol.appendChild(li);});if(!ol.children.length){ol.appendChild(document.createElement('li'));}document.getElementById('rosterEditOverlay').classList.add('open');const first=ol.firstElementChild;if(first){first.focus();const r=document.createRange();r.selectNodeContents(first);r.collapse(false);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(r);}}
+function closeRosterEdit(){document.getElementById('rosterEditOverlay').classList.remove('open');}
+function saveRosterEdit(){const ol=document.getElementById('rosterEditList');const names=Array.from(ol.querySelectorAll('li')).map(li=>li.textContent.trim()).filter(n=>n.length>0);const oldMap={};students.forEach(s=>{oldMap[s.name]=s;});students=names.map(name=>({name,absent:oldMap[name]?oldMap[name].absent:false}));saveStudents();renderStudents();closeRosterEdit();}
+function handleRosterPaste(e){e.preventDefault();const text=e.clipboardData.getData('text/plain');const lines=text.split(/\r?\n/).map(l=>l.replace(/^\s*\d+[\.\)]\s*/,'').trim()).filter(l=>l.length>0);if(!lines.length)return;if(lines.length===1){document.execCommand('insertText',false,lines[0]);return;}const ol=document.getElementById('rosterEditList');ol.innerHTML='';lines.forEach(line=>{const li=document.createElement('li');li.textContent=line;ol.appendChild(li);});const last=ol.lastElementChild;if(last){last.focus();const r=document.createRange();r.selectNodeContents(last);r.collapse(false);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(r);}}
+function handleRosterKey(e){if(e.key==='Escape'){e.preventDefault();closeRosterEdit();}if(e.key==='Enter'&&(e.metaKey||e.ctrlKey)){e.preventDefault();saveRosterEdit();}}
 function updateRandCount(){
   const present=students.filter(s=>!s.absent).length;
   const total=students.length;

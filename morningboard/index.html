@@ -1846,7 +1846,7 @@ function updateCounter(){
   const _br=daysUntilBreak(today),bc=document.getElementById('breakCountdown');
   const br=_br&&_br.name!=='Summer Break'?_br:null;
   if(br)bc.innerHTML=br.days===0?`<span class='dos-stat-label'>${br.emoji} ${br.name} today!</span>`:`<span class='dos-stat-num'>${br.days}</span><span class='dos-stat-label'>days until ${br.name} ${br.emoji}</span>`;
-  else{const fd=FALL_NEXT_DATE?Math.max(0,Math.ceil((FALL_NEXT_DATE-new Date(today.getFullYear(),today.getMonth(),today.getDate()))/864e5)):null;bc.innerHTML=fd===0?`<span class='dos-stat-label'>🍎 Fall semester begins today!</span>`:fd>0?`<span class='dos-stat-num'>${fd}</span><span class='dos-stat-label'>🍎 days until fall semester</span>`:`<span class='dos-stat-label'>🍎 Fall semester TBD</span>`;}
+  else{const fd=FALL_NEXT_DATE?Math.max(0,Math.ceil((FALL_NEXT_DATE-new Date(today.getFullYear(),today.getMonth(),today.getDate()))/864e5)):null;bc.innerHTML=fd===0?`<span class='dos-stat-label'>Fall semester begins today!</span>`:fd>0?`<span class='dos-stat-num'>${fd}</span><span class='dos-stat-label'>days until fall semester</span>`:`<span class='dos-stat-label'>Fall semester TBD</span>`;}
   if(count!==lastCount){renderTally(count);renderBlocks(count);if(MILESTONES.includes(count)&&count>0){launchConfetti();playChime();}lastCount=count;}
   updatePreviewDOS();
 }
@@ -2763,7 +2763,7 @@ updateCounter = function() {
   if (br) bc.innerHTML = br.days === 0
     ? `<span class='dos-stat-label'>${br.emoji} ${br.name} ${t('dos_today_exclaim')}</span>`
     : `<span class='dos-stat-num'>${br.days}</span><span class='dos-stat-label'>${t('dos_days_until')} ${br.name} ${br.emoji}</span>`;
-  else{const fd=FALL_NEXT_DATE?Math.max(0,Math.ceil((FALL_NEXT_DATE-new Date(today.getFullYear(),today.getMonth(),today.getDate()))/864e5)):null;bc.innerHTML=fd===0?`<span class='dos-stat-label'>🍎 ${t('dos_fall_today')}</span>`:fd>0?`<span class='dos-stat-num'>${fd}</span><span class='dos-stat-label'>🍎 ${t('dos_fall_starts')}</span>`:`<span class='dos-stat-label'>🍎 ${t('dos_fall_tbd')}</span>`;}
+  else{const fd=FALL_NEXT_DATE?Math.max(0,Math.ceil((FALL_NEXT_DATE-new Date(today.getFullYear(),today.getMonth(),today.getDate()))/864e5)):null;bc.innerHTML=fd===0?`<span class='dos-stat-label'>${t('dos_fall_today')}</span>`:fd>0?`<span class='dos-stat-num'>${fd}</span><span class='dos-stat-label'>${t('dos_fall_starts')}</span>`:`<span class='dos-stat-label'>${t('dos_fall_tbd')}</span>`;}
   if (count !== lastCount) { renderTally(count); renderBlocks(count); if (MILESTONES.includes(count) && count > 0) { launchConfetti(); playChime(); } lastCount = count; }
   updatePreviewDOS();
 };
